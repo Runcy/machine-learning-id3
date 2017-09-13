@@ -21,7 +21,7 @@ bool has_only_digits(const std::string s)
   return s.find_first_not_of( "0123456789" ) == std::string::npos;
 }
 
-void prepareSqlString(std::vector<std::string> v)
+std::string prepareSqlString(std::vector<std::string> v)
 {
     std::string resultString;
     for (auto it = v.begin(); it != v.end(); it++) {
@@ -34,6 +34,7 @@ void prepareSqlString(std::vector<std::string> v)
     // remove last 2 chars
     resultString.pop_back();
     resultString.pop_back();
+    return resultString;
     // std::cout << "RESULTx " << resultString << std::endl;
 }
 
@@ -71,18 +72,33 @@ int main(int argc, char* argv[])
         //     // int id = query.getColumn(0);
         //     // std::string value = query.getColumn(1);
         //     // std::cout << "row: " << id << ", " << value << std::endl;
-        }
     } catch (std::exception& e) {
         std::cout << "exception: " << e.what() << std::endl;
     }
-
+    std::string resultString;
     if (input.is_open()) {
         while (getline(input, line)) {
             // std::cout << line << std::endl;
             result = split(line, ", ");
-            prepareSqlString(result);
-            // for_each(result.begin(), result.end(), printString);
+            resultString = prepareSqlString(result);
+            // std::cout << "insert into census (" + resultString + ")"
+            try {
+                SQLite::Transaction transaction(db);
+                db.exec("insert into census values(" + resultString + ")");
+                transaction.commit();
+            } catch (std::exception& e) {
+                std::cout << "exception: " << e.what() << std::endl;
+            }
         }
         input.close();
+    }
+
+    SQLite::Statement query(db, "SELECT count(*) FROM census where education=\"Bachelors\"" );
+    while (query.executeStep()) {
+        int columns = query.getColumnCount();
+        for (int i = 0; i < columns; i++) {
+            std::cout << query.getColumn(i) << ' ';
+        }
+        std::cout << std::endl;
     }
 }
