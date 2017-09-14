@@ -16,7 +16,7 @@ std::vector<std::string> split(const std::string &text, std::string sep) {
     return tokens;
 }
 
-bool has_only_digits(const std::string s)
+bool isNumber(const std::string s)
 {
   return s.find_first_not_of( "0123456789" ) == std::string::npos;
 }
@@ -25,7 +25,7 @@ std::string prepareSqlString(std::vector<std::string> v)
 {
     std::string resultString;
     for (auto it = v.begin(); it != v.end(); it++) {
-        if (has_only_digits(*it)) {
+        if (isNumber(*it)) {
             resultString += *it + ", ";
         } else {
             resultString += '"' + *it + '"' + ", ";
@@ -35,7 +35,6 @@ std::string prepareSqlString(std::vector<std::string> v)
     resultString.pop_back();
     resultString.pop_back();
     return resultString;
-    // std::cout << "RESULTx " << resultString << std::endl;
 }
 
 void printString(std::string s)
