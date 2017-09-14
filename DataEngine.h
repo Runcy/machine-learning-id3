@@ -1,3 +1,6 @@
+#ifndef DATAENGINE_H
+#define DATAENGINE_H
+
 #include <stdio.h>
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <iostream>
@@ -7,75 +10,101 @@
 
 class DataEngine
 {
-    private:
-        const std::string trainingDataPath;
-        const std::string tableAttributes;
-        SQLite::Database db;
+private:
+    const std::string trainingDataPath;
+    const std::string tableAttributes;
+    const std::string tableName;
+    SQLite::Database *db;
 
-        bool isNumber(const std::string s)
-        {
-          return s.find_first_not_of( "0123456789" ) == std::string::npos;
+    bool isNumber(const std::string s)
+    {
+      return s.find_first_not_of( "0123456789" ) == std::string::npos;
+    }
+
+    std::vector<std::string> split(const std::string &text, std::string sep)
+    {
+        std::vector<std::string> tokens;
+        std::size_t start = 0, end = 0;
+        while ((end = text.find(sep, start)) != std::string::npos) {
+            tokens.push_back(text.substr(start, end - start));
+            start = end + sep.length();
         }
+        tokens.push_back(text.substr(start));
+        return tokens;
+    }
 
-        std::vector<std::string> split(const std::string &text, std::string sep) {
-            std::vector<std::string> tokens;
-            std::size_t start = 0, end = 0;
-            while ((end = text.find(sep, start)) != std::string::npos) {
-                tokens.push_back(text.substr(start, end - start));
-                start = end + sep.length();
+    std::string prepareSqlString(std::vector<std::string> v)
+    {
+        std::string resultString;
+        for (auto it = v.begin(); it != v.end(); it++) {
+            if (isNumber(*it)) {
+                resultString += *it + ", ";
+            } else {
+                resultString += '"' + *it + '"' + ", ";
             }
-            tokens.push_back(text.substr(start));
-            return tokens;
         }
+        // remove last 2 chars
+        resultString.pop_back();
+        resultString.pop_back();
+        return resultString;
+    }
 
-        std::string prepareSqlString(std::vector<std::string> v)
-        {
-            std::string resultString;
-            for (auto it = v.begin(); it != v.end(); it++) {
-                if (isNumber(*it)) {
-                    resultString += *it + ", ";
-                } else {
-                    resultString += '"' + *it + '"' + ", ";
+    void populateDatabase()
+    {
+        std::ifstream input(trainingDataPath);
+        std::vector<std::string> result;
+        std::string resultString;
+        std::string line;
+        if (input.is_open()) {
+            while (getline(input, line)) {
+                result = split(line, ", ");
+                resultString = prepareSqlString(result);
+                try {
+                    SQLite::Transaction transaction(*db);
+                    db->exec("insert into " + tableName + " values(" + resultString + ")");
+                    transaction.commit();
+                } catch (std::exception& e) {
+                    std::cout << "exception: " << e.what() << std::endl;
                 }
             }
-            // remove last 2 chars
-            resultString.pop_back();
-            resultString.pop_back();
-            return resultString;
         }
+    }
 
-        void populateDatabase()
-        {
-            std::ifstream input(_trainingDataPath);
-            std::string result;
-            std::string resultString;
+public:
+    DataEngine(const std::string _trainingDataPath, const std::string _tableAttributes, const std::string _tableName = "census") : trainingDataPath(_trainingDataPath), tableAttributes(_tableAttributes), tableName(_tableName)
+    {
+        db = new SQLite::Database(":memory:", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+        try {
+            SQLite::Transaction transaction(*db);
+            db->exec(tableAttributes);
+            transaction.commit();
+        } catch (std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
+        populateDatabase();
+        // SQLite::Statement query(*db, "SELECT count(*) FROM census where education=\"Bachelors\""
+    }
 
-            if (input.is_open()) {
-                while (getline(input, line)) {
-                    // std::cout << line << std::endl;
-                    result = split(line, ", ");
-                    resultString = prepareSqlString(result);
-                    // std::cout << "insert into census (" + resultString + ")"
-                    try {
-                        SQLite::Transaction transaction(db);
-                        db.exec("insert into census values(" + resultString + ")");
-                        transaction.commit();
-                    } catch (std::exception& e) {
-                        std::cout << "exception: " << e.what() << std::endl;
-                    }
-                }
+    void executeQuery(std::string sqlString, std::vector<std::vector<std::string>> &v)
+    {
+        SQLite::Statement query(*db, sqlString);
+        while (query.executeStep()) {
+            std::vector<std::string> result;
+            int columns = query.getColumnCount();
+            for (int i = 0; i < columns; i++) {
+                result.push_back(query.getColumn(i).getText());
             }
+            v.push_back(result);
         }
+    }
 
-    public:
-        DataEngine(const std::string _trainingDataPath, const std::string _tableAttributes) : trainingDataPath(_trainingDataPath), tableAttributes(_tableAttributes), db(":memory:",SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE)
-        {
-            try {
-                SQLite::Transaction(db);
-                db.exec(tableAttributes);
-                transaction.commit();
-            } catch (std::exception &e) {
-                std::cout << e.what() << std::endl;
-            }
-        }
-}
+    int getCountQuery(std::string whereString)
+    {
+        std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
+        SQLite::Statement query(*db, sqlString);
+        query.executeStep();
+        return query.getColumn(0).getInt();
+    }
+};
+
+#endif

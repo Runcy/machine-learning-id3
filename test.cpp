@@ -1,3 +1,5 @@
+// #include "DataEngine.h"
+
 #include <stdio.h>
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <iostream>
@@ -47,17 +49,17 @@ int main(int argc, char* argv[])
     std::string line;
     std::ifstream input("../adult.data");
     std::vector<std::string> result;
-    SQLite::Database db(":memory:",SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+    SQLite::Database *db = new SQLite::Database(":memory:",SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
     try {
         // Open a database file
 
-        SQLite::Transaction transaction(db);
-        db.exec("create table census (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
+        SQLite::Transaction transaction(*db);
+        db->exec("create table census (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
                 " education TEXT, education_num INTEGER, marital_status TEXT,"
                 " occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
                 " capital_gain INTEGER, capital_loss INTEGER,"
                 " hours_per_week INTEGER, native_country TEXT, result TEXT)");
-        db.exec("insert into census values(50, \"Self-emp-not-inc\", 83311, \"Bachelors\", 13, \"Married-civ-spouse\", \"Exec-managerial\", \"Husband\", \"White\", \"Male\", 0, 0, 13, \"United-States\", \"<=50K\")");
+        db->exec("insert into census values(50, \"Self-emp-not-inc\", 83311, \"Bachelors\", 13, \"Married-civ-spouse\", \"Exec-managerial\", \"Husband\", \"White\", \"Male\", 0, 0, 13, \"United-States\", \"<=50K\")");
         transaction.commit();
 
         // SQLite::Statement query(db, "SELECT * FROM census");
@@ -82,8 +84,8 @@ int main(int argc, char* argv[])
             resultString = prepareSqlString(result);
             // std::cout << "insert into census (" + resultString + ")"
             try {
-                SQLite::Transaction transaction(db);
-                db.exec("insert into census values(" + resultString + ")");
+                SQLite::Transaction transaction(*db);
+                db->exec("insert into census values(" + resultString + ")");
                 transaction.commit();
             } catch (std::exception& e) {
                 std::cout << "exception: " << e.what() << std::endl;
@@ -92,12 +94,13 @@ int main(int argc, char* argv[])
         input.close();
     }
 
-    SQLite::Statement query(db, "SELECT count(*) FROM census where education=\"Bachelors\"" );
-    while (query.executeStep()) {
-        int columns = query.getColumnCount();
-        for (int i = 0; i < columns; i++) {
-            std::cout << query.getColumn(i) << ' ';
-        }
-        std::cout << std::endl;
-    }
+    SQLite::Statement query(*db, "SELECT count(*) FROM census where education=\"Bachelors\"" );
+    std::cout << query.getQuery();
+    // while (query.executeStep()) {
+    //     int columns = query.getColumnCount();
+    //     for (int i = 0; i < columns; i++) {
+    //         std::cout << query.getColumn(i) << ' ';
+    //     }
+    //     std::cout << std::endl;
+    // }
 }
