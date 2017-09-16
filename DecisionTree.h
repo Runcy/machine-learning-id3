@@ -15,10 +15,14 @@ private:
         std::vector<std::string> attributesList;
         dataEngine.getDistinctAttributeValues(attributesList, attribute);
 
-        std::string contextQueryString = contextString.first + " = " + contextString.second;
+        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-
+            contextQueryString += " and " + it->first + " = " + it->second;
         }
+        int contextCount = dataEngine.getCount(contextQueryString);
+
+        // now we have to find number of each value of the chosen attribute
+        // then computing entropy gain is not that hard
     }
 
 public:

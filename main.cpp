@@ -18,7 +18,23 @@ int main()
     std::vector<std::string> data;
     dataEngine.getDistinctAttributeValues(data, "occupation");
     for (auto it = data.begin(); it != data.end(); it++) {
-        std::cout << *it << std::endl;
+        // std::cout << *it << std::endl;
     }
+
+    std::vector<std::pair<std::string, std::string>> contextString;
+    std::vector<std::string> attributesList;
+    // dataEngine.getDistinctAttributeValues(attributesList, attribute);
+
+    contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
+    contextString.push_back(std::make_pair("education", "'Bachelors'"));
+
+
+    std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+    for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+        contextQueryString += " and " + it->first + " = " + it->second;
+    }
+    std::cout << contextQueryString << std::endl;
+    std::cout << dataEngine.getCount(contextQueryString);
+
     return 0;
 }
