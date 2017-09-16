@@ -10,7 +10,12 @@ int main()
     std::string dataPath = "../adult.data";
 
     DataEngine dataEngine(dataPath, tableAttrib);
-    std::cout << dataEngine.getCountQuery("education=\"Bachelors\" and age > 50");
+    std::cout << dataEngine.getCount("education=\"Bachelors\" and age > 50") << std::endl;
+    std::cout << dataEngine.getCount("education=\"Bachelors\" and age > 50"" and result = '<=50K'") << std::endl;
+    std::cout << dataEngine.getCount("education=\"Bachelors\" and age > 50"" and result = '>50K'") << std::endl;
+
+    std::cout << dataEngine.getProbability("education=\"Bachelors\" and age > 50", '+');
+
 
     return 0;
 }

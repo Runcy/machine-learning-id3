@@ -18,7 +18,7 @@ private:
 
     bool isNumber(const std::string s)
     {
-      return s.find_first_not_of( "0123456789" ) == std::string::npos;
+        return s.find_first_not_of( "0123456789" ) == std::string::npos;
     }
 
     std::vector<std::string> split(const std::string &text, std::string sep)
@@ -98,12 +98,26 @@ public:
         }
     }
 
-    int getCountQuery(std::string whereString)
+    int getCount(std::string whereString)
     {
         std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
         return query.getColumn(0).getInt();
+    }
+
+    float getProbability(std::string queryString, char value) //make this more general
+    {
+        std::string probString = queryString;
+        if (value == '+') {
+            probString += " and result = '>50K'";
+        } else {
+            probString += " and result = '<=50K'";
+        }
+        float count = getCountQuery(probString);
+        float totalCount = getCountQuery(queryString);
+
+        return count / totalCount;
     }
 };
 

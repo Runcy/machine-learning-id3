@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "-O2 -Wall -Wextra")
 project(test_project)
 add_executable(test_p test.cpp)
 add_executable(main main.cpp)
