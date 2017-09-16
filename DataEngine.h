@@ -114,10 +114,20 @@ public:
         } else {
             probString += " and result = '<=50K'";
         }
-        float count = getCountQuery(probString);
-        float totalCount = getCountQuery(queryString);
+        float count = getCount(probString);
+        float totalCount = getCount(queryString);
 
         return count / totalCount;
+    }
+
+    void getDistinctAttributeValues(std::vector<std::string> &valueList, std::string attribute)
+    {
+        std::string sqlQuery = "select distinct " + attribute + " from " + tableName;
+        SQLite::Statement query(*db, sqlQuery);
+        while (query.executeStep()) {
+            valueList.push_back(query.getColumn(0));
+            // std::cout << query.getColumn(0) << std::endl;
+        }
     }
 };
 

@@ -15,7 +15,10 @@ int main()
     std::cout << dataEngine.getCount("education=\"Bachelors\" and age > 50"" and result = '>50K'") << std::endl;
 
     std::cout << dataEngine.getProbability("education=\"Bachelors\" and age > 50", '+');
-
-
+    std::vector<std::string> data;
+    dataEngine.getDistinctAttributeValues(data, "occupation");
+    for (auto it = data.begin(); it != data.end(); it++) {
+        std::cout << *it << std::endl;
+    }
     return 0;
 }

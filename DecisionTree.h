@@ -3,20 +3,28 @@
 
 #include "DataEngine.h"
 
+typedef std::pair<std::string, std::string> ItemPair;
+
 class DecisionTree {
 private:
     std::vector<string> totalAttributes;
     const static DataEngine dataEngine;
 
-    float getEntropy(std::string contextString, std::string)
+    float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     {
+        std::vector<std::string> attributesList;
+        dataEngine.getDistinctAttributeValues(attributesList, attribute);
 
+        std::string contextQueryString = contextString.first + " = " + contextString.second;
+        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+
+        }
     }
 
 public:
     NodeType type;
     std::vector<DecisionTree*> children;
-    std::pair<std::string, std::string> attributePair;
+    ItemPair attributePair;
     enum NodeType {
         TerminalNode,
         AttributeNode
@@ -33,7 +41,7 @@ public:
         attributePair.second = value;
         children = nullptr;
     }
-    DecisionTree buildTree(DecisionTree &dt, std::vector<string> currentAttributes, std::vector<string> remainingAttributes)
+    DecisionTree buildTree(DecisionTree &dt, std::vector<ItemPair> currentAttributes, std::vector<string> remainingAttributes)
     {
         int result = checkResult(currentAttribute);
         if (result > 0) {
@@ -42,6 +50,23 @@ public:
             return new DecisionTree("result", "<50K");
         } else {
             //if current == empty, we know it's root
+
+
+            //anyhow, we will calculate entropies of everything and find
+            // out the best greedy choice
+            float maxEntropyGain = 0;
+            float currentEntropyGain = 0;
+            auto bestChoice = remainingAttributes.begin();
+            for (auto *it = remainingAttributes.begin(); it != remainingAttributes.end(); it++) {
+                currentEntropyGain = entropyGain(currentAtrributes, remainingAttributes);
+                if (currentEntropyGain > maxEntropyGain) {
+                    bestChoice = it;
+                    maxEntropyGain = currentEntropyGain;
+                }
+            }
+            //do something with best choice
+            itemPair = *bestChoice;
+            remainingAttributes.erase(bestChoice);
         }
     }
 };
