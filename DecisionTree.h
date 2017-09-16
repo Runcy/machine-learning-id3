@@ -15,10 +15,11 @@ private:
         std::vector<std::string> attributesList;
         dataEngine.getDistinctAttributeValues(attributesList, attribute);
 
-        std::string contextQueryString = contextString.first + " = " + contextString.second;
+        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-
+            contextQueryString += " and " + it->first + " = " + it->second;
         }
+        dataEngine.getCount(contextQueryString);
     }
 
 public:

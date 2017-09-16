@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+// #include <pair>
 #include <algorithm>
 
 class DataEngine
@@ -101,6 +102,7 @@ public:
     int getCount(std::string whereString)
     {
         std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
+        std::cout << std::endl << sqlString;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
         return query.getColumn(0).getInt();
