@@ -17,11 +17,31 @@ private:
 
         std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-            contextQueryString += " and " + it->first + " = " + it->second;
+            contextQueryString += " and " + it->first + " = '" + it->second + "'";
         }
         int contextCount = dataEngine.getCount(contextQueryString);
-
+        int attributeCount;
+        float instanceProbability;
+        float positiveProbability;
+        float negativeProbability;
+        float entropy;
+        float totalEntropyGain = 0;
         // now we have to find number of each value of the chosen attribute
+        std::string attributeQueryString;
+        for (auto it = attributesList.begin(); it != attributesList.end(); it++) {
+            attributeQueryString = contextQueryString;
+            attributeQueryString += " and " + attribute + " = '" + *it + "'";
+            attributeCount = dataEngine.getCount(attributeQueryString);
+
+            instanceProbability = (float) attributeCount / contextCount;
+
+            positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
+            negativeProbability = dataEngine.getProbability(attributeQueryString, '-');
+            entropy = -positiveProbability*log2(positiveProbability) - negativeProbability*log2(negativeProbability);
+
+            totalEntropyGain += entropy;
+        }
+        return totalEntropyGain;
         // then computing entropy gain is not that hard
     }
 
