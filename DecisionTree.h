@@ -37,9 +37,9 @@ private:
 
             positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
             negativeProbability = dataEngine.getProbability(attributeQueryString, '-');
-            entropy = -positiveProbability*log2(positiveProbability) - negativeProbability*log2(negativeProbability);
+            entropy = positiveProbability*log2(positiveProbability) + negativeProbability*log2(negativeProbability);
 
-            totalEntropyGain += entropy;
+            totalEntropyGain += instanceProability*entropy;
         }
         return totalEntropyGain;
         // then computing entropy gain is not that hard

@@ -16,6 +16,9 @@ private:
     const std::string trainingDataPath;
     const std::string tableAttributes;
     const std::string tableName;
+    const std::string resultString;
+    const std::string positiveInstanceString;
+    const std::string negativeInstanceString;
     SQLite::Database *db;
 
     bool isNumber(const std::string s)
@@ -73,7 +76,10 @@ private:
     }
 
 public:
-    DataEngine(const std::string _trainingDataPath, const std::string _tableAttributes, const std::string _tableName = "census") : trainingDataPath(_trainingDataPath), tableAttributes(_tableAttributes), tableName(_tableName)
+    DataEngine(const std::string _trainingDataPath, const std::string _tableAttributes,
+                const std::string _resultString, const std::string _positiveInstanceString, const std::string _negativeInstanceString) :
+                    trainingDataPath(_trainingDataPath), tableAttributes(_tableAttributes), tableName("dataTable"), resultString(_resultString),
+                    positiveInstanceString(_positiveInstanceString), negativeInstanceString(_negativeInstanceString)
     {
         db = new SQLite::Database(":memory:", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
         try {
@@ -103,7 +109,7 @@ public:
     int getCount(std::string whereString)
     {
         std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
-        std::cout << std::endl << sqlString;
+        // std::cout << sqlString << std::endl;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
         return query.getColumn(0).getInt();
