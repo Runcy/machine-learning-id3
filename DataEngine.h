@@ -62,10 +62,12 @@ private:
         std::string line;
         if (input.is_open()) {
             while (getline(input, line)) {
-                result = split(line, ", ");
+                result = split(line, ",");
                 resultString = prepareSqlString(result);
+                // std::cout << resultString;
                 try {
                     SQLite::Transaction transaction(*db);
+                    // std::cout << "insert into " + tableName + " values(" + resultString + ")";
                     db->exec("insert into " + tableName + " values(" + resultString + ")");
                     transaction.commit();
                 } catch (std::exception& e) {
@@ -106,6 +108,17 @@ public:
         }
     }
 
+    int getAllCount()
+    {
+        std::string sqlString = "select count(*) from " + tableName;
+        // std::cout << sqlString << std::endl;
+        SQLite::Statement query(*db, sqlString);
+        query.executeStep();
+        int val = query.getColumn(0).getInt();
+        std::cout << sqlString << std::endl << val << std::endl;
+        return val;
+    }
+
     int getCount(std::string whereString)
     {
         std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
@@ -121,9 +134,9 @@ public:
     {
         std::string probString = queryString;
         if (value == '+') {
-            probString += " and result = '" + positiveInstanceString + "'";
+            probString += " and " + resultString + "= '" + positiveInstanceString + "'";
         } else {
-            probString += " and result = '" + negativeInstanceString + "'";
+            probString += " and " + resultString + "= '" + negativeInstanceString + "'";
         }
         float count = getCount(probString);
         float totalCount = getCount(queryString);

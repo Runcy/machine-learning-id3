@@ -14,32 +14,54 @@ private:
     {
         std::vector<std::string> attributesList;
         dataEngine.getDistinctAttributeValues(attributesList, attribute);
+        int contextCount;
 
-        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-            contextQueryString += " and " + it->first + " = '" + it->second + "'";
+        std::string contextQueryString = "";
+        if (!contextString.empty()) {
+            contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+            for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+                contextQueryString += " and " + it->first + " = '" + it->second + "'";
+            }
+            // std::cout << contextQueryString << std::endl;
+            contextCount = dataEngine.getCount(contextQueryString);
+        } else {
+            contextCount = dataEngine.getAllCount();
         }
-        int contextCount = dataEngine.getCount(contextQueryString);
+
         int attributeCount;
         float instanceProbability;
         float positiveProbability;
         float negativeProbability;
+        float positiveEntropy;
+        float negativeEntropy;
         float entropy;
         float totalEntropyGain = 0;
         // now we have to find number of each value of the chosen attribute
         std::string attributeQueryString;
         for (auto it = attributesList.begin(); it != attributesList.end(); it++) {
             attributeQueryString = contextQueryString;
-            attributeQueryString += " and " + attribute + " = '" + *it + "'";
+            if (contextString.empty()) {
+                attributeQueryString += attribute + " = '" + *it + "'";
+            } else {
+                attributeQueryString += " and " + attribute + " = '" + *it + "'";
+            }
+            // std::cout << attributeQueryString << std::endl;
             attributeCount = dataEngine.getCount(attributeQueryString);
 
             instanceProbability = (float) attributeCount / contextCount;
 
             positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
             negativeProbability = dataEngine.getProbability(attributeQueryString, '-');
-            entropy = positiveProbability*log2(positiveProbability) + negativeProbability*log2(negativeProbability);
 
-            totalEntropyGain += instanceProability*entropy;
+            positiveEntropy = (positiveProbability == 0) ? 0 : positiveProbability*log2(positiveProbability);
+            negativeEntropy = (negativeProbability == 0) ? 0 : negativeProbability*log2(negativeProbability);
+
+            // positiveEntropy = positiveProbability*log2(positiveProbability);
+            // negativeEntropy = negativeProbability*log2(negativeProbability);
+
+            entropy = positiveEntropy + negativeEntropy;
+
+            totalEntropyGain += instanceProbability*entropy;
         }
         return totalEntropyGain;
         // then computing entropy gain is not that hard
