@@ -1,14 +1,14 @@
 #include "DataEngine.h"
 
 std::string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
-" education TEXT, education-num INTEGER, marital-status TEXT,"
+" education TEXT, education_num INTEGER, marital_status TEXT,"
 " occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
-" capital-gain INTEGER, capital-loss INTEGER,"
-" hours-per-week INTEGER, native-country TEXT, result TEXT)";
+" capital_gain INTEGER, capital_loss INTEGER,"
+" hours_per_week INTEGER, native_country TEXT, result TEXT)";
 std::string dataPath = "../adult.data";
 typedef std::pair<std::string, std::string> ItemPair;
 
-DataEngine dataEngine(dataPath, tableAttrib, "result", ">=50K", "<50K");
+DataEngine dataEngine(dataPath, tableAttrib, "result", "<=50K", ">50K");
 
 float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
 {
@@ -25,6 +25,8 @@ float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     float instanceProbability;
     float positiveProbability;
     float negativeProbability;
+    float positiveEntropy;
+    float negativeEntropy;
     float entropy;
     float totalEntropyGain = 0;
     // now we have to find number of each value of the chosen attribute
@@ -39,7 +41,14 @@ float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
 
         positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
         negativeProbability = dataEngine.getProbability(attributeQueryString, '-');
-        entropy = positiveProbability*log2(positiveProbability) + negativeProbability*log2(negativeProbability);
+
+        positiveEntropy = (positiveProbability == 0) ? 0 : positiveProbability*log2(positiveProbability);
+        negativeEntropy = (negativeProbability == 0) ? 0 : negativeProbability*log2(negativeProbability);
+
+        // positiveEntropy = positiveProbability*log2(positiveProbability);
+        // negativeEntropy = negativeProbability*log2(negativeProbability);
+
+        entropy = positiveEntropy + negativeEntropy;
 
         totalEntropyGain += instanceProbability*entropy;
     }
@@ -68,7 +77,7 @@ int main()
     contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
     contextString.push_back(std::make_pair("education", "Bachelors"));
     // for (int i = 0; i < 100; i++) {
-    std::cout << getEntropyGain(contextString, "marital-status");
+        std::cout << getEntropyGain(contextString, "sex");
     // }
     // std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
     // for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {

@@ -112,19 +112,25 @@ public:
         // std::cout << sqlString << std::endl;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
-        return query.getColumn(0).getInt();
+        int val = query.getColumn(0).getInt();
+        std::cout << sqlString << std::endl << val << std::endl;
+        return val;
     }
 
     float getProbability(std::string queryString, char value) //make this more general
     {
         std::string probString = queryString;
         if (value == '+') {
-            probString += " and result = '>50K'";
+            probString += " and result = '" + positiveInstanceString + "'";
         } else {
-            probString += " and result = '<=50K'";
+            probString += " and result = '" + negativeInstanceString + "'";
         }
         float count = getCount(probString);
         float totalCount = getCount(queryString);
+
+        if (totalCount == 0) { // to take care of 0 probs, idk if this is a best stragegy
+            return 0;
+        }
 
         return count / totalCount;
     }
