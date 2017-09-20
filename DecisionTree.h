@@ -63,58 +63,70 @@ private:
 
             totalEntropyGain += instanceProbability*entropy;
         }
-        return totalEntropyGain;
+        return totalEntropyGain*-1;
         // then computing entropy gain is not that hard
     }
 
 public:
-    NodeType type;
-    std::vector<DecisionTree*> children;
-    ItemPair attributePair;
-    enum NodeType {
-        TerminalNode,
-        AttributeNode
-    };
+    struct DecisionTreeNode {
+        std::vector<node*> children;
+        NodeType type;
+        ItemPair attributePair;
+        enum NodeType {
+            TerminalNode,
+            AttributeNode
+        };
+    }
+
+    DecisionTreeNode rootNode;
+
     DecisionTree(const DataEngine &dataEngine, std::vector<string> &attributes)
     {
         this->dataEngine = dataEngine;
         totalAttributes = attributes;
     }
-    DecisionTree(std::string attribute, std::string value)
-    {
-        type = NodeType::TerminalNode;
-        attributePair.first = attribute;
-        attributePair.second = value;
-        children = nullptr;
-    }
-    DecisionTree buildTree(DecisionTree &dt, std::vector<ItemPair> currentAttributes, std::vector<string> remainingAttributes)
-    {
-        int result = checkResult(currentAttribute);
-        if (result > 0) {
-            return new DecisionTree("result", ">=50K");
-        } else if (result < 0) {
-            return new DecisionTree("result", "<50K");
-        } else {
-            //if current == empty, we know it's root
 
+    void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
+    {
+        float minEntropy = 999;
+        float attributeEntropy;
+        auto bestAttributeItr = availableAttributes.begin();
+        std::vector<std::string> distinctAttributeList;
 
-            //anyhow, we will calculate entropies of everything and find
-            // out the best greedy choice
-            float maxEntropyGain = 0;
-            float currentEntropyGain = 0;
-            auto bestChoice = remainingAttributes.begin();
-            for (auto *it = remainingAttributes.begin(); it != remainingAttributes.end(); it++) {
-                currentEntropyGain = entropyGain(currentAtrributes, remainingAttributes);
-                if (currentEntropyGain > maxEntropyGain) {
-                    bestChoice = it;
-                    maxEntropyGain = currentEntropyGain;
-                }
+        for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
+            attributeEntropy = dataEngine.getEntropyGain(nodeContext, *it)
+            if (attributeEntropy < minEntropy) {
+                minEntropy = attributeEntropy;
+                bestAttributeItr = it;
             }
-            //do something with best choice
-            itemPair = *bestChoice;
-            remainingAttributes.erase(bestChoice);
+        }
+
+        nodeContext.push_back(node.attributePair);
+        std::string bestAttributeString = *bestAttributeItr;
+        availableAttributes.erase(bestAttributeItr);
+        dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
+
+        for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+            DecisionTreeNode* childNode = new DecisionTreeNode();
+            childNode.attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
+
+            if (minEntropy == 0) {
+                childNode.NodeType = NodeType::TerminalNode;
+                childNode.children.push_back(std::make_pair("result", "+"));
+            } else {
+                childNode.NodeType = NodeType::AttributeNode;
+            }
+
+            node.children.push_back(childNode);
+        }
+
+        if (minEntropy != 0) {
+            for (auto it = node.children.begin(); it != node.children.end(); it++) {
+                buildTree(*it, nodeContext, availableAttributes);
+            }
         }
     }
+
 };
 
 #endif
