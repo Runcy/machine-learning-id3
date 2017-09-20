@@ -1,4 +1,0 @@
-/home/nic/original-projects/machine learning/id3/build/CMakeFiles/edit_cache.dir
-/home/nic/original-projects/machine learning/id3/build/CMakeFiles/main.dir
-/home/nic/original-projects/machine learning/id3/build/CMakeFiles/rebuild_cache.dir
-/home/nic/original-projects/machine learning/id3/build/CMakeFiles/test_p.dir
