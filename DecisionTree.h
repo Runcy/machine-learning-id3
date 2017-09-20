@@ -125,8 +125,9 @@ public:
             std::cout << it->first << ' ' << it->second;
         }
 
-        terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
-
+        if (!nodeContext.empty()) {
+            terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
+        }
         if (terminalNodeReached) {
             std::cout << "TERMINAL!" << std::endl;
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
