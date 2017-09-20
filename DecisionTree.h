@@ -92,38 +92,45 @@ public:
         float attributeEntropy;
         auto bestAttributeItr = availableAttributes.begin();
         std::vector<std::string> distinctAttributeList;
-
+        bool terminalNodeReached = false;
         for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
             attributeEntropy = dataEngine.getEntropyGain(nodeContext, *it)
             if (attributeEntropy < minEntropy) {
                 minEntropy = attributeEntropy;
                 bestAttributeItr = it;
+                if (minEntropy  == 0) {
+                    terminalNodeReached = true;
+                    break;
+                }
             }
         }
 
-        nodeContext.push_back(node.attributePair);
         std::string bestAttributeString = *bestAttributeItr;
-        availableAttributes.erase(bestAttributeItr);
         dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
+
+        if (terminalNodeReached) {
+            for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                DecisionTreeNode* childNode = new DecisionTreeNode();
+                childNode.attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
+                childNode.NodeType = NodeType::TerminalNode;
+                childNode.children.push_back(std::make_pair("result", "+")); //change to actual string later
+                node.children.push_back(childNode);
+            }
+            return;
+        }
+
+        nodeContext.push_back(node.attributePair);
+        availableAttributes.erase(bestAttributeItr);
 
         for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
             DecisionTreeNode* childNode = new DecisionTreeNode();
             childNode.attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
-
-            if (minEntropy == 0) {
-                childNode.NodeType = NodeType::TerminalNode;
-                childNode.children.push_back(std::make_pair("result", "+"));
-            } else {
-                childNode.NodeType = NodeType::AttributeNode;
-            }
-
+            childNode.NodeType = NodeType::AttributeNode;
             node.children.push_back(childNode);
         }
 
-        if (minEntropy != 0) {
-            for (auto it = node.children.begin(); it != node.children.end(); it++) {
-                buildTree(*it, nodeContext, availableAttributes);
-            }
+        for (auto it = node.children.begin(); it != node.children.end(); it++) {
+            buildTree(*it, nodeContext, availableAttributes);
         }
     }
 
