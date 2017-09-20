@@ -8,6 +8,7 @@ typedef std::pair<std::string, std::string> ItemPair;
 class DecisionTree {
 private:
     std::vector<std::string> totalAttributes;
+    std::string resultString;
     DataEngine dataEngine;
 
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
@@ -102,6 +103,7 @@ public:
                 dataEngine(_trainingDataPath, _tableAttributes, _resultString,
                             _positiveInstanceString, _negativeInstanceString)
     {
+        resultString = _resultString;
         totalAttributes = attributes;
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
@@ -130,16 +132,12 @@ public:
             terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
         }
         if (terminalNodeReached) {
-            std::cout << "TERMINAL! " << std::endl;
+            std::cout << "TERMINAL! " << resultString << std::endl;
             terminalString = dataEngine.getResultString(prepareQueryString(nodeContext));
-            for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
-
-                DecisionTreeNode* terminalNode = new DecisionTreeNode();
-                terminalNode->attributePair = std::make_pair("result", terminalString);
-                terminalNode->type = NodeType::TerminalNode;
-
-                node->children.push_back(terminalNode);
-            }
+            DecisionTreeNode* terminalNode = new DecisionTreeNode();
+            terminalNode->attributePair = std::make_pair(resultString, terminalString);
+            terminalNode->type = NodeType::TerminalNode;
+            node->children.push_back(terminalNode);
             return;
         } else {
             for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
