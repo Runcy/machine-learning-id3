@@ -101,14 +101,13 @@ public:
                 const std::string _positiveInstanceString,
                 const std::string _negativeInstanceString) :
                 dataEngine(_trainingDataPath, _tableAttributes, _resultString,
-                            _positiveInstanceString, _negativeInstanceString),
-                resultString(_resultString)
+                            _positiveInstanceString, _negativeInstanceString)
     {
         resultString = _resultString;
         totalAttributes = attributes;
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
-        buildTree(&rootNode, nodeContext, attributes);
+        buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
