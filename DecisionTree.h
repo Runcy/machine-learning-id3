@@ -7,8 +7,8 @@ typedef std::pair<std::string, std::string> ItemPair;
 
 class DecisionTree {
 private:
-    std::vector<string> totalAttributes;
-    const static DataEngine dataEngine;
+    std::vector<std::string> totalAttributes;
+    DataEngine dataEngine;
 
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     {
@@ -68,22 +68,33 @@ private:
     }
 
 public:
+    enum NodeType {
+        TerminalNode,
+        AttributeNode,
+        RootNode
+    };
+
     struct DecisionTreeNode {
-        std::vector<node*> children;
+        std::vector<DecisionTreeNode*> children;
         NodeType type;
         ItemPair attributePair;
-        enum NodeType {
-            TerminalNode,
-            AttributeNode
-        };
-    }
+    };
 
     DecisionTreeNode rootNode;
 
-    DecisionTree(const DataEngine &dataEngine, std::vector<string> &attributes)
+    DecisionTree(std::vector<std::string> &attributes,
+                const std::string _trainingDataPath,
+                const std::string _tableAttributes,
+                const std::string _resultString,
+                const std::string _positiveInstanceString,
+                const std::string _negativeInstanceString) :
+                dataEngine(_trainingDataPath, _tableAttributes, _resultString,
+                            _positiveInstanceString, _negativeInstanceString)
     {
-        this->dataEngine = dataEngine;
         totalAttributes = attributes;
+        std::vector<std::pair<std::string, std::string>> nodeContext;
+        rootNode.type = NodeType::RootNode;
+        buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
@@ -94,7 +105,7 @@ public:
         std::vector<std::string> distinctAttributeList;
         bool terminalNodeReached = false;
         for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
-            attributeEntropy = dataEngine.getEntropyGain(nodeContext, *it)
+            attributeEntropy = getEntropyGain(nodeContext, *it);
             if (attributeEntropy < minEntropy) {
                 minEntropy = attributeEntropy;
                 bestAttributeItr = it;
@@ -111,25 +122,32 @@ public:
         if (terminalNodeReached) {
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
                 DecisionTreeNode* childNode = new DecisionTreeNode();
-                childNode.attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
-                childNode.NodeType = NodeType::TerminalNode;
-                childNode.children.push_back(std::make_pair("result", "+")); //change to actual string later
-                node.children.push_back(childNode);
+                childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
+                childNode->type = NodeType::AttributeNode;
+
+                DecisionTreeNode* terminalNode = new DecisionTreeNode();
+                terminalNode->attributePair = std::make_pair("result", "+");
+                terminalNode->type = NodeType::TerminalNode;
+
+                childNode->children.push_back(terminalNode); //change to actual string later
+                node->children.push_back(childNode);
             }
             return;
         }
 
-        nodeContext.push_back(node.attributePair);
+        if (node->type == NodeType::AttributeNode) {
+            nodeContext.push_back(node->attributePair);
+        }
         availableAttributes.erase(bestAttributeItr);
 
         for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
             DecisionTreeNode* childNode = new DecisionTreeNode();
-            childNode.attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
-            childNode.NodeType = NodeType::AttributeNode;
-            node.children.push_back(childNode);
+            childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
+            childNode->type = NodeType::AttributeNode;
+            node->children.push_back(childNode);
         }
 
-        for (auto it = node.children.begin(); it != node.children.end(); it++) {
+        for (auto it = node->children.begin(); it != node->children.end(); it++) {
             buildTree(*it, nodeContext, availableAttributes);
         }
     }
