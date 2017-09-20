@@ -7,13 +7,10 @@ typedef std::pair<std::string, std::string> ItemPair;
 
 class DecisionTree {
 private:
-<<<<<<< HEAD
     std::vector<std::string> totalAttributes;
     std::string resultString;
-=======
->>>>>>> master
     DataEngine dataEngine;
-    const std::string resultString;
+
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     {
         std::vector<std::string> attributesList;
@@ -107,11 +104,8 @@ public:
                             _positiveInstanceString, _negativeInstanceString),
                 resultString(_resultString)
     {
-<<<<<<< HEAD
         resultString = _resultString;
         totalAttributes = attributes;
-=======
->>>>>>> master
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
         buildTree(&rootNode, nodeContext, attributes);
