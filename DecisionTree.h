@@ -115,6 +115,7 @@ public:
         auto bestAttributeItr = availableAttributes.begin();
         std::vector<std::string> distinctAttributeList;
         bool terminalNodeReached = false;
+        std::string terminalString;
 
         if (node->type == NodeType::AttributeNode) {
             nodeContext.push_back(node->attributePair);
@@ -129,11 +130,12 @@ public:
             terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
         }
         if (terminalNodeReached) {
-            std::cout << "TERMINAL!" << std::endl;
+            std::cout << "TERMINAL! " << std::endl;
+            terminalString = dataEngine.getResultString(prepareQueryString(nodeContext));
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
 
                 DecisionTreeNode* terminalNode = new DecisionTreeNode();
-                terminalNode->attributePair = std::make_pair("result", "+");
+                terminalNode->attributePair = std::make_pair("result", terminalString);
                 terminalNode->type = NodeType::TerminalNode;
 
                 node->children.push_back(terminalNode);
