@@ -3,8 +3,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-O2 -Wall -Wextra")
 project(test_project)
+
 add_executable(test_p test.cpp)
 add_executable(main main.cpp)
+
 find_package(SQLiteCpp REQUIRED)
 target_link_libraries(test_p SQLiteCpp sqlite3)
 target_link_libraries(main SQLiteCpp sqlite3)

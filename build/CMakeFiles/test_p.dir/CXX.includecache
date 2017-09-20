@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/nic/original-projects/machine learning/id3/test.cpp
+/home/nic/original-projects/machine learning/id3/DataEngine.h
 stdio.h
 -
 SQLiteCpp/SQLiteCpp.h
@@ -17,8 +17,18 @@ fstream
 -
 sstream
 -
+math.h
+-
 algorithm
 -
+
+/home/nic/original-projects/machine learning/id3/DecisionTree.h
+DataEngine.h
+/home/nic/original-projects/machine learning/id3/DataEngine.h
+
+/home/nic/original-projects/machine learning/id3/test.cpp
+DecisionTree.h
+/home/nic/original-projects/machine learning/id3/DecisionTree.h
 
 /usr/local/include/SQLiteCpp/Assertion.h
 cassert

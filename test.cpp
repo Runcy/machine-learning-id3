@@ -1,106 +1,27 @@
 // #include "DataEngine.h"
+#include "DecisionTree.h"
+// std::string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
+// " education TEXT, education_num INTEGER, marital_status TEXT,"
+// " occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
+// " capital_gain INTEGER, capital_loss INTEGER,"
+// " hours_per_week INTEGER, native_country TEXT, result TEXT)";
 
-#include <stdio.h>
-#include <SQLiteCpp/SQLiteCpp.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <algorithm>
+std::string tableAttrib = "create table dataTable (outlook TEXT, temperature TEXT, humidity TEXT, wind TEXT, playtennis TEXT)";
 
-std::vector<std::string> split(const std::string &text, std::string sep) {
-    std::vector<std::string> tokens;
-    std::size_t start = 0, end = 0;
-    while ((end = text.find(sep, start)) != std::string::npos) {
-        tokens.push_back(text.substr(start, end - start));
-        start = end + sep.length();
-    }
-    tokens.push_back(text.substr(start));
-    return tokens;
-}
+// std::string dataPath = "../adult.data";
 
-bool isNumber(const std::string s)
+std::string dataPath = "../playtennis.csv";
+
+typedef std::pair<std::string, std::string> ItemPair;
+
+int main()
 {
-  return s.find_first_not_of( "0123456789" ) == std::string::npos;
-}
+    std::vector<std::string> v;
+    v.push_back("outlook");
+    v.push_back("temperature");
+    v.push_back("humidity");
+    v.push_back("wind");
 
-std::string prepareSqlString(std::vector<std::string> v)
-{
-    std::string resultString;
-    for (auto it = v.begin(); it != v.end(); it++) {
-        if (isNumber(*it)) {
-            resultString += *it + ", ";
-        } else {
-            resultString += '"' + *it + '"' + ", ";
-        }
-    }
-    // remove last 2 chars
-    resultString.pop_back();
-    resultString.pop_back();
-    return resultString;
-}
-
-void printString(std::string s)
-{
-    std::cout << s << std::endl;
-}
-
-int main(int argc, char* argv[])
-{
-    std::string line;
-    std::ifstream input("../adult.data");
-    std::vector<std::string> result;
-    SQLite::Database *db = new SQLite::Database(":memory:",SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-    try {
-        // Open a database file
-
-        SQLite::Transaction transaction(*db);
-        db->exec("create table census (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
-                " education TEXT, education_num INTEGER, marital_status TEXT,"
-                " occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
-                " capital_gain INTEGER, capital_loss INTEGER,"
-                " hours_per_week INTEGER, native_country TEXT, result TEXT)");
-        db->exec("insert into census values(50, \"Self-emp-not-inc\", 83311, \"Bachelors\", 13, \"Married-civ-spouse\", \"Exec-managerial\", \"Husband\", \"White\", \"Male\", 0, 0, 13, \"United-States\", \"<=50K\")");
-        transaction.commit();
-
-        // SQLite::Statement query(db, "SELECT * FROM census");
-        //
-        // while (query.executeStep()) {
-        //     int columns = query.getColumnCount();
-        //     for (int i = 0; i < columns; i++) {
-        //         std::cout << query.getColumn(i) << ' ';
-        //     }
-        //     std::cout << std::endl;
-        //     // int id = query.getColumn(0);
-        //     // std::string value = query.getColumn(1);
-        //     // std::cout << "row: " << id << ", " << value << std::endl;
-    } catch (std::exception& e) {
-        std::cout << "exception: " << e.what() << std::endl;
-    }
-    std::string resultString;
-    if (input.is_open()) {
-        while (getline(input, line)) {
-            // std::cout << line << std::endl;
-            result = split(line, ", ");
-            resultString = prepareSqlString(result);
-            // std::cout << "insert into census (" + resultString + ")"
-            try {
-                SQLite::Transaction transaction(*db);
-                db->exec("insert into census values(" + resultString + ")");
-                transaction.commit();
-            } catch (std::exception& e) {
-                std::cout << "exception: " << e.what() << std::endl;
-            }
-        }
-        input.close();
-    }
-
-    SQLite::Statement query(*db, "SELECT count(*) FROM census where education=\"Bachelors\"" );
-    std::cout << query.getQuery();
-    // while (query.executeStep()) {
-    //     int columns = query.getColumnCount();
-    //     for (int i = 0; i < columns; i++) {
-    //         std::cout << query.getColumn(i) << ' ';
-    //     }
-    //     std::cout << std::endl;
-    // }
+    DecisionTree decisionTree(v, dataPath, tableAttrib, "playtennis", "yes", "no");
+    return 0;
 }

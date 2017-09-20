@@ -22,13 +22,9 @@ math.h
 algorithm
 -
 
-/home/nic/original-projects/machine learning/id3/DecisionTree.h
+/home/nic/original-projects/machine learning/id3/main.cpp
 DataEngine.h
 /home/nic/original-projects/machine learning/id3/DataEngine.h
-
-/home/nic/original-projects/machine learning/id3/main.cpp
-DecisionTree.h
-/home/nic/original-projects/machine learning/id3/DecisionTree.h
 
 /usr/local/include/SQLiteCpp/Assertion.h
 cassert

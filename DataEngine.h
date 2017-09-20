@@ -64,14 +64,14 @@ private:
             while (getline(input, line)) {
                 result = split(line, ",");
                 resultString = prepareSqlString(result);
-                // std::cout << resultString;
+                // //std::cout << resultString;
                 try {
                     SQLite::Transaction transaction(*db);
-                    // std::cout << "insert into " + tableName + " values(" + resultString + ")";
+                    // //std::cout << "insert into " + tableName + " values(" + resultString + ")";
                     db->exec("insert into " + tableName + " values(" + resultString + ")");
                     transaction.commit();
                 } catch (std::exception& e) {
-                    std::cout << "exception: " << e.what() << std::endl;
+                    //std::cout << "exception: " << e.what() << std::endl;
                 }
             }
         }
@@ -89,7 +89,7 @@ public:
             db->exec(tableAttributes);
             transaction.commit();
         } catch (std::exception &e) {
-            std::cout << e.what() << std::endl;
+            //std::cout << e.what() << std::endl;
         }
         populateDatabase();
         // SQLite::Statement query(*db, "SELECT count(*) FROM census where education=\"Bachelors\""
@@ -111,22 +111,22 @@ public:
     int getAllCount()
     {
         std::string sqlString = "select count(*) from " + tableName;
-        // std::cout << sqlString << std::endl;
+        // //std::cout << sqlString << std::endl;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
         int val = query.getColumn(0).getInt();
-        std::cout << sqlString << std::endl << val << std::endl;
+        //std::cout << sqlString << std::endl << val << std::endl;
         return val;
     }
 
     int getCount(std::string whereString)
     {
         std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
-        // std::cout << sqlString << std::endl;
+        // //std::cout << sqlString << std::endl;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
         int val = query.getColumn(0).getInt();
-        std::cout << sqlString << std::endl << val << std::endl;
+        //std::cout << sqlString << std::endl << val << std::endl;
         return val;
     }
 
@@ -151,10 +151,11 @@ public:
     void getDistinctAttributeValues(std::vector<std::string> &valueList, std::string attribute)
     {
         std::string sqlQuery = "select distinct " + attribute + " from " + tableName;
+        //std::cout << sqlQuery << std::endl;
         SQLite::Statement query(*db, sqlQuery);
         while (query.executeStep()) {
             valueList.push_back(query.getColumn(0));
-            // std::cout << query.getColumn(0) << std::endl;
+            // //std::cout << query.getColumn(0) << std::endl;
         }
     }
 };

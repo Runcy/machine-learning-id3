@@ -29,7 +29,7 @@ float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     if (!contextString.empty()) {
         contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-            contextQueryString += " and " + it->first + " = '" + it->second + "'";
+            contextQueryString += " and " + it->first + " = " + it->second;
         }
         // std::cout << contextQueryString << std::endl;
         contextCount = dataEngine.getCount(contextQueryString);
@@ -91,18 +91,22 @@ int main()
     }
 
     std::vector<std::pair<std::string, std::string>> contextString;
+
     std::vector<std::string> attributesList;
     // dataEngine.getDistinctAttributeValues(attributesList, attribute);
 
     // contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
     // contextString.push_back(std::make_pair("education", "Bachelors"));
 
-    // contextString.push_back(std::make_pair("outlook", "'sunny'"));
+    contextString.push_back(std::make_pair("outlook", "'rain'"));
+    contextString.push_back(std::make_pair("wind", "'strong'"));
 
     // for (int i = 0; i < 100; i++) {
-        std::cout << getEntropyGain(contextString, "wind") << std::endl;
-        std::cout << getEntropyGain(contextString, "outlook") << std::endl;
-        std::cout << getEntropyGain(contextString, "humidity") << std::endl;
+
+
+        std::cout << getEntropyGain(contextString, "temperature") << std::endl;
+        // std::cout << getEntropyGain(contextString, "outlook") << std::endl;
+        // std::cout << getEntropyGain(contextString, "humidity") << std::endl;
 
     // }
     // std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;

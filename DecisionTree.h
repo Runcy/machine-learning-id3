@@ -20,9 +20,9 @@ private:
         if (!contextString.empty()) {
             contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
             for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-                contextQueryString += " and " + it->first + " = '" + it->second + "'";
+                contextQueryString += " and " + it->first + " = " + it->second;
             }
-            // std::cout << contextQueryString << std::endl;
+            // std::cout << "qs " << contextQueryString << std::endl;
             contextCount = dataEngine.getCount(contextQueryString);
         } else {
             contextCount = dataEngine.getAllCount();
@@ -39,6 +39,7 @@ private:
         // now we have to find number of each value of the chosen attribute
         std::string attributeQueryString;
         for (auto it = attributesList.begin(); it != attributesList.end(); it++) {
+            // std::cout << "attribs for " << attribute << ' ' << *it << std::endl;
             attributeQueryString = contextQueryString;
             if (contextString.empty()) {
                 attributeQueryString += attribute + " = '" + *it + "'";
@@ -63,6 +64,7 @@ private:
 
             totalEntropyGain += instanceProbability*entropy;
         }
+        // std::cout << contextQueryString << ' ' << attribute << ' ' << totalEntropyGain <<std::endl;
         return totalEntropyGain*-1;
         // then computing entropy gain is not that hard
     }
@@ -104,7 +106,20 @@ public:
         auto bestAttributeItr = availableAttributes.begin();
         std::vector<std::string> distinctAttributeList;
         bool terminalNodeReached = false;
+
+        if (node->type == NodeType::AttributeNode) {
+            nodeContext.push_back(node->attributePair);
+        }
+
+        std::cout << "context ";
+        for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
+            std::cout << it->first << ' ' << it->second;
+        }
+
+        std::cout << std::endl << "available: ";
+
         for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
+            std::cout << *it << ' ';
             attributeEntropy = getEntropyGain(nodeContext, *it);
             if (attributeEntropy < minEntropy) {
                 minEntropy = attributeEntropy;
@@ -115,11 +130,14 @@ public:
                 }
             }
         }
+        std::cout << std::endl;
 
         std::string bestAttributeString = *bestAttributeItr;
+        std::cout << "BEST"  << bestAttributeString << ' ';
         dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
 
         if (terminalNodeReached) {
+            std::cout << "TERMINAL!" << std::endl;
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
                 DecisionTreeNode* childNode = new DecisionTreeNode();
                 childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
@@ -134,10 +152,19 @@ public:
             }
             return;
         }
+        std::cout << std::endl;
 
-        if (node->type == NodeType::AttributeNode) {
-            nodeContext.push_back(node->attributePair);
-        }
+        // if (node->type == NodeType::RootNode) {
+        //     nodeContext.push_back(node->attributePair);
+        // }
+
+        //
+        // for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
+        //     std::cout << it->first << " " << it->second << " ";
+        // }
+
+        // std::cout << bestAttributeString << ' ' << minEntropy << std::endl;
+
         availableAttributes.erase(bestAttributeItr);
 
         for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
@@ -151,7 +178,6 @@ public:
             buildTree(*it, nodeContext, availableAttributes);
         }
     }
-
 };
 
 #endif
