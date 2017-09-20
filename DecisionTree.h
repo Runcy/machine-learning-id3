@@ -133,8 +133,8 @@ public:
             terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
         }
         if (terminalNodeReached) {
-            std::cout << "TERMINAL! " << resultString << std::endl;
             terminalString = dataEngine.getResultString(prepareQueryString(nodeContext));
+            std::cout << "TERMINAL! " << terminalString << std::endl;
             DecisionTreeNode* terminalNode = new DecisionTreeNode();
             terminalNode->attributePair = std::make_pair(resultString, terminalString);
             terminalNode->type = NodeType::TerminalNode;
