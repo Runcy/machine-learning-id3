@@ -163,6 +163,14 @@ public:
         return true;
     }
 
+    std::string getResultString(std::string queryString)
+    {
+        std::string sqlString = "select distinct " + resultString + " from " + tableName + " where " + queryString;
+        SQLite::Statement query(*db, sqlString);
+        query.executeStep();
+        return query.getColumn(0).getString();
+    }
+
     void getDistinctAttributeValues(std::vector<std::string> &valueList, std::string attribute)
     {
         std::string sqlQuery = "select distinct " + attribute + " from " + tableName;
