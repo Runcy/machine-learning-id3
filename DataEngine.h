@@ -148,6 +148,21 @@ public:
         return count / totalCount;
     }
 
+    bool checkUnique(std::string queryString)
+    {
+        int i = 0;
+        std::string sqlString = "select distinct " + resultString + " from " + tableName + " where " + queryString;
+        SQLite::Statement query(*db, sqlString);
+        while (query.executeStep()) {
+            i++;
+        }
+        // return i;
+        if (i > 1) {
+            return false;
+        }
+        return true;
+    }
+
     void getDistinctAttributeValues(std::vector<std::string> &valueList, std::string attribute)
     {
         std::string sqlQuery = "select distinct " + attribute + " from " + tableName;

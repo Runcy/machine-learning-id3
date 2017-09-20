@@ -19,6 +19,15 @@ DataEngine dataEngine(dataPath, tableAttrib, "playtennis", "yes", "no");
 typedef std::pair<std::string, std::string> ItemPair;
 
 
+std::string prepareContextString(std::vector<ItemPair> contextString)
+{
+    std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+    for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+        contextQueryString += " and " + it->first + " = " + it->second;
+    }
+    return contextQueryString;
+}
+
 float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
 {
     std::vector<std::string> attributesList;
@@ -98,13 +107,13 @@ int main()
     // contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
     // contextString.push_back(std::make_pair("education", "Bachelors"));
 
-    contextString.push_back(std::make_pair("outlook", "'rain'"));
+    // contextString.push_back(std::make_pair("outlook", "'rain'"));
     contextString.push_back(std::make_pair("wind", "'strong'"));
 
     // for (int i = 0; i < 100; i++) {
+    std::cout << dataEngine.checkUnique(prepareContextString(contextString));
 
-
-        std::cout << getEntropyGain(contextString, "temperature") << std::endl;
+        // std::cout << getEntropyGain(contextString, "temperature") << std::endl;
         // std::cout << getEntropyGain(contextString, "outlook") << std::endl;
         // std::cout << getEntropyGain(contextString, "humidity") << std::endl;
 

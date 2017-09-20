@@ -69,6 +69,15 @@ private:
         // then computing entropy gain is not that hard
     }
 
+    std::string prepareQueryString(std::vector<ItemPair> contextString)
+    {
+        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+            contextQueryString += " and " + it->first + " = " + it->second;
+        }
+        return contextQueryString;
+    }
+
 public:
     enum NodeType {
         TerminalNode,
@@ -116,66 +125,48 @@ public:
             std::cout << it->first << ' ' << it->second;
         }
 
-        std::cout << std::endl << "available: ";
-
-        for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
-            std::cout << *it << ' ';
-            attributeEntropy = getEntropyGain(nodeContext, *it);
-            if (attributeEntropy < minEntropy) {
-                minEntropy = attributeEntropy;
-                bestAttributeItr = it;
-                if (minEntropy  == 0) {
-                    terminalNodeReached = true;
-                    break;
-                }
-            }
-        }
-        std::cout << std::endl;
-
-        std::string bestAttributeString = *bestAttributeItr;
-        std::cout << "BEST"  << bestAttributeString << ' ';
-        dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
+        terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
 
         if (terminalNodeReached) {
             std::cout << "TERMINAL!" << std::endl;
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
-                DecisionTreeNode* childNode = new DecisionTreeNode();
-                childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
-                childNode->type = NodeType::AttributeNode;
 
                 DecisionTreeNode* terminalNode = new DecisionTreeNode();
                 terminalNode->attributePair = std::make_pair("result", "+");
                 terminalNode->type = NodeType::TerminalNode;
 
-                childNode->children.push_back(terminalNode); //change to actual string later
-                node->children.push_back(childNode);
+                node->children.push_back(terminalNode);
             }
             return;
-        }
-        std::cout << std::endl;
+        } else {
+            for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
+                std::cout << *it << ' ';
+                attributeEntropy = getEntropyGain(nodeContext, *it);
+                if (attributeEntropy < minEntropy) {
+                    minEntropy = attributeEntropy;
+                    bestAttributeItr = it;
+                }
+            }
+            std::cout << std::endl;
 
-        // if (node->type == NodeType::RootNode) {
-        //     nodeContext.push_back(node->attributePair);
-        // }
+            std::string bestAttributeString = *bestAttributeItr;
+            std::cout << "BEST"  << bestAttributeString << ' ';
+            dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
 
-        //
-        // for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
-        //     std::cout << it->first << " " << it->second << " ";
-        // }
+            std::cout << std::endl;
 
-        // std::cout << bestAttributeString << ' ' << minEntropy << std::endl;
+            availableAttributes.erase(bestAttributeItr);
 
-        availableAttributes.erase(bestAttributeItr);
+            for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                DecisionTreeNode* childNode = new DecisionTreeNode();
+                childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
+                childNode->type = NodeType::AttributeNode;
+                node->children.push_back(childNode);
+            }
 
-        for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
-            DecisionTreeNode* childNode = new DecisionTreeNode();
-            childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
-            childNode->type = NodeType::AttributeNode;
-            node->children.push_back(childNode);
-        }
-
-        for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            buildTree(*it, nodeContext, availableAttributes);
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                buildTree(*it, nodeContext, availableAttributes);
+            }
         }
     }
 };
