@@ -22,16 +22,16 @@ private:
         std::string queryStringPositive = prepareQueryString(contextString);
         std::string queryStringNegative = prepareQueryString(contextString);
         if (!contextString.empty()) {
-            queryStringPositive += "and result = '>50K'";
+            queryStringPositive += " and result = '>50K'";
 
-            queryStringNegative += "and result = '<=50K'";
+            queryStringNegative += " and result = '<=50K'";
         } else {
             queryStringPositive = " result = '>50K'";
             queryStringNegative = " result = '<=50K'";
         }
         dataEngine.getContinuousAttributeValues(contValuesNegative, attribute, queryStringNegative);
         dataEngine.getContinuousAttributeValues(contValuesPositive, attribute, queryStringPositive);
-
+        std::cout <<"SUCCESS";
         std::sort(contValuesPositive.begin(), contValuesPositive.end());
         std::sort(contValuesNegative.begin(), contValuesNegative.end());
 
@@ -61,11 +61,8 @@ private:
         float negativeEntropy;
         float entropy;
         if (!contextString.empty()) {
-            contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-            for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-                contextQueryString += " and " + it->first + " = " + it->second;
-            }
-            // std::cout << "qs " << contextQueryString << std::endl;
+            contextQueryString = prepareQueryString(contextString);
+            std::cout << "qs " << contextQueryString << std::endl;
             contextCount = dataEngine.getCount(contextQueryString);
         } else {
             contextCount = dataEngine.getAllCount();
@@ -129,7 +126,7 @@ private:
             }
         }
         std::cout << "BEST" << bestVal << ' ' << "MAX" << maxEntropy;
-        return std::make_pair(bestVal, maxEntropy*-1);
+        return std::make_pair(bestVal, maxEntropy);
     }
 
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
@@ -202,8 +199,9 @@ private:
         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
             if (isContAttribute(it->first)) {
                 contextQueryString += " and " + it->first + it->second;
+            } else {
+                contextQueryString += " and " + it->first + " = " + it->second;
             }
-            contextQueryString += " and " + it->first + " = " + it->second;
         }
         return contextQueryString;
     }

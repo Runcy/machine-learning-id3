@@ -60,8 +60,12 @@ private:
         std::vector<std::string> result;
         std::string resultString;
         std::string line;
+        int i = 0;
         if (input.is_open()) {
             while (getline(input, line)) {
+                if (line.find('?') != std::string::npos) { //ignore missing for now
+                    continue;
+                }
                 result = split(line, ", ");
                 resultString = prepareSqlString(result);
                 // //std::cout << resultString;
