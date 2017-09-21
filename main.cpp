@@ -153,7 +153,7 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
     } else {
         contextCount = dataEngine.getAllCount();
     }
-    std::cout << contextCount;
+    // std::cout << contextCount;
 
     float maxEntropy = -1;
     float bestVal = 0;
@@ -169,7 +169,7 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
         }
         // std::cout << attributeQueryString;
         attributeCount = dataEngine.getCount(attributeQueryString);
-        // std::cout << attributeCount << std::endl;
+        std::cout << "AF" << attributeCount << ' ' << attributeQueryString << std::endl;
         instanceProbability = (float) attributeCount / contextCount;
 
         positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
@@ -181,13 +181,15 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
         // positiveEntropy = positiveProbability*log2(positiveProbability);
         // negativeEntropy = negativeProbability*log2(negativeProbability);
         entropy = positiveEntropy + negativeEntropy;
+
+        std::cout << *it << "GRAT" << instanceProbability << std::endl;
         totalEntropyGain += entropy*instanceProbability;
 
         attributeQueryString = prepareContextString(contextString);
         if (contextString.empty()) {
-            attributeQueryString += attribute + " < " + std::to_string(*it);
+            attributeQueryString += attribute + " <= " + std::to_string(*it);
         } else {
-            attributeQueryString += " and " + attribute + " < " + std::to_string(*it);
+            attributeQueryString += " and " + attribute + " <= " + std::to_string(*it);
         }
         std::cout << *it << std::endl;
         // std::cout << attributeQueryString;
@@ -251,6 +253,6 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
-getContinuousEntropyGain(contextString, "age");
+getContinuousEntropyGain(contextString, "capital_loss");
     return 0;
 }
