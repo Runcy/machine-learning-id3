@@ -8,7 +8,7 @@ typedef std::pair<std::string, std::string> ItemPair;
 class DecisionTree {
 private:
     std::vector<std::string> totalAttributes;
-
+    std::vector<std::string> contAttributes;
     std::string resultString;
     DataEngine dataEngine;
 
@@ -96,6 +96,7 @@ public:
     DecisionTreeNode rootNode;
 
     DecisionTree(std::vector<std::string> &attributes,
+                std::vector<std::string> &_contAttributes,
                 const std::string _trainingDataPath,
                 const std::string _tableAttributes,
                 const std::string _resultString,
@@ -106,6 +107,7 @@ public:
     {
         resultString = _resultString;
         totalAttributes = attributes;
+        contAttributes = _contAttributes;
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
         buildTree(&rootNode, nodeContext, totalAttributes);
