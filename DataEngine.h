@@ -62,7 +62,7 @@ private:
         std::string line;
         if (input.is_open()) {
             while (getline(input, line)) {
-                result = split(line, ",");
+                result = split(line, ", ");
                 resultString = prepareSqlString(result);
                 // //std::cout << resultString;
                 try {
@@ -182,10 +182,10 @@ public:
         }
     }
 
-    void getContinuousAttributeValues(std::vector<int> &contList, std::string attribute)
+    void getContinuousAttributeValues(std::vector<int> &contList, std::string attribute, std::string queryString)
     {
-        std::string sqlQuery = "select distinct " + attribute + " from " + tableName;
-        //std::cout << sqlQuery << std::endl;
+        std::string sqlQuery = "select distinct " + attribute + " from " + tableName + " where " + queryString;
+        std::cout << sqlQuery << std::endl;
         SQLite::Statement query(*db, sqlQuery);
         while (query.executeStep()) {
             contList.push_back(query.getColumn(0).getInt());

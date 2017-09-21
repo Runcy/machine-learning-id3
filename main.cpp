@@ -1,20 +1,20 @@
 #include "DataEngine.h"
 // #include "DecisionTree.h"
-// std::string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
-// " education TEXT, education_num INTEGER, marital_status TEXT,"
-// " occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
-// " capital_gain INTEGER, capital_loss INTEGER,"
-// " hours_per_week INTEGER, native_country TEXT, result TEXT)";
+std::string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
+" education TEXT, education_num INTEGER, marital_status TEXT,"
+" occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
+" capital_gain INTEGER, capital_loss INTEGER,"
+" hours_per_week INTEGER, native_country TEXT, result TEXT)";
 
-std::string tableAttrib = "create table dataTable (outlook TEXT, temperature TEXT, humidity TEXT, wind TEXT, playtennis TEXT)";
+// std::string tableAttrib = "create table dataTable (outlook TEXT, temperature TEXT, humidity TEXT, wind TEXT, playtennis TEXT)";
 
-// std::string dataPath = "../adult.data";
+std::string dataPath = "../adult.data";
 
-std::string dataPath = "../playtennis.csv";
+// std::string dataPath = "../playtennis.csv";
 
 
-// DataEngine dataEngine(dataPath, tableAttrib, "result", "<=50K", ">50K");
-DataEngine dataEngine(dataPath, tableAttrib, "playtennis", "yes", "no");
+DataEngine dataEngine(dataPath, tableAttrib, "result", "<=50K", ">50K");
+// DataEngine dataEngine(dataPath, tableAttrib, "playtennis", "yes", "no");
 
 typedef std::pair<std::string, std::string> ItemPair;
 
@@ -84,6 +84,56 @@ float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     return totalEntropyGain;
     // then computing entropy gain is not that hard
 }
+std::string prepareQueryString(std::vector<ItemPair> contextString)
+{
+    if (!contextString.empty()) {
+        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+            contextQueryString += " and " + it->first + " = " + it->second;
+        }
+        return contextQueryString;
+    }
+    return "";
+}
+
+float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
+{
+    std::vector<int> contValuesPositive;
+    std::vector<int> contValuesNegative;
+
+    std::vector<float> boundaryValues;
+// do +ve/-ve
+    std::string queryStringPositive = prepareQueryString(contextString);
+    queryStringPositive += "result = '>50K'";
+    dataEngine.getContinuousAttributeValues(contValuesPositive, attribute, queryStringPositive);
+
+    std::string queryStringNegative = prepareQueryString(contextString);
+    queryStringNegative += "result = '<=50K'";
+    dataEngine.getContinuousAttributeValues(contValuesNegative, attribute, queryStringNegative);
+
+    std::sort(contValuesPositive.begin(), contValuesPositive.end());
+    std::sort(contValuesNegative.begin(), contValuesNegative.end());
+
+    auto posItr = contValuesPositive.begin();
+    auto negItr = contValuesNegative.begin();
+    float boundaryValue;
+    // like mergesort
+    while(posItr < contValuesPositive.end() && negItr < contValuesNegative.end()) {
+        if (*posItr <= *negItr) {
+            boundaryValue = (*posItr+*negItr)/2.0;
+            boundaryValues.push_back(boundaryValue);
+            *posItr++;
+        } else {
+            boundaryValue = (*posItr+*negItr)/2.0;
+            boundaryValues.push_back(boundaryValue);
+            *negItr++;
+        }
+    }
+
+    for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
+        std::cout << *it << std::endl;
+    }
+}
 
 int main()
 {
@@ -108,10 +158,10 @@ int main()
     // contextString.push_back(std::make_pair("education", "Bachelors"));
 
     // contextString.push_back(std::make_pair("outlook", "'rain'"));
-    contextString.push_back(std::make_pair("wind", "'strong'"));
+    // contextString.push_back(std::make_pair("wind", "'strong'"));
 
     // for (int i = 0; i < 100; i++) {
-    std::cout << dataEngine.checkUnique(prepareContextString(contextString));
+    // std::cout << dataEngine.checkUnique(prepareContextString(contextString));
 
         // std::cout << getEntropyGain(contextString, "temperature") << std::endl;
         // std::cout << getEntropyGain(contextString, "outlook") << std::endl;
@@ -124,6 +174,6 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
-
+getContinuousEntropyGain(contextString, "fnlwgt");
     return 0;
 }
