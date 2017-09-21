@@ -216,6 +216,7 @@ public:
     DecisionTreeNode rootNode;
 
     DecisionTree(std::vector<std::string> &attributes,
+                std::vector<std::string> &_contAttributes,
                 const std::string _trainingDataPath,
                 const std::string _tableAttributes,
                 const std::string _resultString,
@@ -225,6 +226,7 @@ public:
                             _positiveInstanceString, _negativeInstanceString)
     {
         resultString = _resultString;
+        contAttributes = _contAttributes;
         totalAttributes = attributes;
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
