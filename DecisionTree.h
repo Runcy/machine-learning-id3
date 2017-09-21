@@ -12,6 +12,33 @@ private:
     std::string resultString;
     DataEngine dataEngine;
 
+    float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
+    {
+        std::vector<int> contValues;
+        std::vector<float> boundaryValues;
+
+        dataEngine.getContinuousAttributeValues(contValues, attribute);
+        std::sort(contValues.begin(), contValues.end());
+
+        std::string queryString0;
+        std::string queryString1;
+        float boundaryValue;
+        for (auto it = contValues.begin(); it != contValues.end() - 1; it++) {
+            queryString0 = attribute + " = " + std::to_string(*it);
+            queryString1 = attribute + " = " + std::to_string(*(it+1));
+            if (!contextString.empty()) {
+                queryString0 += " and " + prepareQueryString(contextString);
+                queryString1 += " and " + prepareQueryString(contextString);
+            }
+            if (dataEngine.getResultString(queryString0) != dataEngine.getResultString(queryString1)) {
+                boundaryValue = (*it + *(it+1))/2.0;
+                boundaryValues.push_back(boundaryValue);
+            }
+        }
+
+        // for (auto it = contValues.begin(); it != contValues.end(); it++) {
+    }
+
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     {
         std::vector<std::string> attributesList;

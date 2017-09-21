@@ -181,6 +181,17 @@ public:
             // //std::cout << query.getColumn(0) << std::endl;
         }
     }
+
+    void getContinuousAttributeValues(std::vector<int> &contList, std::string attribute)
+    {
+        std::string sqlQuery = "select distinct " + attribute + " from " + tableName;
+        //std::cout << sqlQuery << std::endl;
+        SQLite::Statement query(*db, sqlQuery);
+        while (query.executeStep()) {
+            contList.push_back(query.getColumn(0).getInt());
+            // //std::cout << query.getColumn(0) << std::endl;
+        }
+    }
 };
 
 #endif
