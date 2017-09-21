@@ -31,7 +31,7 @@ private:
         }
         dataEngine.getContinuousAttributeValues(contValuesNegative, attribute, queryStringNegative);
         dataEngine.getContinuousAttributeValues(contValuesPositive, attribute, queryStringPositive);
-        std::cout <<"SUCCESS";
+        // std::cout <<"SUCCESS";
         std::sort(contValuesPositive.begin(), contValuesPositive.end());
         std::sort(contValuesNegative.begin(), contValuesNegative.end());
 
@@ -62,7 +62,7 @@ private:
         float entropy;
         if (!contextString.empty()) {
             contextQueryString = prepareQueryString(contextString);
-            std::cout << "qs " << contextQueryString << std::endl;
+            // std::cout << "qs " << contextQueryString << std::endl;
             contextCount = dataEngine.getCount(contextQueryString);
         } else {
             contextCount = dataEngine.getAllCount();
@@ -77,13 +77,13 @@ private:
 
             attributeQueryString = prepareQueryString(contextString);
             if (contextString.empty()) {
-                attributeQueryString += attribute + " > " + std::to_string(*it);
+                attributeQueryString += attribute + ">" + std::to_string(*it);
             } else {
-                attributeQueryString += " and " + attribute + " > " + std::to_string(*it);
+                attributeQueryString += " and " + attribute + ">" + std::to_string(*it);
             }
             // std::cout << attributeQueryString;
             attributeCount = dataEngine.getCount(attributeQueryString);
-            std::cout << "AF" << attributeCount << ' ' << attributeQueryString << std::endl;
+            // std::cout << "AF" << attributeCount << ' ' << attributeQueryString << std::endl;
             instanceProbability = (float) attributeCount / contextCount;
 
             positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
@@ -92,20 +92,18 @@ private:
             positiveEntropy = (positiveProbability == 0) ? 0 : positiveProbability*log2(positiveProbability);
             negativeEntropy = (negativeProbability == 0) ? 0 : negativeProbability*log2(negativeProbability);
 
-            // positiveEntropy = positiveProbability*log2(positiveProbability);
-            // negativeEntropy = negativeProbability*log2(negativeProbability);
             entropy = positiveEntropy + negativeEntropy;
 
-            std::cout << *it << "GRAT" << instanceProbability << std::endl;
+            // std::cout << *it << "GRAT" << instanceProbability << std::endl;
             totalEntropyGain += entropy*instanceProbability;
 
             attributeQueryString = prepareQueryString(contextString);
             if (contextString.empty()) {
-                attributeQueryString += attribute + " <= " + std::to_string(*it);
+                attributeQueryString += attribute + "<=" + std::to_string(*it);
             } else {
-                attributeQueryString += " and " + attribute + " <= " + std::to_string(*it);
+                attributeQueryString += " and " + attribute + "<=" + std::to_string(*it);
             }
-            std::cout << *it << std::endl;
+            // std::cout << *it << std::endl;
             // std::cout << attributeQueryString;
             attributeCount = dataEngine.getCount(attributeQueryString);
             // std::cout << attributeCount << std::endl;
@@ -119,14 +117,14 @@ private:
             entropy = positiveEntropy + negativeEntropy;
             totalEntropyGain += entropy*instanceProbability;
 
-            std::cout << *it << ' ' << totalEntropyGain << std::endl;
+            // std::cout << *it << ' ' << totalEntropyGain << std::endl;
             if (totalEntropyGain > maxEntropy) {
                 maxEntropy = totalEntropyGain;
                 bestVal = *it;
             }
         }
-        std::cout << "BEST" << bestVal << ' ' << "MAX" << maxEntropy;
-        return std::make_pair(bestVal, maxEntropy);
+        // std::cout << "BEST" << bestVal << ' ' << "MAX" << maxEntropy << ' ' << contextQueryString << ' ' << attribute << std::endl;
+        return std::make_pair(bestVal, maxEntropy*-1);
     }
 
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
@@ -191,6 +189,9 @@ private:
     std::string prepareQueryString(std::vector<ItemPair> contextString)
     {
         std::string contextQueryString;
+        if (contextString.empty()) {
+            return "";
+        }
         if (isContAttribute(contextString.begin()->first)) {
             contextQueryString = contextString.begin()->first + contextString.begin()->second;
         } else {
@@ -277,15 +278,16 @@ public:
         std::vector<std::string> distinctAttributeList;
         bool terminalNodeReached = false;
         std::string terminalString;
+        float bestContValue;
 
         if (node->type == NodeType::AttributeNode) {
             nodeContext.push_back(node->attributePair);
         }
-        float bestContValue;
         std::cout << "context ";
         for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
-            std::cout << it->first << ' ' << it->second;
+            std::cout << it->first << ' ' << it->second << '\t';
         }
+        std::cout << std::endl;
         std::pair<float, float> contEntropyResult;
         if (!nodeContext.empty()) {
             terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
@@ -304,9 +306,10 @@ public:
                     contEntropyResult = getContinuousEntropyGain(nodeContext, *it);
                     bestContValue = contEntropyResult.first;
                     attributeEntropy = contEntropyResult.second;
+                    std::cout << *it << ": " << attributeEntropy <<  ' ' << bestContValue << std::endl;
                 } else {
-                    std::cout << *it << ' ';
                     attributeEntropy = getEntropyGain(nodeContext, *it);
+                    std::cout << *it << ": " << attributeEntropy << std::endl;
                 }
                 if (attributeEntropy < minEntropy) {
                     minEntropy = attributeEntropy;
@@ -321,12 +324,12 @@ public:
 
             if (isContAttribute(bestAttributeString)) {
                 DecisionTreeNode* positiveContNode = new DecisionTreeNode();
-                positiveContNode->attributePair = std::make_pair(bestAttributeString, " > "+std::to_string(bestContValue));
+                positiveContNode->attributePair = std::make_pair(bestAttributeString, ">"+std::to_string(bestContValue));
                 positiveContNode->type = NodeType::AttributeNode;
                 node->children.push_back(positiveContNode);
 
                 DecisionTreeNode* negativeContNode = new DecisionTreeNode();
-                negativeContNode->attributePair = std::make_pair(bestAttributeString, " <= " + std::to_string(bestContValue));
+                negativeContNode->attributePair = std::make_pair(bestAttributeString, "<=" + std::to_string(bestContValue));
                 negativeContNode->type = NodeType::AttributeNode;
                 node->children.push_back(negativeContNode);
             } else {

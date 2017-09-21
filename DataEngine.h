@@ -126,7 +126,7 @@ public:
     int getCount(std::string whereString)
     {
         std::string sqlString = "select count(*) from " + tableName + " where " + whereString;
-        // //std::cout << sqlString << std::endl;
+        //std::cout << sqlString << std::endl;
         SQLite::Statement query(*db, sqlString);
         query.executeStep();
         int val = query.getColumn(0).getInt();
@@ -189,12 +189,12 @@ public:
     void getContinuousAttributeValues(std::vector<int> &contList, std::string attribute, std::string queryString)
     {
         std::string sqlQuery = "select distinct " + attribute + " from " + tableName + " where " + queryString;
-        std::cout << sqlQuery << std::endl;
+        // std::cout << sqlQuery << std::endl;
         SQLite::Statement query(*db, sqlQuery);
         try {
             while (query.executeStep()) {
                 contList.push_back(query.getColumn(0).getInt());
-                std::cout << query.getColumn(0) << std::endl;
+                // std::cout << query.getColumn(0) << std::endl;
             }
         } catch (std::exception& e) {
             std::cout << "exception!" << e.what();

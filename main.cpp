@@ -245,10 +245,10 @@ int main()
     std::vector<std::string> attributesList;
     // dataEngine.getDistinctAttributeValues(attributesList, attribute);
 
-    contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
-    contextString.push_back(std::make_pair("education", "'HS-grad'"));
-    contextString.push_back(std::make_pair("age", " <= 50"));
-    contextString.push_back(std::make_pair("native_country", "'United-States'"));
+    contextString.push_back(std::make_pair("relationship", "'Not-in-family'"));
+    contextString.push_back(std::make_pair("capital_gain", " > 44"));
+    // contextString.push_back(std::make_pair("age", " <= 50"));
+    // contextString.push_back(std::make_pair("native_country", "'United-States'"));
     // contextString.push_back(std::make_pair("education", "'Bachelors'"));
 
     // contextString.push_back(std::make_pair("outlook", "'rain'"));
@@ -268,6 +268,7 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
+    // std::cout << prepareQueryString(contextString);
 getContinuousEntropyGain(contextString, "hours_per_week");
     return 0;
 }
