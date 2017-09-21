@@ -100,7 +100,7 @@ std::string prepareQueryString(std::vector<ItemPair> contextString)
     return "";
 }
 
-float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
+std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
 {
     std::vector<int> contValuesPositive;
     std::vector<int> contValuesNegative;
@@ -108,12 +108,17 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
     std::vector<float> boundaryValues;
 // do +ve/-ve
     std::string queryStringPositive = prepareQueryString(contextString);
-    queryStringPositive += "result = '>50K'";
-    dataEngine.getContinuousAttributeValues(contValuesPositive, attribute, queryStringPositive);
-
     std::string queryStringNegative = prepareQueryString(contextString);
-    queryStringNegative += "result = '<=50K'";
+    if (!contextString.empty()) {
+        queryStringPositive += "and result = '>50K'";
+
+        queryStringNegative += "and result = '<=50K'";
+    } else {
+        queryStringPositive = " result = '>50K'";
+        queryStringNegative = " result = '<=50K'";
+    }
     dataEngine.getContinuousAttributeValues(contValuesNegative, attribute, queryStringNegative);
+    dataEngine.getContinuousAttributeValues(contValuesPositive, attribute, queryStringPositive);
 
     std::sort(contValuesPositive.begin(), contValuesPositive.end());
     std::sort(contValuesNegative.begin(), contValuesNegative.end());
@@ -212,6 +217,7 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
         }
     }
     std::cout << "BEST" << bestVal << ' ' << "MAX" << maxEntropy;
+    return std::make_pair(bestVal, maxEntropy);
 }
 
 int main()
@@ -233,8 +239,10 @@ int main()
     std::vector<std::string> attributesList;
     // dataEngine.getDistinctAttributeValues(attributesList, attribute);
 
-    // contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
-    // contextString.push_back(std::make_pair("education", "Bachelors"));
+    contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
+    contextString.push_back(std::make_pair("education", "'HS-grad'"));
+    contextString.push_back(std::make_pair("native_country", "'United-States'"));
+    // contextString.push_back(std::make_pair("education", "'Bachelors'"));
 
     // contextString.push_back(std::make_pair("outlook", "'rain'"));
     // contextString.push_back(std::make_pair("wind", "'strong'"));
@@ -253,6 +261,6 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
-getContinuousEntropyGain(contextString, "capital_loss");
+getContinuousEntropyGain(contextString, "age");
     return 0;
 }

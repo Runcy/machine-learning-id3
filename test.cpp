@@ -24,6 +24,6 @@ int main()
 
     DecisionTree decisionTree(v, dataPath, tableAttrib, "playtennis", "yes", "no");
 
-    // decisionTree.traverseTree(&decisionTree.rootNode);
+    decisionTree.traverseTree(&decisionTree.rootNode);
     return 0;
 }
