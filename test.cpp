@@ -20,7 +20,6 @@ int main()
     v.push_back("age");
     v.push_back("workclass");
     v.push_back("education");
-    v.push_back("education_num");
     v.push_back("marital_status");
     v.push_back("occupation");
     v.push_back("relationship");

@@ -269,6 +269,6 @@ int main()
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
     // std::cout << prepareQueryString(contextString);
-getContinuousEntropyGain(contextString, "hours_per_week");
+getEntropyGain(contextString, "workclass");
     return 0;
 }

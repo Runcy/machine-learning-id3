@@ -135,11 +135,7 @@ private:
 
         std::string contextQueryString = "";
         if (!contextString.empty()) {
-            contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-            for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-                contextQueryString += " and " + it->first + " = " + it->second;
-            }
-            // std::cout << "qs " << contextQueryString << std::endl;
+            contextQueryString = prepareQueryString(contextString);
             contextCount = dataEngine.getCount(contextQueryString);
         } else {
             contextCount = dataEngine.getAllCount();
@@ -204,6 +200,7 @@ private:
                 contextQueryString += " and " + it->first + " = " + it->second;
             }
         }
+        std::cout << contextQueryString << std::endl;
         return contextQueryString;
     }
 
@@ -318,8 +315,6 @@ public:
             }
 
             std::string bestAttributeString = *bestAttributeItr;
-
-
             availableAttributes.erase(bestAttributeItr);
 
             if (isContAttribute(bestAttributeString)) {
