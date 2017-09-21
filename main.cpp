@@ -21,6 +21,10 @@ typedef std::pair<std::string, std::string> ItemPair;
 
 std::string prepareContextString(std::vector<ItemPair> contextString)
 {
+    if (contextString.empty()) {
+        return "";
+    }
+
     std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
     for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
         contextQueryString += " and " + it->first + " = " + it->second;
@@ -129,10 +133,58 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
             *negItr++;
         }
     }
-
-    for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
-        std::cout << *it << std::endl;
+    std::string attributeQueryString;
+    std::string contextQueryString = "";
+    int contextCount;
+    int attributeCount;
+    float instanceProbability;
+    float positiveProbability;
+    float negativeProbability;
+    float positiveEntropy;
+    float negativeEntropy;
+    float entropy;
+    if (!contextString.empty()) {
+        contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+            contextQueryString += " and " + it->first + " = " + it->second;
+        }
+        // std::cout << "qs " << contextQueryString << std::endl;
+        contextCount = dataEngine.getCount(contextQueryString);
+    } else {
+        contextCount = dataEngine.getAllCount();
     }
+    std::cout << contextCount;
+
+    float maxEntropy = -1;
+    float bestVal = 0;
+    for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
+        attributeQueryString = prepareContextString(contextString);
+        if (contextString.empty()) {
+            attributeQueryString += attribute + " > " + std::to_string(*it);
+        } else {
+            attributeQueryString += " and " + attribute + " > " + std::to_string(*it);
+        }
+        std::cout << *it << std::endl;
+        // std::cout << attributeQueryString;
+        attributeCount = dataEngine.getCount(attributeQueryString);
+        // std::cout << attributeCount << std::endl;
+        instanceProbability = (float) attributeCount / contextCount;
+
+        positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
+        negativeProbability = dataEngine.getProbability(attributeQueryString, '-');
+
+        positiveEntropy = (positiveProbability == 0) ? 0 : positiveProbability*log2(positiveProbability);
+        negativeEntropy = (negativeProbability == 0) ? 0 : negativeProbability*log2(negativeProbability);
+
+        // positiveEntropy = positiveProbability*log2(positiveProbability);
+        // negativeEntropy = negativeProbability*log2(negativeProbability);
+        entropy = positiveEntropy + negativeEntropy;
+        if (entropy > maxEntropy && entropy != 0) {
+            maxEntropy = entropy;
+            bestVal = *it;
+        }
+    }
+    std::cout << "BEST" << bestVal << ' ' << "MAX" << maxEntropy;
 }
 
 int main()
@@ -174,6 +226,6 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
-getContinuousEntropyGain(contextString, "fnlwgt");
+getContinuousEntropyGain(contextString, "capital_gain");
     return 0;
 }
