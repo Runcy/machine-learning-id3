@@ -129,7 +129,7 @@ private:
             }
         }
         std::cout << "BEST" << bestVal << ' ' << "MAX" << maxEntropy;
-        return std::make_pair(bestVal, maxEntropy);
+        return std::make_pair(bestVal, maxEntropy*-1);
     }
 
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
@@ -193,11 +193,29 @@ private:
 
     std::string prepareQueryString(std::vector<ItemPair> contextString)
     {
-        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+        std::string contextQueryString;
+        if (isContAttribute(contextString.begin()->first)) {
+            contextQueryString = contextString.begin()->first + contextString.begin()->second;
+        } else {
+            contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+        }
         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+            if (isContAttribute(it->first)) {
+                contextQueryString += " and " + it->first + it->second;
+            }
             contextQueryString += " and " + it->first + " = " + it->second;
         }
         return contextQueryString;
+    }
+
+    bool isContAttribute(std::string attribute)
+    {
+        for (auto it = contAttributes.begin(); it != contAttributes.end(); it++) {
+            if (*it == attribute) {
+                return true;
+            }
+        }
+        return false;
     }
 
 public:
@@ -265,12 +283,12 @@ public:
         if (node->type == NodeType::AttributeNode) {
             nodeContext.push_back(node->attributePair);
         }
-
+        float bestContValue;
         std::cout << "context ";
         for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
             std::cout << it->first << ' ' << it->second;
         }
-
+        std::pair<float, float> contEntropyResult;
         if (!nodeContext.empty()) {
             terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
         }
@@ -284,28 +302,43 @@ public:
             return;
         } else {
             for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
-                std::cout << *it << ' ';
-                attributeEntropy = getEntropyGain(nodeContext, *it);
+                if (isContAttribute(*it)) {
+                    contEntropyResult = getContinuousEntropyGain(nodeContext, *it);
+                    bestContValue = contEntropyResult.first;
+                    attributeEntropy = contEntropyResult.second;
+                } else {
+                    std::cout << *it << ' ';
+                    attributeEntropy = getEntropyGain(nodeContext, *it);
+                }
                 if (attributeEntropy < minEntropy) {
                     minEntropy = attributeEntropy;
                     bestAttributeItr = it;
                 }
             }
-            std::cout << std::endl;
 
             std::string bestAttributeString = *bestAttributeItr;
-            std::cout << "BEST"  << bestAttributeString << ' ';
-            dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
 
-            std::cout << std::endl;
 
             availableAttributes.erase(bestAttributeItr);
 
-            for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
-                DecisionTreeNode* childNode = new DecisionTreeNode();
-                childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
-                childNode->type = NodeType::AttributeNode;
-                node->children.push_back(childNode);
+            if (isContAttribute(bestAttributeString)) {
+                DecisionTreeNode* positiveContNode = new DecisionTreeNode();
+                positiveContNode->attributePair = std::make_pair(bestAttributeString, " > "+std::to_string(bestContValue));
+                positiveContNode->type = NodeType::AttributeNode;
+                node->children.push_back(positiveContNode);
+
+                DecisionTreeNode* negativeContNode = new DecisionTreeNode();
+                negativeContNode->attributePair = std::make_pair(bestAttributeString, " <= " + std::to_string(bestContValue));
+                negativeContNode->type = NodeType::AttributeNode;
+                node->children.push_back(negativeContNode);
+            } else {
+                dataEngine.getDistinctAttributeValues(distinctAttributeList, bestAttributeString);
+                for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                    DecisionTreeNode* childNode = new DecisionTreeNode();
+                    childNode->attributePair = std::make_pair(bestAttributeString, "'" + *it + "'");
+                    childNode->type = NodeType::AttributeNode;
+                    node->children.push_back(childNode);
+                }
             }
 
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
