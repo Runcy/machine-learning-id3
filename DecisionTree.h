@@ -269,6 +269,9 @@ public:
 
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
     {
+        if (availableAttributes.empty()) {
+            return;
+        }
         float minEntropy = 999;
         float attributeEntropy;
         auto bestAttributeItr = availableAttributes.begin();
