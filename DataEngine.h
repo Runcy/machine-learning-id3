@@ -60,7 +60,7 @@ private:
         std::vector<std::string> result;
         std::string resultString;
         std::string line;
-        int i = 0;
+
         if (input.is_open()) {
             while (getline(input, line)) {
                 if (line.find('?') != std::string::npos) { //ignore missing for now
@@ -166,7 +166,7 @@ public:
             i++;
         }
         // return i;
-        if (i > 1) {
+        if (i != 1) {
             return false;
         }
         return true;
