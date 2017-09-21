@@ -8,6 +8,7 @@ typedef std::pair<std::string, std::string> ItemPair;
 class DecisionTree {
 private:
     std::vector<std::string> totalAttributes;
+
     std::string resultString;
     DataEngine dataEngine;
 
@@ -108,6 +109,26 @@ public:
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
         buildTree(&rootNode, nodeContext, totalAttributes);
+    }
+
+    void traverseTree(DecisionTreeNode* node)
+    {
+        if (node->type == NodeType::RootNode) {
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                traverseTree(*it);
+                std::cout << std::endl;
+            }
+            return;
+        }
+        std::cout << node->attributePair.first << ' ' << node->attributePair.second;
+        if (node->type == NodeType::AttributeNode) {
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                traverseTree(*it);
+                std::cout << std::endl;
+            }
+        }
+        if (node->type == NodeType::TerminalNode) {
+        }
     }
 
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)

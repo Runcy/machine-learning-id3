@@ -23,5 +23,7 @@ int main()
     v.push_back("wind");
 
     DecisionTree decisionTree(v, dataPath, tableAttrib, "playtennis", "yes", "no");
+
+    decisionTree.traverseTree(&decisionTree.rootNode);
     return 0;
 }
