@@ -157,14 +157,16 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
 
     float maxEntropy = -1;
     float bestVal = 0;
+    float totalEntropyGain;
     for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
+        totalEntropyGain = 0;
+
         attributeQueryString = prepareContextString(contextString);
         if (contextString.empty()) {
             attributeQueryString += attribute + " > " + std::to_string(*it);
         } else {
             attributeQueryString += " and " + attribute + " > " + std::to_string(*it);
         }
-        std::cout << *it << std::endl;
         // std::cout << attributeQueryString;
         attributeCount = dataEngine.getCount(attributeQueryString);
         // std::cout << attributeCount << std::endl;
@@ -179,8 +181,31 @@ float getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string 
         // positiveEntropy = positiveProbability*log2(positiveProbability);
         // negativeEntropy = negativeProbability*log2(negativeProbability);
         entropy = positiveEntropy + negativeEntropy;
-        if (entropy > maxEntropy && entropy != 0) {
-            maxEntropy = entropy;
+        totalEntropyGain += entropy*instanceProbability;
+
+        attributeQueryString = prepareContextString(contextString);
+        if (contextString.empty()) {
+            attributeQueryString += attribute + " < " + std::to_string(*it);
+        } else {
+            attributeQueryString += " and " + attribute + " < " + std::to_string(*it);
+        }
+        std::cout << *it << std::endl;
+        // std::cout << attributeQueryString;
+        attributeCount = dataEngine.getCount(attributeQueryString);
+        // std::cout << attributeCount << std::endl;
+        instanceProbability = (float) attributeCount / contextCount;
+
+        positiveProbability = dataEngine.getProbability(attributeQueryString, '+');
+        negativeProbability = dataEngine.getProbability(attributeQueryString, '-');
+
+        positiveEntropy = (positiveProbability == 0) ? 0 : positiveProbability*log2(positiveProbability);
+        negativeEntropy = (negativeProbability == 0) ? 0 : negativeProbability*log2(negativeProbability);
+        entropy = positiveEntropy + negativeEntropy;
+        totalEntropyGain += entropy*instanceProbability;
+
+        std::cout << *it << ' ' << totalEntropyGain << std::endl;
+        if (totalEntropyGain > maxEntropy) {
+            maxEntropy = totalEntropyGain;
             bestVal = *it;
         }
     }
@@ -226,6 +251,6 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
-getContinuousEntropyGain(contextString, "capital_gain");
+getContinuousEntropyGain(contextString, "age");
     return 0;
 }
