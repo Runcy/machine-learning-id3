@@ -187,9 +187,13 @@ public:
         std::string sqlQuery = "select distinct " + attribute + " from " + tableName + " where " + queryString;
         std::cout << sqlQuery << std::endl;
         SQLite::Statement query(*db, sqlQuery);
-        while (query.executeStep()) {
-            contList.push_back(query.getColumn(0).getInt());
-            // //std::cout << query.getColumn(0) << std::endl;
+        try {
+            while (query.executeStep()) {
+                contList.push_back(query.getColumn(0).getInt());
+                std::cout << query.getColumn(0) << std::endl;
+            }
+        } catch (std::exception& e) {
+            std::cout << "exception!" << e.what();
         }
     }
 };

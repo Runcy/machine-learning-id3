@@ -15,22 +15,20 @@ std::string dataPath = "../adult.data";
 
 DataEngine dataEngine(dataPath, tableAttrib, "result", "<=50K", ">50K");
 // DataEngine dataEngine(dataPath, tableAttrib, "playtennis", "yes", "no");
+std::vector<std::string> contAttributes;
 
 typedef std::pair<std::string, std::string> ItemPair;
 
-
-std::string prepareContextString(std::vector<ItemPair> contextString)
+bool isContAttribute(std::string attribute)
 {
-    if (contextString.empty()) {
-        return "";
+    for (auto it = contAttributes.begin(); it != contAttributes.end(); it++) {
+        if (*it == attribute) {
+            return true;
+        }
     }
-
-    std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-    for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-        contextQueryString += " and " + it->first + " = " + it->second;
-    }
-    return contextQueryString;
+    return false;
 }
+
 
 float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
 {
@@ -90,14 +88,20 @@ float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
 }
 std::string prepareQueryString(std::vector<ItemPair> contextString)
 {
-    if (!contextString.empty()) {
-        std::string contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+    std::string contextQueryString;
+    if (isContAttribute(contextString.begin()->first)) {
+        contextQueryString = contextString.begin()->first + contextString.begin()->second;
+    } else {
+        contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+    }
+    for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+        if (isContAttribute(it->first)) {
+            contextQueryString += " and " + it->first + it->second;
+        } else {
             contextQueryString += " and " + it->first + " = " + it->second;
         }
-        return contextQueryString;
     }
-    return "";
+    return contextQueryString;
 }
 
 std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
@@ -110,16 +114,16 @@ std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextSt
     std::string queryStringPositive = prepareQueryString(contextString);
     std::string queryStringNegative = prepareQueryString(contextString);
     if (!contextString.empty()) {
-        queryStringPositive += "and result = '>50K'";
+        queryStringPositive += " and result = '>50K'";
 
-        queryStringNegative += "and result = '<=50K'";
+        queryStringNegative += " and result = '<=50K'";
     } else {
         queryStringPositive = " result = '>50K'";
         queryStringNegative = " result = '<=50K'";
     }
     dataEngine.getContinuousAttributeValues(contValuesNegative, attribute, queryStringNegative);
     dataEngine.getContinuousAttributeValues(contValuesPositive, attribute, queryStringPositive);
-
+    std::cout <<"SUCCESS";
     std::sort(contValuesPositive.begin(), contValuesPositive.end());
     std::sort(contValuesNegative.begin(), contValuesNegative.end());
 
@@ -149,11 +153,8 @@ std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextSt
     float negativeEntropy;
     float entropy;
     if (!contextString.empty()) {
-        contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-            contextQueryString += " and " + it->first + " = " + it->second;
-        }
-        // std::cout << "qs " << contextQueryString << std::endl;
+        contextQueryString = prepareQueryString(contextString);
+        std::cout << "qs " << contextQueryString << std::endl;
         contextCount = dataEngine.getCount(contextQueryString);
     } else {
         contextCount = dataEngine.getAllCount();
@@ -166,7 +167,7 @@ std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextSt
     for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
         totalEntropyGain = 0;
 
-        attributeQueryString = prepareContextString(contextString);
+        attributeQueryString = prepareQueryString(contextString);
         if (contextString.empty()) {
             attributeQueryString += attribute + " > " + std::to_string(*it);
         } else {
@@ -190,7 +191,7 @@ std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextSt
         std::cout << *it << "GRAT" << instanceProbability << std::endl;
         totalEntropyGain += entropy*instanceProbability;
 
-        attributeQueryString = prepareContextString(contextString);
+        attributeQueryString = prepareQueryString(contextString);
         if (contextString.empty()) {
             attributeQueryString += attribute + " <= " + std::to_string(*it);
         } else {
@@ -222,6 +223,11 @@ std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextSt
 
 int main()
 {
+    contAttributes.push_back("age");
+    contAttributes.push_back("fnlwgt");
+    contAttributes.push_back("capital_gain");
+    contAttributes.push_back("capital_loss");
+    contAttributes.push_back("hours_per_week");
     //
     // std::cout << dataEngine.getCount("education=\"Bachelors\" and age > 50") << std::endl;
     // std::cout << dataEngine.getCount("education=\"Bachelors\" and age > 50"" and result = '<=50K'") << std::endl;
@@ -241,6 +247,7 @@ int main()
 
     contextString.push_back(std::make_pair("occupation", "'Craft-repair'"));
     contextString.push_back(std::make_pair("education", "'HS-grad'"));
+    contextString.push_back(std::make_pair("age", " <= 50"));
     contextString.push_back(std::make_pair("native_country", "'United-States'"));
     // contextString.push_back(std::make_pair("education", "'Bachelors'"));
 
@@ -261,6 +268,6 @@ int main()
     // }
     // std::cout << contextQueryString << std::endl;
     // std::cout << dataEngine.getCount(contextQueryString);
-getContinuousEntropyGain(contextString, "age");
+getContinuousEntropyGain(contextString, "hours_per_week");
     return 0;
 }
