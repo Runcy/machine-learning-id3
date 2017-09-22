@@ -247,6 +247,26 @@ public:
         buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
+    DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue)
+    {
+        if (node->type == NodeType::RootNode) {
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                return findNode(*it, attribute, attributeValue);
+            }
+        } else if (node->type == NodeType::AttributeNode) {
+            if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
+                return node;
+            } else {
+                for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                    return findNode(*it, attribute, attributeValue);
+                }
+            }
+        } else if (node->type == NodeType::RootNode) {
+            return nullptr;
+        }
+
+    }
+
     void traverseTree(DecisionTreeNode* node, std::string rule)
     {
         if (node->type == NodeType::RootNode) {

@@ -29,6 +29,7 @@ int main()
     v.push_back("capital_loss");
     v.push_back("hours_per_week");
     v.push_back("native_country");
+    v.push_back("fnlwgt");
     contAttributes.push_back("age");
     contAttributes.push_back("fnlwgt");
     contAttributes.push_back("capital_gain");
