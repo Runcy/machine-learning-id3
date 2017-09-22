@@ -200,7 +200,7 @@ private:
                 contextQueryString += " and " + it->first + " = " + it->second;
             }
         }
-        std::cout << contextQueryString << std::endl;
+        // std::cout << contextQueryString << std::endl;
         return contextQueryString;
     }
 
@@ -251,19 +251,18 @@ public:
     {
         if (node->type == NodeType::RootNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                traverseTree(*it);
+                traverseTree(*it, rule);
             }
             return;
         }
-        std::cout << node->attributePair.first << ' ' << node->attributePair.second;
-        rule += node->attributePair.first + ' ' + node->attributePair.second + '\t';
+        rule += node->attributePair.first + ' ' + node->attributePair.second + ' ';
         if (node->type == NodeType::AttributeNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                traverseTree(*it);
+                traverseTree(*it, rule);
             }
         }
         if (node->type == NodeType::TerminalNode) {
-            std::cout << "RULE: " << rule << std::endl;
+            std::cout << std::endl << "RULE: " << rule << std::endl;
         }
     }
 
@@ -283,11 +282,11 @@ public:
         if (node->type == NodeType::AttributeNode) {
             nodeContext.push_back(node->attributePair);
         }
-        std::cout << "context ";
-        for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
-            std::cout << it->first << ' ' << it->second << '\t';
-        }
-        std::cout << std::endl;
+        // std::cout << "context ";
+        // for (auto it = nodeContext.begin(); it != nodeContext.end(); it++) {
+        //     std::cout << it->first << ' ' << it->second << '\t';
+        // }
+        // std::cout << std::endl;
         std::pair<float, float> contEntropyResult;
         int terminalResult;
         if (!nodeContext.empty()) {
@@ -302,7 +301,7 @@ public:
         }
         if (terminalNodeReached) {
             terminalString = dataEngine.getResultString(prepareQueryString(nodeContext));
-            std::cout << "TERMINAL! " << terminalString << std::endl;
+            // std::cout << "TERMINAL! " << terminalString << std::endl;
             DecisionTreeNode* terminalNode = new DecisionTreeNode();
             terminalNode->attributePair = std::make_pair(resultString, terminalString);
             terminalNode->type = NodeType::TerminalNode;
@@ -314,10 +313,10 @@ public:
                     contEntropyResult = getContinuousEntropyGain(nodeContext, *it);
                     bestContValue = contEntropyResult.first;
                     attributeEntropy = contEntropyResult.second;
-                    std::cout << *it << ": " << attributeEntropy <<  ' ' << bestContValue << std::endl;
+                    // std::cout << *it << ": " << attributeEntropy <<  ' ' << bestContValue << std::endl;
                 } else {
                     attributeEntropy = getEntropyGain(nodeContext, *it);
-                    std::cout << *it << ": " << attributeEntropy << std::endl;
+                    // std::cout << *it << ": " << attributeEntropy << std::endl;
                 }
                 if (attributeEntropy < minEntropy) {
                     minEntropy = attributeEntropy;
