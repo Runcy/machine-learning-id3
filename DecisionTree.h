@@ -200,7 +200,6 @@ private:
                 contextQueryString += " and " + it->first + " = " + it->second;
             }
         }
-        std::cout << contextQueryString << std::endl;
         return contextQueryString;
     }
 
@@ -331,14 +330,14 @@ public:
             }
             return;
         }
-        rule += node->attributePair.first + ' ' + node->attributePair.second + ' ';
+        rule += node->attributePair.first + ' ' + node->attributePair.second + '\n';
         if (node->type == NodeType::AttributeNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
                 traverseTree(*it, rule);
             }
         }
         if (node->type == NodeType::TerminalNode) {
-            std::cout << "RULE: " << rule << std::endl;
+            std::cout << "RULE: " << std::endl << rule;
         }
     }
 

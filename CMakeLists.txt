@@ -6,7 +6,9 @@ project(test_project)
 
 add_executable(test_p test.cpp)
 add_executable(main main.cpp)
+add_executable(simple_test simple_test.cpp)
 
 find_package(SQLiteCpp REQUIRED)
 target_link_libraries(test_p SQLiteCpp sqlite3)
 target_link_libraries(main SQLiteCpp sqlite3)
+target_link_libraries(simple_test SQLiteCpp sqlite3)
