@@ -200,7 +200,7 @@ private:
                 contextQueryString += " and " + it->first + " = " + it->second;
             }
         }
-        // std::cout << contextQueryString << std::endl;
+        std::cout << contextQueryString << std::endl;
         return contextQueryString;
     }
 
@@ -262,7 +262,7 @@ public:
             }
         }
         if (node->type == NodeType::TerminalNode) {
-            std::cout << std::endl << "RULE: " << rule << std::endl;
+            std::cout << "RULE: " << rule << std::endl;
         }
     }
 
