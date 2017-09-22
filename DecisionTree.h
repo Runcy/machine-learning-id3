@@ -226,7 +226,7 @@ public:
         ItemPair attributePair;
     };
 
-    DecisionTreeNode rootNode;
+    DecisionTreeNode rootNode, myRoot;
 
     DecisionTree(std::vector<std::string> &attributes,
                 std::vector<std::string> &_contAttributes,
@@ -243,12 +243,13 @@ public:
         totalAttributes = attributes;
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
+        myRoot.type = NodeType::RootNode;
         buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
     DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue)
     {
-        if (node->type == NodeType::RootNode) {
+        if (node->type == NodeType::TerminalNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
                 return findNode(*it, attribute, attributeValue);
             }
@@ -337,7 +338,7 @@ public:
             }
         }
         if (node->type == NodeType::TerminalNode) {
-            std::cout << "RULE: " << std::endl << rule;
+            std::cout << "RULE:" << std::endl << rule;
         }
     }
 
