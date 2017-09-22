@@ -2,6 +2,7 @@
 #define DATAENGINE_H
 
 #include <stdio.h>
+#include <queue>
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <iostream>
 #include <fstream>

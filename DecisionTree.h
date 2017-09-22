@@ -276,6 +276,7 @@ public:
         ruleQueue.pop();
 
         DecisionTreeNode* searchNode;
+        DecisionTreeNode* insertionNode;
 
         std::string attribute = ruleAttributePair.first;
         std::string attributeValue = ruleAttributePair.second;
@@ -284,6 +285,20 @@ public:
         searchNode = findNode(node, attribute, attributeValue); //only works in discrete case
 
         std::vector<std::string> distinctAttributeList;
+
+        if (searchNode == nullptr) {
+            insertionNode = node;
+        } else {
+            insertionNode = searchNode;
+        }
+
+        if (attribute == resultString) {
+            DecisionTreeNode* terminalNode = new DecisionTreeNode();
+            terminalNode->attributePair = std::make_pair(attribute, attributeValue);
+            terminalNode->type = NodeType::TerminalNode;
+            node->children.push_back(terminalNode);
+            return;
+        }
 
         if (isContAttribute(attribute)) {
             DecisionTreeNode* positiveContNode = new DecisionTreeNode();
@@ -294,26 +309,18 @@ public:
             negativeContNode->attributePair = std::make_pair(attribute, attributeValue);
             negativeContNode->type = NodeType::AttributeNode;
 
-            if (searchNode == nullptr) {
-                node->children.push_back(positiveContNode);
-                node->children.push_back(negativeContNode);
-            } else {
-                searchNode->children.push_back(positiveContNode);
-                searchNode->children.push_back(negativeContNode);
-            }
+            insertionNode->children.push_back(positiveContNode);
+            insertionNode->children.push_back(negativeContNode);
         } else {
             dataEngine.getDistinctAttributeValues(distinctAttributeList, attribute);
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
                 DecisionTreeNode* childNode = new DecisionTreeNode();
                 childNode->attributePair = std::make_pair(attribute, "'" + *it + "'");
                 childNode->type = NodeType::AttributeNode;
-                if (searchNode == nullptr) {
-                    node->children.push_back(childNode);
-                } else {
-                    searchNode->children.push_back(childNode);
-                }
+                insertionNode->children.push_back(childNode);
             }
         }
+        buildTreeFromRule(insertionNode, ruleQueue);
     }
 
     void traverseTree(DecisionTreeNode* node, std::string rule)
