@@ -36,6 +36,6 @@ int main()
     contAttributes.push_back("hours_per_week");
     DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K");
 
-    decisionTree.traverseTree(&decisionTree.rootNode);
+    decisionTree.traverseTree(&decisionTree.rootNode, "");
     return 0;
 }

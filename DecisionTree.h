@@ -247,23 +247,23 @@ public:
         buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
-    void traverseTree(DecisionTreeNode* node)
+    void traverseTree(DecisionTreeNode* node, std::string rule)
     {
         if (node->type == NodeType::RootNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
                 traverseTree(*it);
-                std::cout << std::endl;
             }
             return;
         }
         std::cout << node->attributePair.first << ' ' << node->attributePair.second;
+        rule += node->attributePair.first + ' ' + node->attributePair.second + '\t';
         if (node->type == NodeType::AttributeNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
                 traverseTree(*it);
-                std::cout << std::endl;
             }
         }
         if (node->type == NodeType::TerminalNode) {
+            std::cout << "RULE: " << rule << std::endl;
         }
     }
 
@@ -289,8 +289,16 @@ public:
         }
         std::cout << std::endl;
         std::pair<float, float> contEntropyResult;
+        int terminalResult;
         if (!nodeContext.empty()) {
-            terminalNodeReached = dataEngine.checkUnique(prepareQueryString(nodeContext));
+            terminalResult = dataEngine.checkUnique(prepareQueryString(nodeContext));
+            if (terminalResult == -1) {
+                return;
+            } else if (terminalResult == 1) {
+                terminalNodeReached = true;
+            } else {
+                terminalNodeReached = false;
+            }
         }
         if (terminalNodeReached) {
             terminalString = dataEngine.getResultString(prepareQueryString(nodeContext));

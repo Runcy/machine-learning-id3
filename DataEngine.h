@@ -156,7 +156,7 @@ public:
         return count / totalCount;
     }
 
-    bool checkUnique(std::string queryString)
+    int checkUnique(std::string queryString)
     {
         int i = 0;
         std::string sqlString = "select distinct " + resultString + " from " + tableName + " where " + queryString;
@@ -166,10 +166,13 @@ public:
             i++;
         }
         // return i;
-        if (i != 1) {
-            return false;
+        if (i == 0) {
+            return -1;
         }
-        return true;
+        if (i == 1) {
+            return 1;
+        }
+        return 0;
     }
 
     std::string getResultString(std::string queryString)
