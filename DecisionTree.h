@@ -281,7 +281,6 @@ public:
         std::string attribute = ruleAttributePair.first;
         std::string attributeValue = ruleAttributePair.second;
 
-
         searchNode = findNode(node, attribute, attributeValue); //only works in discrete case
 
         std::vector<std::string> distinctAttributeList;
