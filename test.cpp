@@ -45,7 +45,7 @@ int main()
     for (; getline(input, line);) {
         // std::cout <<line <<std::endl;
         if (line == "RULE: ") {
-            std::cout << i++ << std::endl;
+            // std::cout << i++ << std::endl;
             decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
             while(!ruleQueue.empty()) {
                 ruleQueue.pop();

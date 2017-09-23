@@ -419,7 +419,7 @@ public:
             }
         }
         if (node->type == NodeType::TerminalNode) {
-            std::cout << "RULE:" << std::endl << rule;
+            std::cout << "RULE: " << std::endl << rule;
         }
     }
 
