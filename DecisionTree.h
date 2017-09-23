@@ -284,7 +284,6 @@ public:
 
     void buildTreeFromRule(DecisionTreeNode* node, std::queue<ItemPair> ruleQueue) //attribute is taken and then discarded
     {
-
         if (ruleQueue.empty()) {
             return;
         }
@@ -346,6 +345,29 @@ public:
             nextNode = searchNode;
         }
         buildTreeFromRule(nextNode, ruleQueue);
+    }
+
+    std::string searchAttributeValue(std::string attribute, std::vector<ItemPair> instanceList)
+    {
+        for (auto it = instanceList.begin(); it != instanceList.end(); it++) {
+            if (attribute == it->attributePair.first) {
+                return it->attributePair.second;
+            }
+        }
+        return "Oh dear";
+    }
+
+    std::string evaluateInstance(DecisionTreeNode* node, std::vector<ItemPair> instanceList)
+    {
+        if (node->type == TerminalNode) {
+            return node->attributePair.second;
+        }
+        std::string attribute = (*(node->children.begin()))->attributePair.first;
+        std::string attributeValue = searchAttributeValue(attribute, instanceList);
+
+        for (auto it = node->children.begin(); it != node->children.end(); it++) {
+            // if ()
+        }
     }
 
     void traverseTree(DecisionTreeNode* node, std::string rule)
