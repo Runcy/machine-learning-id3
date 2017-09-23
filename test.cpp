@@ -41,9 +41,11 @@ int main()
     ifstream input("rule_base");
     queue<ItemPair> ruleQueue;
     string line;
+    int i =0;
     for (; getline(input, line);) {
         // std::cout <<line <<std::endl;
         if (line == "RULE: ") {
+            std::cout << i++ << std::endl;
             decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
             while(!ruleQueue.empty()) {
                 ruleQueue.pop();

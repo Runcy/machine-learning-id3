@@ -288,14 +288,14 @@ public:
 
     DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue)
     {
-        std::cout << attribute <<  ' ' << attributeValue;
+        // std::cout << attribute <<  ' ' << attributeValue;
         // std::cout << "ATNODE" + node->attributePair.first + node->attributePair.second <<std::endl;
         if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
             return node;
         }
         DecisionTreeNode* tmp;
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
+            // std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
             tmp = findNode(*it, attribute, attributeValue);
             if (tmp!=nullptr) {
                 return tmp;
@@ -312,21 +312,20 @@ public:
         ItemPair ruleAttributePair = ruleQueue.front();
         ruleQueue.pop();
 
-        DecisionTreeNode* searchNode;
-        DecisionTreeNode* insertionNode;
+        DecisionTreeNode* searchNode = nullptr;
+        DecisionTreeNode* insertionNode = nullptr;
 
         std::string attribute = ruleAttributePair.first;
         std::string attributeValue = ruleAttributePair.second;
 
+        std::vector<std::string> distinctAttributeList;
         searchNode = findNode(node, attribute, attributeValue); //only works in discrete case
 
-        std::vector<std::string> distinctAttributeList;
-
         if (searchNode == nullptr) {
-            std::cout << "search for" << attribute << ' ' <<attributeValue << "not found\n";
+            // std::cout << "search for" << attribute << ' ' <<attributeValue << "not found\n";
             insertionNode = node;
         } else {
-            std::cout << "search for" << attribute << ' ' <<attributeValue << "found\n";
+            // std::cout << "search for" << attribute << ' ' <<attributeValue << "found\n";
             insertionNode = searchNode;
         }
         if (attribute == resultString) {
@@ -340,7 +339,6 @@ public:
         if (isContAttribute(attribute) && searchNode == nullptr) {
             std::string contValue;
             std::size_t posMore = attributeValue.find(">");
-            std::size_t posLess = attributeValue.find("<=");
 
             contValue = (posMore != std::string::npos) ? attributeValue.substr(1) : attributeValue.substr(2); //1 for >, 2 for <=
 
@@ -354,13 +352,15 @@ public:
 
             insertionNode->children.push_back(positiveContNode);
             insertionNode->children.push_back(negativeContNode);
+
+            nextNode = (posMore != std::string::npos) ? positiveContNode : negativeContNode;
         } else if (!isContAttribute(attribute) && searchNode == nullptr) {
             dataEngine.getDistinctAttributeValues(distinctAttributeList, attribute);
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
                 DecisionTreeNode* childNode = new DecisionTreeNode();
                 childNode->attributePair = std::make_pair(attribute, "'" + *it + "'");
                 childNode->type = NodeType::AttributeNode;
-                std::cout << "doing" "'" + *it + "'" << " " << attribute <<std::endl;
+                // std::cout << "doing " "'" + *it + "'" << " " << attribute <<std::endl;
                 insertionNode->children.push_back(childNode);
                 if ("'" + *it + "'" == attributeValue) {
                     // std::cout << "match";
