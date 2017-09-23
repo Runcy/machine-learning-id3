@@ -13,7 +13,7 @@ std::string dataPath = "../adult.data";
 // std::string dataPath = "../playtennis.csv";
 
 typedef std::pair<std::string, std::string> ItemPair;
-
+using namespace std;
 int main()
 {
     std::vector<std::string> v;
@@ -29,13 +29,35 @@ int main()
     v.push_back("capital_loss");
     v.push_back("hours_per_week");
     v.push_back("native_country");
+
     contAttributes.push_back("age");
     contAttributes.push_back("fnlwgt");
     contAttributes.push_back("capital_gain");
     contAttributes.push_back("capital_loss");
     contAttributes.push_back("hours_per_week");
-    DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K");
+    // DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K");
+    DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
 
-    decisionTree.traverseTree(&decisionTree.rootNode, "");
+    ifstream input("rule_base");
+    queue<ItemPair> ruleQueue;
+    string line;
+    for (; getline(input, line);) {
+        // std::cout <<line <<std::endl;
+        if (line == "RULE: ") {
+            decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
+            while(!ruleQueue.empty()) {
+                ruleQueue.pop();
+            }
+            continue;
+        }
+        istringstream iss(line);
+        string attribute, attributeValue;
+        iss >> attribute >> attributeValue;
+        ItemPair tempPair;
+        tempPair = make_pair(attribute, attributeValue);
+        ruleQueue.push(tempPair);
+    }
+
+    decisionTree.traverseTree(&decisionTree.myRoot, "");
     return 0;
 }

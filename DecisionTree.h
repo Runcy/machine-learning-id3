@@ -247,6 +247,26 @@ public:
         buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
+    DecisionTree(std::vector<std::string> &attributes,
+                std::vector<std::string> &_contAttributes,
+                const std::string _trainingDataPath,
+                const std::string _tableAttributes,
+                const std::string _resultString,
+                const std::string _positiveInstanceString,
+                const std::string _negativeInstanceString, bool noBuild) :
+                dataEngine(_trainingDataPath, _tableAttributes, _resultString,
+                            _positiveInstanceString, _negativeInstanceString)
+    {
+        resultString = _resultString;
+        contAttributes = _contAttributes;
+        totalAttributes = attributes;
+        std::vector<std::pair<std::string, std::string>> nodeContext;
+        rootNode.type = NodeType::RootNode;
+        myRoot.type = NodeType::RootNode;
+        // buildTree(&rootNode, nodeContext, totalAttributes);
+    }
+
+
     // DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue) //this code sucks
     // {
     //     if (node->type == NodeType::TerminalNode) {
@@ -268,12 +288,14 @@ public:
 
     DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue)
     {
+        std::cout << attribute <<  ' ' << attributeValue;
+        // std::cout << "ATNODE" + node->attributePair.first + node->attributePair.second <<std::endl;
         if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
             return node;
         }
         DecisionTreeNode* tmp;
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            // std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
+            std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
             tmp = findNode(*it, attribute, attributeValue);
             if (tmp!=nullptr) {
                 return tmp;
@@ -302,13 +324,11 @@ public:
 
         if (searchNode == nullptr) {
             std::cout << "search for" << attribute << ' ' <<attributeValue << "not found\n";
-
             insertionNode = node;
         } else {
             std::cout << "search for" << attribute << ' ' <<attributeValue << "found\n";
             insertionNode = searchNode;
         }
-
         if (attribute == resultString) {
             DecisionTreeNode* terminalNode = new DecisionTreeNode();
             terminalNode->attributePair = std::make_pair(attribute, attributeValue);
