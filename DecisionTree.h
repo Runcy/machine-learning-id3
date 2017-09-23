@@ -350,8 +350,8 @@ public:
     std::string searchAttributeValue(std::string attribute, std::vector<ItemPair> instanceList)
     {
         for (auto it = instanceList.begin(); it != instanceList.end(); it++) {
-            if (attribute == it->attributePair.first) {
-                return it->attributePair.second;
+            if (attribute == it->first) {
+                return it->second;
             }
         }
         return "Oh dear";
@@ -365,9 +365,16 @@ public:
         std::string attribute = (*(node->children.begin()))->attributePair.first;
         std::string attributeValue = searchAttributeValue(attribute, instanceList);
 
+        std::string nodeAttr;
+        std::string nodeVal;
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            // if ()
+            nodeAttr = (*it)->attributePair.first;
+            nodeVal = (*it)->attributePair.second;
+            if ((nodeAttr == attribute) && (nodeVal == attributeValue)) {
+                return evaluateInstance(*it, instanceList);
+            }
         }
+        return "Oh Dear";
     }
 
     void traverseTree(DecisionTreeNode* node, std::string rule)
