@@ -46,8 +46,11 @@ int main()
     }
     // decisionTree.traverseTree(&decisionTree.myRoot, "");
     vector<ItemPair> instanceList;
-    instanceList.push_back(make_pair("outlook", "'overcast'"));
+    instanceList.push_back(make_pair("outlook", "'sunny'"));
     instanceList.push_back(make_pair("wind", "'strong'"));
+    instanceList.push_back(make_pair("humidity", "'normal'"));
+    instanceList.push_back(make_pair("temperature", "'hot'"));
+
     std::cout << "RESULT: " << decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
     return 0;
 }
