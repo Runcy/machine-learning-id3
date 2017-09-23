@@ -247,23 +247,34 @@ public:
         buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
+    // DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue) //this code sucks
+    // {
+    //     if (node->type == NodeType::TerminalNode) {
+    //         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+    //             return findNode(*it, attribute, attributeValue);
+    //         }
+    //     } else if (node->type == NodeType::AttributeNode) {
+    //         if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
+    //             return node;
+    //         } else {
+    //             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+    //                 return findNode(*it, attribute, attributeValue);
+    //             }
+    //         }
+    //     } else if (node->type == NodeType::RootNode) {
+    //         return nullptr;
+    //     }
+    // }
+
     DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue)
     {
-        if (node->type == NodeType::TerminalNode) {
-            for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                return findNode(*it, attribute, attributeValue);
-            }
-        } else if (node->type == NodeType::AttributeNode) {
-            if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
-                return node;
-            } else {
-                for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                    return findNode(*it, attribute, attributeValue);
-                }
-            }
-        } else if (node->type == NodeType::RootNode) {
-            return nullptr;
+        if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
+            return node;
         }
+        for (auto it = node->children.begin(); it != node->children.end(); it++) {
+            return findNode(*it, attribute, attributeValue);
+        }
+        return nullptr;
     }
 
     void buildTreeFromRule(DecisionTreeNode* node, std::queue<ItemPair> ruleQueue) //attribute is taken and then discarded
@@ -286,8 +297,12 @@ public:
         std::vector<std::string> distinctAttributeList;
 
         if (searchNode == nullptr) {
+            std::cout << "search for" << attribute << ' ' <<attributeValue << "not found\n";
+
             insertionNode = node;
         } else {
+            std::cout << "search for" << attribute << ' ' <<attributeValue << "found\n";
+
             insertionNode = searchNode;
         }
 
@@ -298,7 +313,7 @@ public:
             node->children.push_back(terminalNode);
             return;
         }
-
+        DecisionTreeNode* nextNode;
         if (isContAttribute(attribute)) {
             DecisionTreeNode* positiveContNode = new DecisionTreeNode();
             positiveContNode->attributePair = std::make_pair(attribute, attributeValue);
@@ -316,10 +331,15 @@ public:
                 DecisionTreeNode* childNode = new DecisionTreeNode();
                 childNode->attributePair = std::make_pair(attribute, "'" + *it + "'");
                 childNode->type = NodeType::AttributeNode;
+                std::cout << "doing" "'" + *it + "'" << " " << attribute <<std::endl;
+                if ("'" + *it + "'" == attributeValue) {
+                    // std::cout << "match";
+                    nextNode = childNode;
+                }
                 insertionNode->children.push_back(childNode);
             }
         }
-        buildTreeFromRule(insertionNode, ruleQueue);
+        buildTreeFromRule(nextNode, ruleQueue);
     }
 
     void traverseTree(DecisionTreeNode* node, std::string rule)
