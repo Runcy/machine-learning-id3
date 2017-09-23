@@ -318,12 +318,18 @@ public:
         }
         DecisionTreeNode* nextNode;
         if (isContAttribute(attribute) && searchNode == nullptr) {
+            std::string contValue;
+            std::size_t posMore = attributeValue.find(">");
+            std::size_t posLess = attributeValue.find("<=");
+
+            contValue = (posMore != std::string::npos) ? attributeValue.substr(1) : attributeValue.substr(2); //1 for >, 2 for <=
+
             DecisionTreeNode* positiveContNode = new DecisionTreeNode();
-            positiveContNode->attributePair = std::make_pair(attribute, attributeValue);
+            positiveContNode->attributePair = std::make_pair(attribute, ">" + contValue);
             positiveContNode->type = NodeType::AttributeNode;
 
             DecisionTreeNode* negativeContNode = new DecisionTreeNode();
-            negativeContNode->attributePair = std::make_pair(attribute, attributeValue);
+            negativeContNode->attributePair = std::make_pair(attribute, "<=" + contValue);
             negativeContNode->type = NodeType::AttributeNode;
 
             insertionNode->children.push_back(positiveContNode);
