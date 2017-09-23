@@ -273,7 +273,7 @@ public:
         }
         DecisionTreeNode* tmp;
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
+            // std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
             tmp = findNode(*it, attribute, attributeValue);
             if (tmp!=nullptr) {
                 return tmp;
@@ -359,11 +359,12 @@ public:
 
     std::string evaluateInstance(DecisionTreeNode* node, std::vector<ItemPair> instanceList)
     {
-        if (node->type == TerminalNode) {
-            return node->attributePair.second;
-        }
         std::string attribute = (*(node->children.begin()))->attributePair.first;
+        if (attribute == resultString) {
+            return (*(node->children.begin()))->attributePair.second;
+        }
         std::string attributeValue = searchAttributeValue(attribute, instanceList);
+        std::cout << attribute << ' ' << attributeValue << std::endl;
 
         std::string nodeAttr;
         std::string nodeVal;

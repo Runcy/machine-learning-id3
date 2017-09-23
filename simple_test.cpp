@@ -44,6 +44,10 @@ int main()
         tempPair = make_pair(attribute, attributeValue);
         ruleQueue.push(tempPair);
     }
-    decisionTree.traverseTree(&decisionTree.myRoot, "");
+    // decisionTree.traverseTree(&decisionTree.myRoot, "");
+    vector<ItemPair> instanceList;
+    instanceList.push_back(make_pair("outlook", "'overcast'"));
+    instanceList.push_back(make_pair("wind", "'strong'"));
+    std::cout << "RESULT: " << decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
     return 0;
 }
