@@ -271,8 +271,13 @@ public:
         if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
             return node;
         }
+        DecisionTreeNode* tmp;
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            return findNode(*it, attribute, attributeValue);
+            std::cout << "SEARCHING!!" << (*it)->attributePair.first << " " << (*it)->attributePair.second << std::endl;
+            tmp = findNode(*it, attribute, attributeValue);
+            if (tmp!=nullptr) {
+                return tmp;
+            }
         }
         return nullptr;
     }
@@ -302,7 +307,6 @@ public:
             insertionNode = node;
         } else {
             std::cout << "search for" << attribute << ' ' <<attributeValue << "found\n";
-
             insertionNode = searchNode;
         }
 
@@ -314,7 +318,7 @@ public:
             return;
         }
         DecisionTreeNode* nextNode;
-        if (isContAttribute(attribute)) {
+        if (isContAttribute(attribute) && searchNode == nullptr) {
             DecisionTreeNode* positiveContNode = new DecisionTreeNode();
             positiveContNode->attributePair = std::make_pair(attribute, attributeValue);
             positiveContNode->type = NodeType::AttributeNode;
@@ -325,19 +329,21 @@ public:
 
             insertionNode->children.push_back(positiveContNode);
             insertionNode->children.push_back(negativeContNode);
-        } else {
+        } else if (!isContAttribute(attribute) && searchNode == nullptr) {
             dataEngine.getDistinctAttributeValues(distinctAttributeList, attribute);
             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
                 DecisionTreeNode* childNode = new DecisionTreeNode();
                 childNode->attributePair = std::make_pair(attribute, "'" + *it + "'");
                 childNode->type = NodeType::AttributeNode;
                 std::cout << "doing" "'" + *it + "'" << " " << attribute <<std::endl;
+                insertionNode->children.push_back(childNode);
                 if ("'" + *it + "'" == attributeValue) {
                     // std::cout << "match";
                     nextNode = childNode;
                 }
-                insertionNode->children.push_back(childNode);
             }
+        } else {
+            nextNode = searchNode;
         }
         buildTreeFromRule(nextNode, ruleQueue);
     }
