@@ -390,15 +390,39 @@ public:
             return (*(node->children.begin()))->attributePair.second;
         }
         std::string attributeValue = searchAttributeValue(attribute, instanceList);
-        std::cout << attribute << ' ' << attributeValue << std::endl;
 
         std::string nodeAttr;
         std::string nodeVal;
-        for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            nodeAttr = (*it)->attributePair.first;
-            nodeVal = (*it)->attributePair.second;
-            if ((nodeAttr == attribute) && (nodeVal == attributeValue)) {
-                return evaluateInstance(*it, instanceList);
+        if (isContAttribute(attribute)) {
+            // for (auto it = node->children.begin(); it != node->children.end(); it++) {
+
+            // }
+            std::cout << "ATTRIBVAL"<< attributeValue << std::endl;
+            DecisionTreeNode* positiveContNode = *(node->children.begin());
+            DecisionTreeNode* negativeContNode = *(node->children.begin()+1);
+            nodeAttr = (positiveContNode)->attributePair.first;
+            nodeVal = (positiveContNode)->attributePair.second;
+            std::cout << "ContAttr" + nodeAttr + " NodeVal " + nodeVal <<std::endl;
+
+            //
+            // nodeVal = positiveContNode->attributePair.second;
+            std::string number = nodeVal.substr(1);
+            float nodeContNumber = std::stof(number);
+            float instanceContNumber = std::stof(attributeValue);
+            //
+            std::cout << "NODECONT " << nodeContNumber << " instanceCont " << instanceContNumber << std::endl;
+            if (instanceContNumber > nodeContNumber) {
+                return evaluateInstance(positiveContNode, instanceList);
+            } else {
+                return evaluateInstance(negativeContNode, instanceList);
+            }
+        } else if (!isContAttribute(attribute)) {
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                nodeAttr = (*it)->attributePair.first;
+                nodeVal = (*it)->attributePair.second;
+                if ((nodeAttr == attribute) && (nodeVal == attributeValue)) {
+                    return evaluateInstance(*it, instanceList);
+                }
             }
         }
         return "Oh Dear";

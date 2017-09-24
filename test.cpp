@@ -27,6 +27,7 @@ int main()
     v.push_back("sex");
     v.push_back("capital_gain");
     v.push_back("capital_loss");
+    // v.push_back("fnlwgt");
     v.push_back("hours_per_week");
     v.push_back("native_country");
 
@@ -35,7 +36,7 @@ int main()
     contAttributes.push_back("capital_gain");
     contAttributes.push_back("capital_loss");
     contAttributes.push_back("hours_per_week");
-    // DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K");
+    // DecisionTree decisionTree0(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K");
     DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
 
     ifstream input("rule_base");
@@ -60,6 +61,25 @@ int main()
         ruleQueue.push(tempPair);
     }
 
-    decisionTree.traverseTree(&decisionTree.myRoot, "");
+    // decisionTree.traverseTree(&decisionTree.myRoot, "");
+
+
+    vector<ItemPair> instanceList;
+
+    instanceList.push_back(make_pair("age", "60"));
+    instanceList.push_back(make_pair("workclass", "Private"));
+    instanceList.push_back(make_pair("education", "'11th'"));
+    instanceList.push_back(make_pair("marital_status", "'Never-married'"));
+    instanceList.push_back(make_pair("occupation", "'Machine-op-inspct'"));
+    instanceList.push_back(make_pair("relationship", "'Own-child'"));
+    instanceList.push_back(make_pair("race", "'Black'"));
+    instanceList.push_back(make_pair("sex", "'Male'"));
+    instanceList.push_back(make_pair("capital_gain", "0"));
+    instanceList.push_back(make_pair("capital_loss", "0"));
+    instanceList.push_back(make_pair("hours_per_week", "40"));
+    instanceList.push_back(make_pair("native_country", "'United-States'"));
+
+
+    cout << decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
     return 0;
 }
