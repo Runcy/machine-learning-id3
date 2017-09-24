@@ -389,7 +389,9 @@ public:
         if (attribute == resultString) {
             return (*(node->children.begin()))->attributePair.second;
         }
+
         std::string attributeValue = searchAttributeValue(attribute, instanceList);
+        // std::cout << "TestAtrrib" << attribute << ' ' << "Value " << attributeValue<<  std::endl;
 
         std::string nodeAttr;
         std::string nodeVal;
@@ -397,25 +399,34 @@ public:
             // for (auto it = node->children.begin(); it != node->children.end(); it++) {
 
             // }
-            std::cout << "ATTRIBVAL"<< attributeValue << std::endl;
+            // std::cout << "ATTRIBVAL"<< attributeValue << std::endl;
             DecisionTreeNode* positiveContNode = *(node->children.begin());
             DecisionTreeNode* negativeContNode = *(node->children.begin()+1);
             nodeAttr = (positiveContNode)->attributePair.first;
             nodeVal = (positiveContNode)->attributePair.second;
-            std::cout << "ContAttr" + nodeAttr + " NodeVal " + nodeVal <<std::endl;
+            // std::cout << "ContAttr" + nodeAttr + " NodeVal " + nodeVal <<std::endl;
 
             //
             // nodeVal = positiveContNode->attributePair.second;
             std::string number = nodeVal.substr(1);
             float nodeContNumber = std::stof(number);
             float instanceContNumber = std::stof(attributeValue);
-            //
-            std::cout << "NODECONT " << nodeContNumber << " instanceCont " << instanceContNumber << std::endl;
-            if (instanceContNumber > nodeContNumber) {
-                return evaluateInstance(positiveContNode, instanceList);
+            DecisionTreeNode* nextNode = (instanceContNumber > nodeContNumber) ? positiveContNode : negativeContNode;
+
+            std::string nextString = (*(nextNode->children.begin()))->attributePair.first;
+            std::cout << "ATTR" << nodeAttr << " NEXT " << nextString << std::endl;
+            if (nextString == resultString) {
+                return (*(nextNode->children.begin()))->attributePair.second;
             } else {
-                return evaluateInstance(negativeContNode, instanceList);
+                return evaluateInstance(nextNode, instanceList);
             }
+            //
+            // std::cout << "NODECONT " << nodeContNumber << " instanceCont " << instanceContNumber << std::endl;
+            // if (instanceContNumber > nodeContNumber) {
+            //     return evaluateInstance(positiveContNode, instanceList);
+            // } else {
+            //     return evaluateInstance(negativeContNode, instanceList);
+            // }
         } else if (!isContAttribute(attribute)) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
                 nodeAttr = (*it)->attributePair.first;
