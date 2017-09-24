@@ -319,6 +319,13 @@ public:
         std::string attributeValue = ruleAttributePair.second;
 
         std::vector<std::string> distinctAttributeList;
+        if (attribute == resultString) {
+            DecisionTreeNode* terminalNode = new DecisionTreeNode();
+            terminalNode->attributePair = std::make_pair(attribute, attributeValue);
+            terminalNode->type = NodeType::TerminalNode;
+            node->children.push_back(terminalNode);
+            return;
+        }
         searchNode = findNode(node, attribute, attributeValue); //only works in discrete case
 
         if (searchNode == nullptr) {
@@ -327,13 +334,6 @@ public:
         } else {
             // std::cout << "search for" << attribute << ' ' <<attributeValue << "found\n";
             insertionNode = searchNode;
-        }
-        if (attribute == resultString) {
-            DecisionTreeNode* terminalNode = new DecisionTreeNode();
-            terminalNode->attributePair = std::make_pair(attribute, attributeValue);
-            terminalNode->type = NodeType::TerminalNode;
-            node->children.push_back(terminalNode);
-            return;
         }
         DecisionTreeNode* nextNode;
         if (isContAttribute(attribute) && searchNode == nullptr) {
@@ -360,7 +360,6 @@ public:
                 DecisionTreeNode* childNode = new DecisionTreeNode();
                 childNode->attributePair = std::make_pair(attribute, "'" + *it + "'");
                 childNode->type = NodeType::AttributeNode;
-                // std::cout << "doing " "'" + *it + "'" << " " << attribute <<std::endl;
                 insertionNode->children.push_back(childNode);
                 if ("'" + *it + "'" == attributeValue) {
                     // std::cout << "match";
@@ -386,12 +385,13 @@ public:
     std::string evaluateInstance(DecisionTreeNode* node, std::vector<ItemPair> instanceList)
     {
         std::string attribute = (*(node->children.begin()))->attributePair.first;
+
         if (attribute == resultString) {
             return (*(node->children.begin()))->attributePair.second;
         }
 
         std::string attributeValue = searchAttributeValue(attribute, instanceList);
-        // std::cout << "TestAtrrib" << attribute << ' ' << "Value " << attributeValue<<  std::endl;
+        std::cout << "TestAtrrib" << attribute << ' ' << "Value " << attributeValue<<  std::endl;
 
         std::string nodeAttr;
         std::string nodeVal;
@@ -402,6 +402,7 @@ public:
             // std::cout << "ATTRIBVAL"<< attributeValue << std::endl;
             DecisionTreeNode* positiveContNode = *(node->children.begin());
             DecisionTreeNode* negativeContNode = *(node->children.begin()+1);
+
             nodeAttr = (positiveContNode)->attributePair.first;
             nodeVal = (positiveContNode)->attributePair.second;
             // std::cout << "ContAttr" + nodeAttr + " NodeVal " + nodeVal <<std::endl;
@@ -413,13 +414,16 @@ public:
             float instanceContNumber = std::stof(attributeValue);
             DecisionTreeNode* nextNode = (instanceContNumber > nodeContNumber) ? positiveContNode : negativeContNode;
 
-            std::string nextString = (*(nextNode->children.begin()))->attributePair.first;
-            std::cout << "ATTR" << nodeAttr << " NEXT " << nextString << std::endl;
-            if (nextString == resultString) {
-                return (*(nextNode->children.begin()))->attributePair.second;
-            } else {
-                return evaluateInstance(nextNode, instanceList);
+            if (nextNode->children.empty()) {
+                nextNode = (nextNode == positiveContNode) ? negativeContNode : positiveContNode;
             }
+            return evaluateInstance(nextNode, instanceList);
+
+            // std::string nextString = (*(nextNode->children.begin()))->attributePair.first;
+            // std::cout << "ATTR" << nodeAttr << " NEXT " << nextString << std::endl;
+            // if (nextString == resultString) {
+            //     return (*(nextNode->children.begin()))->attributePair.second;
+            // } else {
             //
             // std::cout << "NODECONT " << nodeContNumber << " instanceCont " << instanceContNumber << std::endl;
             // if (instanceContNumber > nodeContNumber) {
