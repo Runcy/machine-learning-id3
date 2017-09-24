@@ -436,6 +436,14 @@ public:
                 nodeAttr = (*it)->attributePair.first;
                 nodeVal = (*it)->attributePair.second;
                 if ((nodeAttr == attribute) && (nodeVal == attributeValue)) {
+                    if ((*it)->children.empty()) {
+                        std::cout << attribute << " " << attributeValue << "EMPTY!" <<std::endl;
+                        for (auto itr = node->children.begin(); itr != node->children.end(); itr++) {
+                            if (!(*itr)->children.empty()) {
+                                return evaluateInstance(*itr, instanceList);
+                            }
+                        }
+                    }
                     return evaluateInstance(*it, instanceList);
                 }
             }
