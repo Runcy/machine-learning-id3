@@ -391,7 +391,7 @@ public:
         }
 
         std::string attributeValue = searchAttributeValue(attribute, instanceList);
-        std::cout << "TestAtrrib" << attribute << ' ' << "Value " << attributeValue<<  std::endl;
+        // std::cout << "TestAtrrib" << attribute << ' ' << "Value " << attributeValue<<  std::endl;
 
         std::string nodeAttr;
         std::string nodeVal;
@@ -437,7 +437,6 @@ public:
                 nodeVal = (*it)->attributePair.second;
                 if ((nodeAttr == attribute) && (nodeVal == attributeValue)) {
                     if ((*it)->children.empty()) {
-                        std::cout << attribute << " " << attributeValue << "EMPTY!" <<std::endl;
                         for (auto itr = node->children.begin(); itr != node->children.end(); itr++) {
                             if (!(*itr)->children.empty()) {
                                 return evaluateInstance(*itr, instanceList);

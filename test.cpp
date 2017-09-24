@@ -33,9 +33,10 @@ void parseData(DecisionTree &decisionTree)
     std::vector<std::string> result;
     std::string resultString;
     std::string line;
+
     float total = 0;
     float correct = 0;
-
+    float incorrect = 0;
     if (input.is_open()) {
         while (getline(input, line)) {
             if (line.find('?') != std::string::npos) { //ignore missing for now
@@ -61,10 +62,9 @@ void parseData(DecisionTree &decisionTree)
             std::string resultVal = result[14];
             resultVal.pop_back();
             if (resultVal == decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList)) {
-                cout << "PASS!" << std::endl;
                 correct++;
             } else {
-                cout << "Fail" << std::endl;
+                incorrect++;
             }
         }
     }
@@ -123,25 +123,5 @@ int main()
     }
     cout << "Tree built!" <<endl;
     parseData(decisionTree);
-    // decisionTree.traverseTree(&decisionTree.myRoot, "");
-
-
-    // vector<ItemPair> instanceList;
-    //
-    // instanceList.push_back(make_pair("age", "38"));
-    // instanceList.push_back(make_pair("workclass", "'Private'"));
-    // instanceList.push_back(make_pair("education", "'HS-grad'"));
-    // instanceList.push_back(make_pair("marital_status", "'Married-civ-spouse'"));
-    // instanceList.push_back(make_pair("occupation", "'Farming-fishing'"));
-    // instanceList.push_back(make_pair("relationship", "'Husband'"));
-    // instanceList.push_back(make_pair("race", "'White'"));
-    // instanceList.push_back(make_pair("sex", "'Male'"));
-    // instanceList.push_back(make_pair("capital_gain", "0"));
-    // instanceList.push_back(make_pair("capital_loss", "0"));
-    // instanceList.push_back(make_pair("hours_per_week", "50"));
-    // instanceList.push_back(make_pair("native_country", "'United-States'"));
-    //
-    //
-    // cout << decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
     return 0;
 }
