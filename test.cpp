@@ -33,6 +33,8 @@ void parseData(DecisionTree &decisionTree)
     std::vector<std::string> result;
     std::string resultString;
     std::string line;
+    float total = 0;
+    float correct = 0;
 
     if (input.is_open()) {
         while (getline(input, line)) {
@@ -40,7 +42,7 @@ void parseData(DecisionTree &decisionTree)
                 continue;
             }
             result = split(line, ", ");
-
+            total++;
             // cout << line <<endl;
             vector<ItemPair> instanceList;
 
@@ -56,10 +58,18 @@ void parseData(DecisionTree &decisionTree)
             instanceList.push_back(make_pair("capital_loss", result[11]));
             instanceList.push_back(make_pair("hours_per_week", result[12]));
             instanceList.push_back(make_pair("native_country", "'"+result[13]+"'"));
-
-            cout << decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList)<<endl;
+            std::string resultVal = result[14];
+            resultVal.pop_back();
+            if (resultVal == decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList)) {
+                cout << "PASS!" << std::endl;
+                correct++;
+            } else {
+                cout << "Fail" << std::endl;
+            }
         }
     }
+    float finalVal = correct/total;
+    cout << finalVal << std::endl;
 }
 
 typedef std::pair<std::string, std::string> ItemPair;
@@ -112,7 +122,7 @@ int main()
         ruleQueue.push(tempPair);
     }
     cout << "Tree built!" <<endl;
-   parseData(decisionTree);
+    parseData(decisionTree);
     // decisionTree.traverseTree(&decisionTree.myRoot, "");
 
 
