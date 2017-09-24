@@ -26,7 +26,8 @@ std::vector<std::string> split(const std::string &text, std::string sep)
     return tokens;
 }
 std::string testDataPath = "../adult.test";
-
+string positiveString = ">50K";
+string negativeString = "<=50K";
 void parseData(DecisionTree &decisionTree)
 {
     std::ifstream input(testDataPath);
@@ -34,16 +35,19 @@ void parseData(DecisionTree &decisionTree)
     std::string resultString;
     std::string line;
 
-    float total = 0;
-    float correct = 0;
-    float incorrect = 0;
+    float positive = 0;
+    float negative = 0;
+    float true_positive = 0;
+    float true_negative = 0;
+    float false_positive = 0;
+    float false_negative = 0;
+
     if (input.is_open()) {
         while (getline(input, line)) {
             if (line.find('?') != std::string::npos) { //ignore missing for now
                 continue;
             }
             result = split(line, ", ");
-            total++;
             // cout << line <<endl;
             vector<ItemPair> instanceList;
 
@@ -60,17 +64,34 @@ void parseData(DecisionTree &decisionTree)
             instanceList.push_back(make_pair("hours_per_week", result[12]));
             instanceList.push_back(make_pair("native_country", "'"+result[13]+"'"));
             std::string resultVal = result[14];
-            resultVal.pop_back();
-            if (resultVal == decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList)) {
-                correct++;
-            } else {
-                incorrect++;
+            // resultVal.pop_back();
+            string instanceResult = decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
+            if (resultVal == positiveString && instanceResult == positiveString) {
+                positive++;
+                true_positive++;
+            } else if (resultVal == positiveString && instanceResult == negativeString) {
+                positive++;
+                false_negative++;
+            } else if (resultVal == negativeString && instanceResult == negativeString) {
+                negative++;
+                true_negative++;
+            } else if (resultVal == negativeString && instanceResult == positiveString) {
+                negative++;
+                false_positive++;
             }
         }
     }
-    float finalVal = correct/total;
-    cout << finalVal << std::endl;
+    float accuracy = (true_positive+true_negative) / (true_positive + false_negative + false_positive + true_negative);
+    float precision = true_positive / (true_positive + false_positive);
+    float recall = true_positive / positive;
+    float f1_score = 2 * (precision*recall) / (precision+recall);
+
+    cout << "Accuracy: " << accuracy << endl;
+    cout << "Precision: " << precision << endl;
+    cout << "Recall: " << recall << endl;
+    cout << "F1 Score: " << f1_score << endl;
 }
+
 
 typedef std::pair<std::string, std::string> ItemPair;
 int main()
