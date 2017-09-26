@@ -8,6 +8,86 @@ std::string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, 
 
 
 typedef std::pair<std::string, std::string> ItemPair;
+
+std::vector<std::string> split(const std::string &text, std::string sep)
+{
+    std::vector<std::string> tokens;
+    std::size_t start = 0, end = 0;
+    while ((end = text.find(sep, start)) != std::string::npos) {
+        tokens.push_back(text.substr(start, end - start));
+        start = end + sep.length();
+    }
+    tokens.push_back(text.substr(start));
+    return tokens;
+}
+std::string testDataPath = "../adult.test";
+string positiveString = ">50K";
+string negativeString = "<=50K";
+
+void parseData(DecisionTree &decisionTree)
+{
+    std::ifstream input(testDataPath);
+    std::vector<std::string> result;
+    std::string resultString;
+    std::string line;
+
+    float positive = 0;
+    float negative = 0;
+    float true_positive = 0;
+    float true_negative = 0;
+    float false_positive = 0;
+    float false_negative = 0;
+
+    if (input.is_open()) {
+        while (getline(input, line)) {
+            if (line.find('?') != std::string::npos) { //ignore missing for now
+                continue;
+            }
+            result = split(line, ", ");
+            // cout << line <<endl;
+            vector<ItemPair> instanceList;
+
+            instanceList.push_back(make_pair("age", result[0]));
+            instanceList.push_back(make_pair("workclass", "'" +result[1]+"'"));
+            instanceList.push_back(make_pair("education", "'"+ result[3] + "'"));
+            instanceList.push_back(make_pair("marital_status", "'"+result[5]+"'"));
+            instanceList.push_back(make_pair("occupation", "'"+result[6]+"'"));
+            instanceList.push_back(make_pair("relationship", "'"+result[7]+"'"));
+            instanceList.push_back(make_pair("race", "'"+result[8]+"'"));
+            instanceList.push_back(make_pair("sex", "'"+result[9]+"'"));
+            instanceList.push_back(make_pair("capital_gain", result[10]));
+            instanceList.push_back(make_pair("capital_loss", result[11]));
+            instanceList.push_back(make_pair("hours_per_week", result[12]));
+            instanceList.push_back(make_pair("native_country", "'"+result[13]+"'"));
+            std::string resultVal = result[14];
+            // resultVal.pop_back();
+            string instanceResult = decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
+            if (resultVal == positiveString && instanceResult == positiveString) {
+                positive++;
+                true_positive++;
+            } else if (resultVal == positiveString && instanceResult == negativeString) {
+                positive++;
+                false_negative++;
+            } else if (resultVal == negativeString && instanceResult == negativeString) {
+                negative++;
+                true_negative++;
+            } else if (resultVal == negativeString && instanceResult == positiveString) {
+                negative++;
+                false_positive++;
+            }
+        }
+    }
+    float accuracy = (true_positive+true_negative) / (true_positive + false_negative + false_positive + true_negative);
+    float precision = true_positive / (true_positive + false_positive);
+    float recall = true_positive / positive;
+    float f1_score = 2 * (precision*recall) / (precision+recall);
+
+    cout << "Accuracy: " << accuracy << endl;
+    cout << "Precision: " << precision << endl;
+    cout << "Recall: " << recall << endl;
+    cout << "F1 Score: " << f1_score << endl;
+}
+
 int main()
 {
     const string randomForestRuleBase = "../random_rule_bases/random_rule_base";
@@ -70,8 +150,11 @@ int main()
         cout << "Tree built " << i << endl;
     }
 
-    for (auto it = forest.begin(); it != forest.end(); it++) {
-        DecisionTree::traverseTree(&((*it)->myRoot), "");
-    }
+    // for (auto it = forest.begin(); it != forest.end(); it++) {
+    //     DecisionTree::traverseTree(&((*it)->myRoot), "");
+    // }
+    DecisionTree* f = forest[0];
+    DecisionTree tmp = &f;
+    parseData(tmp);
     return 0;
 }
