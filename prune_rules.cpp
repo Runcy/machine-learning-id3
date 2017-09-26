@@ -90,11 +90,11 @@ float getAccuracy(DecisionTree::DecisionTreeNode* rootNode)
     return accuracy;
 }
 
-void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> nodeContext)
+void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> nodeContext, DecisionTree &dummyTree)
 {
     if (node->type == DecisionTree::NodeType::RootNode) {
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            pruneRules(*it, nodeContext);
+            pruneRules(*it, nodeContext, dummyTree);
         }
     }
     auto childrenItr = node->children.begin();
@@ -104,23 +104,23 @@ void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> node
     nodeContext.push_back(node->attributePair);
     if (node->type == DecisionTree::NodeType::AttributeNode) {
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            float origAccuracy = getAccuracy(node);
-            std::string mostCommonResult;// = dataEngine.getMostCommonResult(nodeContext); //fill this in
+            float origAccuracy = getAccuracy(&dummyTree.myRoot);
+            std::string mostCommonResult = dummyTree.getMostCommonResult(nodeContext); //fill this in
             std::vector<DecisionTree::DecisionTreeNode*> temp = node->children;
 
             DecisionTree::DecisionTreeNode* terminalNode = new DecisionTree::DecisionTreeNode();
-            terminalNode->attributePair = std::make_pair("result", mostCommonResult);
+            terminalNode->attributePair = std::make_pair("result", "'" + mostCommonResult + "'");
             terminalNode->type = DecisionTree::NodeType::TerminalNode;
             std::vector<DecisionTree::DecisionTreeNode*> terminalVector;
             terminalVector.push_back(terminalNode);
 
             node->children = terminalVector;
-            float newAccuracy = getAccuracy(node);
+            float newAccuracy = getAccuracy(&dummyTree.myRoot);
             if (newAccuracy > origAccuracy) {
                 continue;
             }
             node->children = temp;
-            pruneRules(*it, nodeContext);
+            pruneRules(*it, nodeContext, dummyTree);
         }
     }
     if (node->type == DecisionTree::NodeType::TerminalNode) {
@@ -175,5 +175,7 @@ int main()
         ruleQueue.push(tempPair);
     }
     cout << getAccuracy(&decisionTree.myRoot) <<endl;
+    std::vector<ItemPair> nodeContext;
+    pruneRules(&decisionTree.myRoot, nodeContext, decisionTree);
     return 0;
 }

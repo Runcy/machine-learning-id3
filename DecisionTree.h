@@ -10,6 +10,8 @@ private:
     std::vector<std::string> totalAttributes;
     std::vector<std::string> contAttributes;
     std::string resultString;
+    std::string positiveString;
+    std::string negativeString;
     DataEngine dataEngine;
 
     std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
@@ -244,6 +246,8 @@ public:
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
         myRoot.type = NodeType::RootNode;
+        positiveString = _positiveInstanceString;
+        negativeString = _negativeInstanceString;
         buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
@@ -263,6 +267,8 @@ public:
         std::vector<std::pair<std::string, std::string>> nodeContext;
         rootNode.type = NodeType::RootNode;
         myRoot.type = NodeType::RootNode;
+        positiveString = _positiveInstanceString;
+        negativeString = _negativeInstanceString;
         // buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
@@ -370,6 +376,17 @@ public:
             nextNode = searchNode;
         }
         buildTreeFromRule(nextNode, ruleQueue);
+    }
+
+    std::string getMostCommonResult(std::vector<ItemPair> nodeContext)
+    {
+        std::string contextQueryString = "";
+        contextQueryString = prepareQueryString(nodeContext);
+        float positiveProbability = dataEngine.getProbability(contextQueryString, '+');
+        float negativeProbability = dataEngine.getProbability(contextQueryString, '-');
+
+        std::string resultString = (positiveProbability > negativeProbability) ? positiveString : negativeString;
+        return resultString;
     }
 
     std::string searchAttributeValue(std::string attribute, std::vector<ItemPair> instanceList)
