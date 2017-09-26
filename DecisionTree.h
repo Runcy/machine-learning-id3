@@ -469,6 +469,26 @@ public:
         }
     }
 
+    void traverseTree(DecisionTreeNode* node, std::string rule, std::ofstream &output)
+    {
+        std::cout << "INGOOD";
+        if (node->type == NodeType::RootNode) {
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                traverseTree(*it, rule);
+            }
+            return;
+        }
+        rule += node->attributePair.first + ' ' + node->attributePair.second + '\n';
+        if (node->type == NodeType::AttributeNode) {
+            for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                traverseTree(*it, rule);
+            }
+        }
+        if (node->type == NodeType::TerminalNode) {
+            output << "RULE: " << std::endl << rule;
+        }
+    }
+
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
     {
         if (availableAttributes.empty()) {

@@ -6,10 +6,14 @@ set(CMAKE_CXX_FLAGS "-Og -Wall -Wextra")
 project(test_project)
 add_executable(random_dataset random_dataset.cpp)
 add_executable(test_p test.cpp)
+add_executable(random_trees build_random_trees.cpp)
 # add_executable(main main.cpp)
+
 # add_executable(simple_test simple_test.cpp)
 
 find_package(SQLiteCpp REQUIRED)
 target_link_libraries(test_p SQLiteCpp sqlite3)
+target_link_libraries(random_trees SQLiteCpp sqlite3)
+
 # target_link_libraries(main SQLiteCpp sqlite3)
 # target_link_libraries(simple_test SQLiteCpp sqlite3)

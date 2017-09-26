@@ -64,7 +64,7 @@ private:
 
         if (input.is_open()) {
             while (getline(input, line)) {
-                if (line.find('?') != std::string::npos) { //ignore missing for now
+                if (line.find('?') != std::string::npos || line.size() <= 1) { //ignore missing for now
                     continue;
                 }
                 result = split(line, ", ");
