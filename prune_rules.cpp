@@ -97,27 +97,34 @@ void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> node
             pruneRules(*it, nodeContext);
         }
     }
+    auto childrenItr = node->children.begin();
+    if ((*childrenItr)->attributePair.first == "result") {
+        return;
+    }
     nodeContext.push_back(node->attributePair);
     if (node->type == DecisionTree::NodeType::AttributeNode) {
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
-            // float origAccuracy = calculateAccuracy();
-            // std::string mostCommonResult = dataEngine.getMostCommonResult(nodeContext); //fill this in
-            // std::vector<DecisionTreeNode*> temp = node->children;
-            //
-            // DecisionTreeNode* terminalNode = new DecisionTreeNode();
-            // terminalNode->attributePair = std::make_pair(resultString, mostCommonResult);
-            // terminalNode->type = NodeType::TerminalNode;
-            // std::vector<DecisionTreeNode*> terminalVector;
-            // terminalVector.push_back(terminalNode);
-            //
-            // float newAccuracy = calculateAccuracy();
-            // if (newAccuracy > origAccuracy) {
-            //     node->children = terminalVector;
-            //     continue;
-            // }
-            // node->children = temp;
-            // pruneRules(*it, nodeContext);
+            float origAccuracy = getAccuracy(node);
+            std::string mostCommonResult;// = dataEngine.getMostCommonResult(nodeContext); //fill this in
+            std::vector<DecisionTree::DecisionTreeNode*> temp = node->children;
+
+            DecisionTree::DecisionTreeNode* terminalNode = new DecisionTree::DecisionTreeNode();
+            terminalNode->attributePair = std::make_pair("result", mostCommonResult);
+            terminalNode->type = DecisionTree::NodeType::TerminalNode;
+            std::vector<DecisionTree::DecisionTreeNode*> terminalVector;
+            terminalVector.push_back(terminalNode);
+
+            node->children = terminalVector;
+            float newAccuracy = getAccuracy(node);
+            if (newAccuracy > origAccuracy) {
+                continue;
+            }
+            node->children = temp;
+            pruneRules(*it, nodeContext);
         }
+    }
+    if (node->type == DecisionTree::NodeType::TerminalNode) {
+        return;
     }
 }
 
@@ -167,6 +174,6 @@ int main()
         tempPair = make_pair(attribute, attributeValue);
         ruleQueue.push(tempPair);
     }
-    cout << "Tree built!" <<endl;
+    cout << getAccuracy(&decisionTree.myRoot) <<endl;
     return 0;
 }
