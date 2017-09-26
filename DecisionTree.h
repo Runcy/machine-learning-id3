@@ -465,23 +465,23 @@ public:
             }
         }
         if (node->type == NodeType::TerminalNode) {
+            // std::cout << "WRNGFXNWRNGOUTPUT";
             std::cout << "RULE: " << std::endl << rule;
         }
     }
 
     void traverseTree(DecisionTreeNode* node, std::string rule, std::ofstream &output)
     {
-        std::cout << "INGOOD";
         if (node->type == NodeType::RootNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                traverseTree(*it, rule);
+                traverseTree(*it, rule, output);
             }
             return;
         }
         rule += node->attributePair.first + ' ' + node->attributePair.second + '\n';
         if (node->type == NodeType::AttributeNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                traverseTree(*it, rule);
+                traverseTree(*it, rule, output);
             }
         }
         if (node->type == NodeType::TerminalNode) {
