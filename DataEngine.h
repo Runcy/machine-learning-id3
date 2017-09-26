@@ -100,6 +100,11 @@ public:
         // SQLite::Statement query(*db, "SELECT count(*) FROM census where education=\"Bachelors\""
     }
 
+    ~DataEngine()
+    {
+        delete db;
+    }
+
     void executeQuery(std::string sqlString, std::vector<std::vector<std::string>> &v)
     {
         SQLite::Statement query(*db, sqlString);
