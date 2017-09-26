@@ -489,37 +489,6 @@ public:
         }
     }
 
-    void pruneRules(DecisionTreeNode* node, std::vector<ItemPair> nodeContext)
-    {
-        if (node->type == NodeType::RootNode) {
-            for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                pruneRules(*it, nodeContext);
-            }
-        }
-        nodeContext.push_back(node->attributePair);
-        if (node->type == NodeType::AttributeNode) {
-            for (auto it = node->children.begin(); it != node->children.end(); it++) {
-                // float origAccuracy = calculateAccuracy();
-                // std::string mostCommonResult = dataEngine.getMostCommonResult(nodeContext); //fill this in
-                // std::vector<DecisionTreeNode*> temp = node->children;
-                //
-                // DecisionTreeNode* terminalNode = new DecisionTreeNode();
-                // terminalNode->attributePair = std::make_pair(resultString, mostCommonResult);
-                // terminalNode->type = NodeType::TerminalNode;
-                // std::vector<DecisionTreeNode*> terminalVector;
-                // terminalVector.push_back(terminalNode);
-                //
-                // float newAccuracy = calculateAccuracy();
-                // if (newAccuracy > origAccuracy) {
-                //     node->children = terminalVector;
-                //     continue;
-                // }
-                // node->children = temp;
-                // pruneRules(*it, nodeContext);
-            }
-        }
-    }
-
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
     {
         if (availableAttributes.empty()) {

@@ -12,7 +12,9 @@ std::vector<std::string> v;
 typedef std::pair<std::string, std::string> ItemPair;
 
 std::string dataPath = "../adult.data";
-
+std::string testDataPath = "../adult.test";
+string positiveString = ">50K";
+string negativeString = "<=50K";
 
 std::vector<std::string> split(const std::string &text, std::string sep)
 {
@@ -25,14 +27,11 @@ std::vector<std::string> split(const std::string &text, std::string sep)
     tokens.push_back(text.substr(start));
     return tokens;
 }
-std::string testDataPath = "../adult.test";
-string positiveString = ">50K";
-string negativeString = "<=50K";
 
-float parseData(DecisionTreeNode* rootNode)
+float getAccuracy(DecisionTree::DecisionTreeNode* rootNode)
 {
     DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
-    decisionTree.myRoot = rootNode;
+    decisionTree.myRoot = *rootNode;
     std::ifstream input(testDataPath);
     std::vector<std::string> result;
     std::string resultString;
@@ -91,6 +90,36 @@ float parseData(DecisionTreeNode* rootNode)
     return accuracy;
 }
 
+void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> nodeContext)
+{
+    if (node->type == DecisionTree::NodeType::RootNode) {
+        for (auto it = node->children.begin(); it != node->children.end(); it++) {
+            pruneRules(*it, nodeContext);
+        }
+    }
+    nodeContext.push_back(node->attributePair);
+    if (node->type == DecisionTree::NodeType::AttributeNode) {
+        for (auto it = node->children.begin(); it != node->children.end(); it++) {
+            // float origAccuracy = calculateAccuracy();
+            // std::string mostCommonResult = dataEngine.getMostCommonResult(nodeContext); //fill this in
+            // std::vector<DecisionTreeNode*> temp = node->children;
+            //
+            // DecisionTreeNode* terminalNode = new DecisionTreeNode();
+            // terminalNode->attributePair = std::make_pair(resultString, mostCommonResult);
+            // terminalNode->type = NodeType::TerminalNode;
+            // std::vector<DecisionTreeNode*> terminalVector;
+            // terminalVector.push_back(terminalNode);
+            //
+            // float newAccuracy = calculateAccuracy();
+            // if (newAccuracy > origAccuracy) {
+            //     node->children = terminalVector;
+            //     continue;
+            // }
+            // node->children = temp;
+            // pruneRules(*it, nodeContext);
+        }
+    }
+}
 
 int main()
 {
