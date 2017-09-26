@@ -24,7 +24,7 @@ std::string testDataPath = "../adult.test";
 string positiveString = ">50K";
 string negativeString = "<=50K";
 
-void parseData(DecisionTree &decisionTree)
+void parseData(DecisionTree* decisionTree)
 {
     std::ifstream input(testDataPath);
     std::vector<std::string> result;
@@ -61,7 +61,7 @@ void parseData(DecisionTree &decisionTree)
             instanceList.push_back(make_pair("native_country", "'"+result[13]+"'"));
             std::string resultVal = result[14];
             // resultVal.pop_back();
-            string instanceResult = decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
+            string instanceResult = decisionTree->evaluateInstance(&(decisionTree->myRoot), instanceList);
             if (resultVal == positiveString && instanceResult == positiveString) {
                 positive++;
                 true_positive++;
@@ -153,8 +153,8 @@ int main()
     // for (auto it = forest.begin(); it != forest.end(); it++) {
     //     DecisionTree::traverseTree(&((*it)->myRoot), "");
     // }
-    DecisionTree* f = forest[0];
-    DecisionTree tmp = &f;
-    parseData(tmp);
+    // DecisionTree* f = forest[0];
+    // DecisionTree tmp = &f;
+    // parseData(tmp);
     return 0;
 }
