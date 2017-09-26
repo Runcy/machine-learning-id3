@@ -11,6 +11,7 @@ typedef std::pair<std::string, std::string> ItemPair;
 int main()
 {
     const string randomForestRuleBase = "../random_rule_bases/random_rule_base";
+    const string randomForestFilePath = "../random_forest/adultTraining";
 
     std::vector<std::string> contAttributes;
     std::vector<std::string> v;
@@ -38,8 +39,9 @@ int main()
         queue<ItemPair> ruleQueue;
         string line;
         string filePath = randomForestRuleBase+to_string(i);
+        string dataPath = randomForestFilePath+to_string(i);
         ifstream input(filePath);
-        DecisionTree decisionTree(v, contAttributes, filePath, tableAttrib, "result", "<=50K", ">50K", false);
+        DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
         for (; getline(input, line);) {
             // std::cout <<line <<std::endl;
             if (line == "RULE: ") {
@@ -51,6 +53,9 @@ int main()
                 while(!ruleQueue.empty()) {
                     ruleQueue.pop();
                 }
+                continue;
+            }
+            if (line.length() <= 1) {
                 continue;
             }
             istringstream iss(line);
