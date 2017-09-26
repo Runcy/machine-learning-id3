@@ -80,6 +80,7 @@ private:
                 }
             }
         }
+        input.close();
     }
 
 public:

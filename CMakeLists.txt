@@ -4,7 +4,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set (CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Og -Wall -Wextra")
 project(test_project)
-
+add_executable(random_dataset random_dataset.cpp)
 add_executable(test_p test.cpp)
 # add_executable(main main.cpp)
 # add_executable(simple_test simple_test.cpp)
