@@ -41,14 +41,15 @@ int main()
         string filePath = randomForestRuleBase+to_string(i);
         string dataPath = randomForestFilePath+to_string(i);
         ifstream input(filePath);
-        DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
+        // DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
+        DecisionTree* decisionTree = new DecisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
+
         for (; getline(input, line);) {
             // std::cout <<line <<std::endl;
             if (line == "RULE: ") {
-                std::cout << "RULELINE\n";
                 // std::cout << i++ << std::endl;
-                // decisionTree->buildTreeFromRule(&(decisionTree->myRoot), ruleQueue);
-                decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
+                decisionTree->buildTreeFromRule(&(decisionTree->myRoot), ruleQueue);
+                // decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
 
                 while(!ruleQueue.empty()) {
                     ruleQueue.pop();
@@ -65,8 +66,12 @@ int main()
             tempPair = make_pair(attribute, attributeValue);
             ruleQueue.push(tempPair);
         }
-        // forest.push_back(decisionTree);
+        forest.push_back(decisionTree);
         cout << "Tree built " << i << endl;
+    }
+
+    for (auto it = forest.begin(); it != forest.end(); it++) {
+        DecisionTree::traverseTree(&((*it)->myRoot), "");
     }
     return 0;
 }

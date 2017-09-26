@@ -450,7 +450,7 @@ public:
         return "Oh Dear";
     }
 
-    void traverseTree(DecisionTreeNode* node, std::string rule)
+    static void traverseTree(DecisionTreeNode* node, std::string rule)
     {
         if (node->type == NodeType::RootNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
@@ -470,7 +470,7 @@ public:
         }
     }
 
-    void traverseTree(DecisionTreeNode* node, std::string rule, std::ofstream &output)
+    static void traverseTree(DecisionTreeNode* node, std::string rule, std::ofstream &output)
     {
         if (node->type == NodeType::RootNode) {
             for (auto it = node->children.begin(); it != node->children.end(); it++) {
