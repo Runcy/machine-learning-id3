@@ -35,14 +35,33 @@ int main()
     vector<DecisionTree*> forest;
 
     for (int i = 0; i < 128; i++) {
-        ofstream output(randomForestRuleBase+to_string(i));
+        queue<ItemPair> ruleQueue;
+        string line;
+        string filePath = randomForestRuleBase+to_string(i);
+        ifstream input(filePath);
+        DecisionTree decisionTree(v, contAttributes, filePath, tableAttrib, "result", "<=50K", ">50K", false);
+        for (; getline(input, line);) {
+            // std::cout <<line <<std::endl;
+            if (line == "RULE: ") {
+                std::cout << "RULELINE\n";
+                // std::cout << i++ << std::endl;
+                // decisionTree->buildTreeFromRule(&(decisionTree->myRoot), ruleQueue);
+                decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
 
-
-        DecisionTree decisionTree(v, contAttributes, randomForestFilePath+to_string(i), tableAttrib, "result", "<=50K", ">50K");
+                while(!ruleQueue.empty()) {
+                    ruleQueue.pop();
+                }
+                continue;
+            }
+            istringstream iss(line);
+            string attribute, attributeValue;
+            iss >> attribute >> attributeValue;
+            ItemPair tempPair;
+            tempPair = make_pair(attribute, attributeValue);
+            ruleQueue.push(tempPair);
+        }
+        // forest.push_back(decisionTree);
         cout << "Tree built " << i << endl;
-        decisionTree.traverseTree(&decisionTree.rootNode, "", output);
-        cout << "Tree written" << endl;
-        output.close();
     }
     return 0;
 }

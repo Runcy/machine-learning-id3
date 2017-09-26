@@ -466,7 +466,7 @@ public:
         }
         if (node->type == NodeType::TerminalNode) {
             // std::cout << "WRNGFXNWRNGOUTPUT";
-            std::cout << "RULE: " << std::endl << rule;
+            std::cout << rule << "RULE: " << std::endl;
         }
     }
 
@@ -485,7 +485,7 @@ public:
             }
         }
         if (node->type == NodeType::TerminalNode) {
-            output << "RULE: " << std::endl << rule;
+            output << rule << "RULE: " << std::endl;
         }
     }
 
