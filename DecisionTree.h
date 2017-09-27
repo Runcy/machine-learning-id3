@@ -184,26 +184,6 @@ private:
         // then computing entropy gain is not that hard
     }
 
-    std::string prepareQueryString(std::vector<ItemPair> contextString)
-    {
-        std::string contextQueryString;
-        if (contextString.empty()) {
-            return "";
-        }
-        if (isContAttribute(contextString.begin()->first)) {
-            contextQueryString = contextString.begin()->first + contextString.begin()->second;
-        } else {
-            contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
-        }
-        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
-            if (isContAttribute(it->first)) {
-                contextQueryString += " and " + it->first + it->second;
-            } else {
-                contextQueryString += " and " + it->first + " = " + it->second;
-            }
-        }
-        return contextQueryString;
-    }
 
     bool isContAttribute(std::string attribute)
     {
@@ -272,6 +252,26 @@ public:
         // buildTree(&rootNode, nodeContext, totalAttributes);
     }
 
+    std::string prepareQueryString(std::vector<ItemPair> contextString)
+    {
+        std::string contextQueryString;
+        if (contextString.empty()) {
+            return "";
+        }
+        if (isContAttribute(contextString.begin()->first)) {
+            contextQueryString = contextString.begin()->first + contextString.begin()->second;
+        } else {
+            contextQueryString = contextString.begin()->first + " = " + contextString.begin()->second;
+        }
+        for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+            if (isContAttribute(it->first)) {
+                contextQueryString += " and " + it->first + it->second;
+            } else {
+                contextQueryString += " and " + it->first + " = " + it->second;
+            }
+        }
+        return contextQueryString;
+    }
 
     // DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue) //this code sucks
     // {

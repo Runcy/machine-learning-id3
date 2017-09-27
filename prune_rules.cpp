@@ -97,11 +97,12 @@ void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> node
             pruneRules(*it, nodeContext, dummyTree);
         }
     }
-    auto childrenItr = node->children.begin();
-    if ((*childrenItr)->attributePair.first == "result") {
+    // auto childrenItr = node->children.begin();
+    if (node->children.empty()) {
         return;
     }
     nodeContext.push_back(node->attributePair);
+    // cout << "Node context: " << dummyTree.prepareQueryString(nodeContext) << std::endl;
     if (node->type == DecisionTree::NodeType::AttributeNode) {
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
             float origAccuracy = getAccuracy(&dummyTree.myRoot);
@@ -117,8 +118,12 @@ void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> node
             node->children = terminalVector;
             float newAccuracy = getAccuracy(&dummyTree.myRoot);
             if (newAccuracy > origAccuracy) {
+                // cout << "REPLACING!: ";
+                // std::cout << origAccuracy << " NEW " << newAccuracy << std::endl;
                 continue;
             }
+            // cout << "NO REPLACE: ";
+            // std::cout << origAccuracy << " NEW " << newAccuracy << std::endl;
             node->children = temp;
             pruneRules(*it, nodeContext, dummyTree);
         }
@@ -174,8 +179,9 @@ int main()
         tempPair = make_pair(attribute, attributeValue);
         ruleQueue.push(tempPair);
     }
-    cout << getAccuracy(&decisionTree.myRoot) <<endl;
+    // cout << getAccuracy(&decisionTree.myRoot) <<endl;
     std::vector<ItemPair> nodeContext;
     pruneRules(&decisionTree.myRoot, nodeContext, decisionTree);
+    decisionTree.traverseTree(&decisionTree.myRoot, "");
     return 0;
 }
