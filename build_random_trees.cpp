@@ -36,7 +36,7 @@ int main()
 
     for (int i = 0; i < 128; i++) {
         ofstream output(randomForestRuleBase+to_string(i));
-        DecisionTree decisionTree(v, contAttributes, randomForestFilePath+to_string(i), tableAttrib, "result", "<=50K", ">50K");
+        DecisionTree decisionTree(v, contAttributes, randomForestFilePath+to_string(i), tableAttrib, "result", "<=50K", ">50K", true);
         cout << "Tree built " << i << endl;
         decisionTree.traverseTree(&decisionTree.rootNode, "", output);
         cout << "Tree written" << endl;

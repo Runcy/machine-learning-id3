@@ -216,7 +216,7 @@ public:
                 const std::string _tableAttributes,
                 const std::string _resultString,
                 const std::string _positiveInstanceString,
-                const std::string _negativeInstanceString) :
+                const std::string _negativeInstanceString, bool doBuild) :
                 dataEngine(_trainingDataPath, _tableAttributes, _resultString,
                             _positiveInstanceString, _negativeInstanceString)
     {
@@ -228,28 +228,9 @@ public:
         myRoot.type = NodeType::RootNode;
         positiveString = _positiveInstanceString;
         negativeString = _negativeInstanceString;
-        buildTree(&rootNode, nodeContext, totalAttributes);
-    }
-
-    DecisionTree(std::vector<std::string> &attributes,
-                std::vector<std::string> &_contAttributes,
-                const std::string _trainingDataPath,
-                const std::string _tableAttributes,
-                const std::string _resultString,
-                const std::string _positiveInstanceString,
-                const std::string _negativeInstanceString, bool noBuild) :
-                dataEngine(_trainingDataPath, _tableAttributes, _resultString,
-                            _positiveInstanceString, _negativeInstanceString)
-    {
-        resultString = _resultString;
-        contAttributes = _contAttributes;
-        totalAttributes = attributes;
-        std::vector<std::pair<std::string, std::string>> nodeContext;
-        rootNode.type = NodeType::RootNode;
-        myRoot.type = NodeType::RootNode;
-        positiveString = _positiveInstanceString;
-        negativeString = _negativeInstanceString;
-        // buildTree(&rootNode, nodeContext, totalAttributes);
+        if (doBuild) {
+            buildTree(&rootNode, nodeContext, totalAttributes);
+        }
     }
 
     std::string prepareQueryString(std::vector<ItemPair> contextString)
