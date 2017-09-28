@@ -115,7 +115,9 @@ int main(int argc, char** argv)
     contAttributes.push_back("capital_loss");
     contAttributes.push_back("hours_per_week");
 
-    DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
+    DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", true);
+    DecisionTree::traverseTree(&decisionTree.rootNode, "");
+
     ifstream input;
     if (argc) {
         input.open(argv[1]);

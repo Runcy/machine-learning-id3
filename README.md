@@ -13,7 +13,8 @@ This project is a modern, C++11 implementation of a Decision Tree.
 This project has dependencies on the SQLite3 library and SQLiteCpp for interfacing SQL with C++ code. The project has been built with CMake. The libraries can be downloaded with:
 
 ```
-sudo apt install libsqlite3-dev cmake
+sudo apt install libsqlite3-dev libsqlite3-0
+ cmake
 ```
 
 The SQLiteCpp must be built from source. Instructions for doing so can be found here: [https://github.com/SRombauts/SQLiteCpp/](https://github.com/SRombauts/SQLiteCpp/)
@@ -105,7 +106,12 @@ The Random Forest method provides a good combination of short execution time and
 
 ## Results
 
+All of the following decision trees were tested on a modern laptop with a i5-6300U and an SSD. The code has been compiled using the ```-std=c++11``` and ```-O2``` g++ optimisation flags to improve performance.
+
+The standard ID3 algorithm takes upto two hours to build the tree and returns results of:
+
+
+
 random_dataset
 build_random_trees
 rebuild_forest
-libsqlite3-0
