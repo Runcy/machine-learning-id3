@@ -81,7 +81,29 @@ The pre-built ```rule_base``` file contains the list of the rules deduced from t
 
 This file initialises the tree from the ```rule_base``` file which contains the rules deduced from the training of the Decision Tree.
 
-The tree is then aggressively pruned, very heavily favouring nodes which improve the overall accuracy of the tree.
+The tree is then aggressively pruned, very heavily favouring nodes which improve the overall accuracy of the tree. Pruning is done by a custom BFS algorithm which checks if the accuracy of the tree is improved by deleting the node and replacing it with a TerminalNode having the result of the majority instances of the tree at that point. In case the accuracy is improved, the node is deleted and replaced with a TerminalNode. Otherwise, the node is kept at the same position and tree is recursively traversed till all the nodes have been checked.
+
+This algorithm requires the most execution time of the three. In return, it also provides the best accuracy at a startling **96%**!
+
+### Random Forests
+
+These have been created using three separate files:
+
+#### random_dataset.cpp
+
+Randomly selects elements from the dataset and creates N number of files with these values. In this case, 128 files are randomly produced, each consisting of 512 training instances. The datasets are stored in random_forest/adultTraining*.
+
+#### build_random_trees.cpp
+
+Builds decision trees from the random datasets created in the previous file. The tree is then linearized and written back to a file so it can be quickly accessed the next time.
+
+#### test_forest.cpp
+
+The Random Forest is constructed in an ```std::vector``` of pointers to DecisionTreeNode root nodes. The Random Forest evaluates a given instance by taking a vote among the 128 generated Decision Trees. The majority vote is taken as the result of the provided instance.
+
+The Random Forest method provides a good combination of short execution time and good performance. However, the performance does not improve much by increasing the number of decision trees in the forest or increasing the number of training instances used to produce each decision tree.
+
+## Results
 
 random_dataset
 build_random_trees
