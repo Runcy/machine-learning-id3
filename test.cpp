@@ -1,39 +1,37 @@
 // #include "DataEngine.h"
 #include "DecisionTree.h"
 using namespace std;
-std::string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
+string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
 " education TEXT, education_num INTEGER, marital_status TEXT,"
 " occupation TEXT, relationship TEXT, race TEXT, sex TEXT,"
 " capital_gain INTEGER, capital_loss INTEGER,"
 " hours_per_week INTEGER, native_country TEXT, result TEXT)";
-std::vector<std::string> contAttributes;
-// std::string tableAttrib = "create table dataTable (outlook TEXT, temperature TEXT, humidity TEXT, wind TEXT, playtennis TEXT)";
+vector<string> contAttributes;
 
-std::string dataPath = "../adult.data";
+string dataPath = "../adult.data";
 
-// std::string dataPath = "../playtennis.csv";
-
-
-std::vector<std::string> split(const std::string &text, std::string sep)
+vector<string> split(const string &text, string sep)
 {
-    std::vector<std::string> tokens;
-    std::size_t start = 0, end = 0;
-    while ((end = text.find(sep, start)) != std::string::npos) {
+    vector<string> tokens;
+    size_t start = 0, end = 0;
+    while ((end = text.find(sep, start)) != string::npos) {
         tokens.push_back(text.substr(start, end - start));
         start = end + sep.length();
     }
     tokens.push_back(text.substr(start));
     return tokens;
 }
-std::string testDataPath = "../adult.test";
+
+string testDataPath = "../adult.test";
 string positiveString = ">50K";
 string negativeString = "<=50K";
+
 void parseData(DecisionTree &decisionTree)
 {
-    std::ifstream input(testDataPath);
-    std::vector<std::string> result;
-    std::string resultString;
-    std::string line;
+    ifstream input(testDataPath);
+    vector<string> result;
+    string resultString;
+    string line;
 
     float positive = 0;
     float negative = 0;
@@ -44,7 +42,7 @@ void parseData(DecisionTree &decisionTree)
 
     if (input.is_open()) {
         while (getline(input, line)) {
-            if (line.find('?') != std::string::npos) { //ignore missing for now
+            if (line.find('?') != string::npos) { //ignore missing for now
                 continue;
             }
             result = split(line, ", ");
@@ -63,7 +61,7 @@ void parseData(DecisionTree &decisionTree)
             instanceList.push_back(make_pair("capital_loss", result[11]));
             instanceList.push_back(make_pair("hours_per_week", result[12]));
             instanceList.push_back(make_pair("native_country", "'"+result[13]+"'"));
-            std::string resultVal = result[14];
+            string resultVal = result[14];
             // resultVal.pop_back();
             string instanceResult = decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
             if (resultVal == positiveString && instanceResult == positiveString) {
@@ -93,10 +91,10 @@ void parseData(DecisionTree &decisionTree)
 }
 
 
-typedef std::pair<std::string, std::string> ItemPair;
+typedef pair<string, string> ItemPair;
 int main()
 {
-    std::vector<std::string> v;
+    vector<string> v;
     v.push_back("age");
     v.push_back("workclass");
     v.push_back("education");
@@ -116,19 +114,16 @@ int main()
     contAttributes.push_back("capital_gain");
     contAttributes.push_back("capital_loss");
     contAttributes.push_back("hours_per_week");
-    // DecisionTree decisionTree0(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K");
 
     DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
     ifstream input("rule_base");
     queue<ItemPair> ruleQueue;
     string line;
-    int i =0;
-
 
     for (; getline(input, line);) {
-        // std::cout <<line <<std::endl;
+        // cout <<line <<endl;
         if (line == "RULE: ") {
-            // std::cout << i++ << std::endl;
+            // cout << i++ << endl;
             decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
             while(!ruleQueue.empty()) {
                 ruleQueue.pop();
@@ -142,7 +137,8 @@ int main()
         tempPair = make_pair(attribute, attributeValue);
         ruleQueue.push(tempPair);
     }
-    cout << "Tree built!" <<endl;
+
+    cout << "Tree built!" << endl;
     parseData(decisionTree);
     return 0;
 }
