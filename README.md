@@ -164,6 +164,6 @@ Validation Time: 0m13.217s
 
 Training Time: 7m55.311s
 
-random_dataset
-build_random_trees
-rebuild_forest
+## Conclusions
+
+ID3 is a very effective machine learning clasifying algorithm. The algorithm can be adapted in many ways to improve the training time and accuracy as the problem requires. It can be adapted to solve several problems when large datasets are given. Furthermore, the construction of the tree is easy to visualise and the rules deduced by the tree are simple to understand. To improve performance, the algorithm could be rewritten to support multithreading and to recursively search the best attribute on each thread.
