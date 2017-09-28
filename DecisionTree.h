@@ -203,9 +203,9 @@ public:
     };
 
     struct DecisionTreeNode {
-        std::vector<DecisionTreeNode*> children;
-        NodeType type;
-        ItemPair attributePair;
+        std::vector<DecisionTreeNode*> children; // each node of the DecisionTreeNode has a vector of pointers to the next nodes in the tree
+        NodeType type; // useful for letting us know whether we are at the "Top" (root) or "Bottom" (terminal) of the tree
+        ItemPair attributePair; // attributes and values are stored as pairs, like <"outlook", "'sunny'">
     };
 
     DecisionTreeNode rootNode, myRoot;
