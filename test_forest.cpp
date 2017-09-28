@@ -130,7 +130,7 @@ int main()
     contAttributes.push_back("hours_per_week");
     vector<DecisionTree*> forest;
 
-    for (int i = 0; i < 512; i++) {
+    for (int i = 0; i < 128; i++) {
         queue<ItemPair> ruleQueue;
         string line;
         string filePath = randomForestRuleBase+to_string(i);

@@ -92,7 +92,7 @@ void parseData(DecisionTree &decisionTree)
 
 
 typedef pair<string, string> ItemPair;
-int main()
+int main(int argc, char** argv)
 {
     vector<string> v;
     v.push_back("age");
@@ -116,7 +116,12 @@ int main()
     contAttributes.push_back("hours_per_week");
 
     DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
-    ifstream input("rule_base");
+    ifstream input;
+    if (argc) {
+        input.open(argv[1]);
+    } else {
+        input.open("rule_base");
+    }
     queue<ItemPair> ruleQueue;
     string line;
 

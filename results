@@ -1,0 +1,28 @@
+Random Forest (512 trees/1024 instances)
+Accuracy: 0.835857
+Precision: 0.705351
+Recall: 0.57
+F1 Score: 0.630493
+
+Basic ID3
+Accuracy: 0.810359
+Precision: 0.618606
+Recall: 0.594865
+F1 Score: 0.606503
+
+real    0m11.050s
+user    0m11.040s
+sys     0m0.008s
+
+Prune
+
+Accuracy: 0.988082
+Precision: 1
+Recall: 0.0363636
+F1 Score: 0.0701754
+
+real    0m2.042s
+user    0m2.036s
+sys     0m0.004s
+
+

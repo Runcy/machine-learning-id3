@@ -10,8 +10,8 @@
 using namespace std;
 const string trainingDataPath = "../adult.data";
 const string randomForestFilePath = "../random_forest/adultTraining";
-const int trees = 512;
-const int instances = 1024;
+const int trees = 128;
+const int instances = 512;
 int main()
 {
     ifstream input(trainingDataPath);
