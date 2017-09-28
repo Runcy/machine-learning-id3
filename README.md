@@ -110,6 +110,27 @@ All of the following decision trees were tested on a modern laptop with a i5-630
 
 The standard ID3 algorithm takes upto two hours to build the tree and returns results of:
 
+### Reduced Error Pruning
+
+The Reduced Error Pruning alogrithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however.
+
+#### Stats
+
+Accuracy: 0.988082
+
+Precision: 1
+
+Recall: 0.0363636
+
+F1 Score: 0.0701754
+
+#### Validation Time
+
+real    0m2.042s
+user    0m2.036s
+sys     0m0.004s
+
+#### Training Time
 
 
 random_dataset
