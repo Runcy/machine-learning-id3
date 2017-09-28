@@ -1,5 +1,5 @@
-// Generates the datasets for Random Forests by randomly selecting 1024 instances
-// from the adult data set. This produces datasets for 512 trees which is then read
+// Generates the datasets for Random Forests by randomly selecting 512 instances
+// from the adult data set. This produces datasets for 128 trees which is then read
 // by build_random_trees.cpp to generate the rulebases for these trees
 
 #include <fstream>

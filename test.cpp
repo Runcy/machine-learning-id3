@@ -1,4 +1,19 @@
-// #include "DataEngine.h"
+// This works by taking a rule base, that is the list of deduced rules from a file 
+// and building a DecisionTree from the deduced rules. The first argument passed to
+// the program is used as the path to the file containing the list of rules.
+//
+// If the last argument if the constructor of the DecisionTree is set to ```false```,
+// the tree is built from the rules defined in the rule base. If it is set to ```true```,
+// the tree is built by training it from the training instances. This can be upto
+// 100 times slower than just building the tree from the file.
+//
+// The properties of the DecisionTree, such as the schema of the SQL database,
+// the list of discrete and continuous attributes, and the path of the training
+// and test data is specified in this file.
+//
+// The pre-built ```rule_base``` file contains the list of the rules deduced from
+// the standard ID3 algorithm.
+
 #include "DecisionTree.h"
 using namespace std;
 string tableAttrib = "create table dataTable (age INTEGER, workclass TEXT, fnlwgt INTEGER,"
