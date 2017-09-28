@@ -126,6 +126,8 @@ F1 Score: 0.606503
 
 Validation Time: 0m11.050s
 
+Training Time: 108m26.086s
+
 ### Reduced Error Pruning
 
 The Reduced Error Pruning alogrithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however. Reduced Error Pruning has a very long execution time and hence, should only be used in instances where long time training time is not a problem.
@@ -142,7 +144,7 @@ F1 Score: 0.0701754
 
 Validation Time: 0m2.042s
 
-Training Time:
+Training Time: 108m26.086s + 64m12.762s *the training time includes the time for constructing the tree using standard ID3 in the first place*
 
 ### Random Forest
 
