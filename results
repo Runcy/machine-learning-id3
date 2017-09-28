@@ -4,6 +4,18 @@ Precision: 0.705351
 Recall: 0.57
 F1 Score: 0.630493
 
+build::
+real    7m55.311s
+user    7m54.032s
+sys     0m0.852s
+
+valid"
+
+real    0m13.217s
+user    0m13.168s
+sys     0m0.044s
+
+
 Basic ID3
 Accuracy: 0.810359
 Precision: 0.618606
@@ -24,5 +36,3 @@ F1 Score: 0.0701754
 real    0m2.042s
 user    0m2.036s
 sys     0m0.004s
-
-

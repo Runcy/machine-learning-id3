@@ -110,9 +110,25 @@ All of the following decision trees were tested on a modern laptop with a i5-630
 
 The standard ID3 algorithm takes upto two hours to build the tree and returns results of:
 
+### Standard ID3
+
+The Standard ID3 algorithm shows some promising results. It scores an accuracy of 81%, which is higher than expected. In the case, the ID3 algorithm deduces over 9000 rules. The running time of the algorithm could be improved by reducing the number of SQLite queries to the RAM database. The program consumes 12MB of RAM with this dataset.
+
+#### Stats
+
+Accuracy: 0.810359
+
+Precision: 0.618606
+
+Recall: 0.594865
+
+F1 Score: 0.606503
+
+Validation Time: 0m11.050s
+
 ### Reduced Error Pruning
 
-The Reduced Error Pruning alogrithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however.
+The Reduced Error Pruning alogrithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however. Reduced Error Pruning has a very long execution time and hence, should only be used in instances where long time training time is not a problem.
 
 #### Stats
 
@@ -124,14 +140,27 @@ Recall: 0.0363636
 
 F1 Score: 0.0701754
 
-#### Validation Time
+Validation Time: 0m2.042s
 
-real    0m2.042s
-user    0m2.036s
-sys     0m0.004s
+Training Time:
 
-#### Training Time
+### Random Forest
 
+The random forest approach to Decision Trees provides some of the best results. It has better results than the standard ID3 algorithm, while being over 20 times faster when it comes to training with 128 trees, each trained on 512 instances. The random forest's performance does not improve by much on increasing the number of trees or the training instances. The same has been cited in many papers about this subject. The only drawback of the random forest approach is that it uses twice as much RAM as the standard ID3 algorithm.
+
+#### Stats
+
+Accuracy: 0.835857
+
+Precision: 0.705351
+
+Recall: 0.57
+
+F1 Score: 0.630493
+
+Validation Time: 0m13.217s
+
+Training Time: 7m55.311s
 
 random_dataset
 build_random_trees
