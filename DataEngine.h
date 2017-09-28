@@ -1,3 +1,7 @@
+// Class for handling all the database queries which come up in the construction of a
+// DecisionTree. Works by creating an SQLite database in RAM. It uses inline functions
+// for making queries to the databse.
+
 #ifndef DATAENGINE_H
 #define DATAENGINE_H
 

@@ -1,18 +1,28 @@
+// Class for implmenting the Decison Tree. This is used for implementing all the
+// Decision Trees in this project, including the one used for reduced error pruning and
+// random forests.
+
 #ifndef DECISIONTREE_H
 #define DECISIONTREE_H
 
 #include "DataEngine.h"
 
+// Used extensively for nodes. The first element is the attribute of the node at
+// that point and the second is the value.
 typedef std::pair<std::string, std::string> ItemPair;
 
 class DecisionTree {
 private:
-    std::vector<std::string> totalAttributes;
-    std::vector<std::string> contAttributes;
+    std::vector<std::string> totalAttributes; // list of attributes in the dataset
+    std::vector<std::string> contAttributes; // list of contd. attributes
     std::string resultString;
     std::string positiveString;
     std::string negativeString;
     DataEngine dataEngine;
+
+    // We deduce the best continuous attribute by scanning instances where the result
+    // of the instance changes from positive to negative and vice versa. The entropy for
+    // the subsets is calculated and compared with those in the discrete case.
 
     std::pair<float, float> getContinuousEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     {
@@ -123,6 +133,9 @@ private:
         return std::make_pair(bestVal, maxEntropy*-1);
     }
 
+    // Greedily checks for the attribute with the best entropy gain in the dataset.
+    // The context string parameter gives the list of attributes satisfied by the given node.
+
     float getEntropyGain(std::vector<ItemPair> contextString, std::string attribute)
     {
         std::vector<std::string> attributesList;
@@ -172,7 +185,6 @@ private:
         return totalEntropyGain*-1;
     }
 
-
     bool isContAttribute(std::string attribute)
     {
         for (auto it = contAttributes.begin(); it != contAttributes.end(); it++) {
@@ -198,6 +210,11 @@ public:
 
     DecisionTreeNode rootNode, myRoot;
 
+    // Constructor for initialising the decision tree. The Data Engine is also constructed
+    // and initialised in this step. If the last argument is set to false, the DecisionTree
+    // is initialised without building the tree, whereas the tree is built if the last argument
+    // is set to true.
+
     DecisionTree(std::vector<std::string> &attributes,
                 std::vector<std::string> &_contAttributes,
                 const std::string _trainingDataPath,
@@ -221,6 +238,8 @@ public:
         }
     }
 
+    // Converts the context of a node into a string which can be submitted for SQL queries.
+
     std::string prepareQueryString(std::vector<ItemPair> contextString)
     {
         std::string contextQueryString;
@@ -242,6 +261,8 @@ public:
         return contextQueryString;
     }
 
+    // Recursively finds a node in the tree using custom DFS. Returns nullptr if no node is found.
+
     DecisionTreeNode* findNode(DecisionTreeNode* node, std::string attribute, std::string attributeValue)
     {
         if (node->attributePair.first == attribute && node->attributePair.second == attributeValue) {
@@ -256,6 +277,8 @@ public:
         }
         return nullptr;
     }
+
+    // Used for building a tree from the rules deduced in a file.
 
     void buildTreeFromRule(DecisionTreeNode* node, std::queue<ItemPair> ruleQueue) //attribute is taken and then discarded
     {
@@ -344,6 +367,8 @@ public:
         return "Oh dear";
     }
 
+    // Searches through the tree to find if a test instance is positive or negative.
+
     std::string evaluateInstance(DecisionTreeNode* node, std::vector<ItemPair> instanceList)
     {
         std::string attribute = (*(node->children.begin()))->attributePair.first;
@@ -410,6 +435,8 @@ public:
         }
     }
 
+    // Overloaded method for traversing the tree. Writes the linearizied tree to the file specified in output.
+
     static void traverseTree(DecisionTreeNode* node, std::string rule, std::ofstream &output)
     {
         if (node->type == NodeType::RootNode) {
@@ -428,6 +455,8 @@ public:
             output << rule << "RULE: " << std::endl;
         }
     }
+
+    // Called from the constructor to recursively build the tree given the training examples.
 
     void buildTree(DecisionTreeNode* node, std::vector<ItemPair> nodeContext, std::vector<std::string> availableAttributes)
     {
