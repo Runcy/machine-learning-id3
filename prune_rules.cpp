@@ -50,7 +50,6 @@ float getAccuracy(DecisionTree::DecisionTreeNode* rootNode)
                 continue;
             }
             result = split(line, ", ");
-            // cout << line <<endl;
             vector<ItemPair> instanceList;
 
             instanceList.push_back(make_pair("age", result[0]));
@@ -66,7 +65,6 @@ float getAccuracy(DecisionTree::DecisionTreeNode* rootNode)
             instanceList.push_back(make_pair("hours_per_week", result[12]));
             instanceList.push_back(make_pair("native_country", "'"+result[13]+"'"));
             std::string resultVal = result[14];
-            // resultVal.pop_back();
             string instanceResult = decisionTree.evaluateInstance(&decisionTree.myRoot, instanceList);
             if (resultVal == positiveString && instanceResult == positiveString) {
                 positive++;
@@ -97,12 +95,10 @@ void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> node
             pruneRules(*it, nodeContext, dummyTree);
         }
     }
-    // auto childrenItr = node->children.begin();
     if (node->children.empty()) {
         return;
     }
     nodeContext.push_back(node->attributePair);
-    // cout << "Node context: " << dummyTree.prepareQueryString(nodeContext) << std::endl;
     if (node->type == DecisionTree::NodeType::AttributeNode) {
         for (auto it = node->children.begin(); it != node->children.end(); it++) {
             float origAccuracy = getAccuracy(&dummyTree.myRoot);
@@ -118,12 +114,9 @@ void pruneRules(DecisionTree::DecisionTreeNode* node, std::vector<ItemPair> node
             node->children = terminalVector;
             float newAccuracy = getAccuracy(&dummyTree.myRoot);
             if (newAccuracy > origAccuracy) {
-                // cout << "REPLACING!: ";
-                // std::cout << origAccuracy << " NEW " << newAccuracy << std::endl;
+
                 continue;
             }
-            // cout << "NO REPLACE: ";
-            // std::cout << origAccuracy << " NEW " << newAccuracy << std::endl;
             node->children = temp;
             pruneRules(*it, nodeContext, dummyTree);
         }
@@ -163,9 +156,7 @@ int main()
 
 
     for (; getline(input, line);) {
-        // std::cout <<line <<std::endl;
         if (line == "RULE: ") {
-            // std::cout << i++ << std::endl;
             decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
             while(!ruleQueue.empty()) {
                 ruleQueue.pop();
