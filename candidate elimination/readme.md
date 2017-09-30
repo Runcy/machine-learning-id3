@@ -8,10 +8,9 @@ One of the most naive processes of finding out the hypothesis given a target con
 
 In the working directory where the data.txt is present type:
 ```
-
 g++ -std=c++11 main.cpp 
 ./a.out
-``
+```
 c++11 is needed to support stoi function used in the code.
 
 ## Results
