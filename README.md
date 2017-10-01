@@ -78,6 +78,8 @@ If the last argument if the constructor of the DecisionTree is set to ```false``
 
 The properties of the DecisionTree, such as the schema of the SQL database, the list of discrete and continuous attributes, and the path of the training and test data is specified in this file.
 
+In the given training example, all the given properties have been used except for ```fnlwgt``` as it was increasing the training time by a factor of 10X without any improvement in the accuracy of the tree. Furthermore, missing attributes were ignored in this implementation as there was plenty of complete data for validation.
+
 The pre-built ```rule_base``` file contains the list of the rules deduced from the standard ID3 algorithm.
 
 ### prune_rules.cpp

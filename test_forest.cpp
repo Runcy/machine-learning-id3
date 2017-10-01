@@ -44,9 +44,6 @@ void parseData(vector<DecisionTree*> forest)
 
     if (input.is_open()) {
         while (getline(input, line)) {
-            if (line.find('?') != string::npos) { //ignore missing for now
-                continue;
-            }
             result = split(line, ", ");
             // cout << line <<endl;
             vector<ItemPair> instanceList;
