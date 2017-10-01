@@ -112,6 +112,8 @@ The Random Forest method provides a good combination of short execution time and
 
 All of the following decision trees were tested on a modern laptop with a i5-6300U and an SSD. The code has been compiled using the ```-std=c++11``` and ```-O2``` g++ optimisation flags to improve performance. The calculations for the statistics shown below are by comparing the output of the decision tree with the expected value in ```adult.test``` file.
 
+For reference, the rules deduced for standard ID3 and rule pruning can be found in ```rule_bases/```.
+
 ### Standard ID3
 
 The Standard ID3 algorithm shows some promising results. It scores an accuracy of 81%, which is higher than expected. In the case, the ID3 algorithm deduces over 9000 rules. The running time of the algorithm could be improved by reducing the number of SQLite queries to the RAM database. The program consumes 12MB of RAM with this dataset.
