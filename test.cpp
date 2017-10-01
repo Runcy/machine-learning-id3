@@ -1,4 +1,4 @@
-// This works by taking a rule base, that is the list of deduced rules from a file 
+// This works by taking a rule base, that is the list of deduced rules from a file
 // and building a DecisionTree from the deduced rules. The first argument passed to
 // the program is used as the path to the file containing the list of rules.
 //
@@ -130,20 +130,19 @@ int main(int argc, char** argv)
     contAttributes.push_back("capital_loss");
     contAttributes.push_back("hours_per_week");
 
-    DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", true);
+    DecisionTree decisionTree(v, contAttributes, dataPath, tableAttrib, "result", "<=50K", ">50K", false);
     DecisionTree::traverseTree(&decisionTree.rootNode, "");
 
     ifstream input;
-    if (argc) {
+    if (argc > 1) {
         input.open(argv[1]);
     } else {
-        input.open("rule_base");
+        input.open("../rule_bases/rule_base");
     }
     queue<ItemPair> ruleQueue;
     string line;
 
     for (; getline(input, line);) {
-        // cout <<line <<endl;
         if (line == "RULE: ") {
             // cout << i++ << endl;
             decisionTree.buildTreeFromRule(&decisionTree.myRoot, ruleQueue);
