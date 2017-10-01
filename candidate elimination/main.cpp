@@ -45,9 +45,13 @@ int checkconsistent(instance boun,instance ins)
 int moregeneral(instance g1,instance g2)
 {
     if((g1.hair==-1&&g2.hair!=-1)||(g1.feathers==-1&&g2.feathers!=-1)||(g1.eggs==-1&&g2.eggs!=-1)||(g1.milk==-1&&g2.milk!=-1)||(g1.airborne==-1&&g2.airborne!=-1)||(g1.aquatic==-1&&g2.aquatic!=-1)||(g1.predator==-1&&g2.predator!=-1)||(g1.toothed==-1&&g2.toothed!=-1)||(g1.backbone==-1&&g2.backbone!=-1)||(g1.breathes==-1&&g2.breathes!=-1)||(g1.venomous==-1&&g2.venomous!=-1)||(g1.fins==-1&&g2.fins!=-1)||(g1.legs==-1&&g2.legs!=-1)||(g1.tail==-1&&g2.tail!=-1)||(g1.domestic==-1&&g2.domestic!=-1)||(g1.catsize==-1&&g2.catsize!=-1))
-    return 1;
-    else
+    {
+      if((g1.hair!=-1&&g2.hair==-1)||(g1.feathers!=-1&&g2.feathers==-1)||(g1.eggs!=-1&&g2.eggs==-1)||(g1.milk!=-1&&g2.milk==-1)||(g1.airborne!=-1&&g2.airborne==-1)||(g1.aquatic!=-1&&g2.aquatic==-1)||(g1.predator!=-1&&g2.predator==-1)||(g1.toothed!=-1&&g2.toothed==-1)||(g1.backbone!=-1&&g2.backbone==-1)||(g1.breathes!=-1&&g2.breathes==-1)||(g1.venomous!=-1&&g2.venomous==-1)||(g1.fins!=-1&&g2.fins==-1)||(g1.legs!=-1&&g2.legs==-1)||(g1.tail!=-1&&g2.tail==-1)||(g1.domestic!=-1&&g2.domestic==-1)||(g1.catsize!=-1&&g2.catsize==-1))
     return 0;
+
+    else
+    return 1;
+    }
 }
 int same(instance genera, instance specifi)
 {
@@ -72,6 +76,7 @@ void getgeneralandspecific(int no)
 
     for(int i=0;i<instances.size();i++)
     {
+
         if(instances[i].type==no)
         {
            for(int j=0;j<general.size();j++)
@@ -149,170 +154,451 @@ void getgeneralandspecific(int no)
                    cout<<"NOT POSSIBLE FOR CLASS "<<no<<endl<<endl;
                    return;
             }
-            int allcheck=1;
-            for(int j=0;j<general.size();j++)
-            {
-                if(!checkconsistent(general[j],instances[i]))
-                    allcheck=0;
-            }
-            if(allcheck==0)
+            int allcheck=0;
+            //here
+
+            int emergency=general.size();
+            for(int j=0;j<emergency;j++)
             {
 
-                for(int j=0;j<general.size();j++)
-                {
-                   if(checkconsistent(general[j],instances[i]))
-                    {
-                        general.erase(general.begin()+j);
-                        j--;
-                    }
-                }
-            }
-            else
-            {
-
-                int emergency=general.size();
-                for(int j=0;j<emergency;j++)
+                if(checkconsistent(general[j],instances[i]))
                 {
 
-                    if(general[j].hair==-1)
-                    {
-                            instance temp=general[j];
-                            temp.hair=specific[0].hair;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                      if(general[j].hair==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.hair=specific[0].hair;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
 
-                    }
-                    if(general[j].milk==-1)
-                    {
-                            instance temp=general[j];
-                            temp.milk=specific[0].milk;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                    }
 
-                    }
-                    if(general[j].eggs==-1)
-                    {
-                            instance temp=general[j];
-                            temp.eggs=specific[0].eggs;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //cout<<"pushed hair\n";
+                                              general.push_back(temp);
+                                              }
 
-                    }
-                    if(general[j].airborne==-1)
-                    {
-                            instance temp=general[j];
-                            temp.airborne=specific[0].airborne;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                      }
+                                      if(general[j].milk==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.milk=specific[0].milk;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
 
-                    }
-                    if(general[j].feathers==-1)
-                    {
-                            instance temp=general[j];
-                            temp.feathers=specific[0].feathers;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                    }
 
-                    }
-                    if(general[j].aquatic==-1)
-                    {
-                            instance temp=general[j];
-                            temp.aquatic=specific[0].aquatic;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //cout<<"pushed milk\n";
+                                              general.push_back(temp);
+                                              }
 
-                    }
-                    if(general[j].predator==-1)
-                    {
-                            instance temp=general[j];
-                            temp.predator=specific[0].predator;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                      }
+                                      if(general[j].eggs==-1)
+                                      {
+                                              instance temp=general[j];
+                                              temp.eggs=specific[0].eggs;
+                                              allcheck=1;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
 
-                    }
-                    if(general[j].toothed==-1)
-                    {
-                            instance temp=general[j];
-                            temp.toothed=specific[0].toothed;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                    }
 
-                    }
-                    if(general[j].backbone==-1)
-                    {
-                            instance temp=general[j];
-                            temp.backbone=specific[0].backbone;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed eggs\n";
+                                              general.push_back(temp);
+                                            }
 
-                    }
-                    if(general[j].venomous==-1)
-                    {
-                            instance temp=general[j];
-                            temp.venomous=specific[0].venomous;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                      }
+                                      if(general[j].airborne==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.airborne=specific[0].airborne;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
 
-                    }
-                    if(general[j].breathes==-1)
-                    {
-                            instance temp=general[j];
-                            temp.breathes=specific[0].breathes;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                    }
 
-                    }
-                    if(general[j].fins==-1)
-                    {
-                            instance temp=general[j];
-                            temp.fins=specific[0].fins;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed airborne\n";
+                                              general.push_back(temp);
+                                            }
 
-                    }
-                    if(general[j].legs==-1)
-                    {
-                            instance temp=general[j];
-                            temp.legs=specific[0].legs;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                      }
+                                      if(general[j].feathers==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.feathers=specific[0].feathers;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
 
-                    }
-                    if(general[j].tail==-1)
-                    {
-                            instance temp=general[j];
-                            temp.tail=specific[0].tail;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                    }
 
-                    }
-                    if(general[j].domestic==-1)
-                    {
-                            instance temp=general[j];
-                            temp.domestic=specific[0].domestic;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              general.push_back(temp);
+                                              //cout<<"pushed feathers\n";
+                                            }
 
-                    }
-                    if(general[j].catsize==-1)
-                    {
-                            instance temp=general[j];
-                            temp.catsize=specific[0].catsize;
-                            if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
-                                general.push_back(temp);
+                                      }
+                                      if(general[j].aquatic==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.aquatic=specific[0].aquatic;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
 
-                    }
-                    general.erase(general.begin());
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              general.push_back(temp);
+                                              //cout<<"pushed aquatic";
+                                            }
+
+                                      }
+                                      if(general[j].predator==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.predator=specific[0].predator;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              general.push_back(temp);
+                                            //  cout<<"pushed predator";
+                                            }
+
+                                      }
+                                      if(general[j].toothed==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.toothed=specific[0].toothed;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed tooth\n";
+                                              general.push_back(temp);
+                                            }
+
+                                      }
+                                      if(general[j].backbone==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.backbone=specific[0].backbone;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed backbone\n";
+                                              general.push_back(temp);
+                                            }
+
+                                      }
+                                      if(general[j].venomous==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.venomous=specific[0].venomous;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                //cout<<"i got in here";
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              general.push_back(temp);
+                                              //cout<<"pushed venemous\n";
+                                            }
+
+                                      }
+                                      if(general[j].breathes==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.breathes=specific[0].breathes;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed breathes\n";
+                                              general.push_back(temp);
+                                            }
+                                      }
+                                      if(general[j].fins==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.fins=specific[0].fins;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed fins\n";
+                                                general.push_back(temp);
+                                              }
+
+                                      }
+                                      if(general[j].legs==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.legs=specific[0].legs;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed legs\n";
+                                              general.push_back(temp);
+                                            }
+
+                                      }
+                                      if(general[j].tail==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.tail=specific[0].tail;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              //  cout<<"pushed tail\n";
+                                              general.push_back(temp);
+                                            }
+
+                                      }
+                                      if(general[j].domestic==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.domestic=specific[0].domestic;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              general.push_back(temp);
+                                            //  cout<<"pushed domestic\n";
+                                            }
+
+                                      }
+                                      if(general[j].catsize==-1)
+                                      {
+                                              allcheck=1;
+                                              instance temp=general[j];
+                                              temp.catsize=specific[0].catsize;
+                                              if(!checkconsistent(temp,instances[i])&&(moregeneral(temp,specific[0])||same(temp,specific[0])))
+                                              {
+                                                allcheck=0;
+                                                for(int k=0;k<general.size();k++)
+                                                {
+                                                    if(!checkconsistent(general[k],instances[i]))
+                                                    {
+                                                      if(moregeneral(general[k],temp)||same(general[k],temp))
+                                                      allcheck=1;
+
+                                                    }
+
+                                                }
+                                              }
+                                              if(allcheck==0)
+                                              {
+                                              general.push_back(temp);
+                                            //  cout<<"pushed catsize\n";
+                                            }
+
+                                      }
+                                      general.erase(general.begin()+j);
+                                      j--;
+                                      emergency--;
                 }
+
+            }
+
+
                 if(general.size()==0)
                 {
                    cout<<"NOT POSSIBLE FOR CLASS "<<no<<endl<<endl;
                    return;
                 }
+                //here
+
             }
         }
-    }
-       cout<<"*****General boundary*****\n";
+
+    cout<<"*****General boundary*****\n";
     for(int i=0;i<general.size();i++)
     {
 
