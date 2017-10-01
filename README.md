@@ -1,4 +1,4 @@
-# ID3, Reduced Error Pruning, and Random Forests - BITS F464 Assigment 2
+# ID3, Reduced Error Pruning, and Random Forests - BITS F464 Assignment 2
 
 ## Introduction
 
@@ -19,7 +19,7 @@ sudo apt install libsqlite3-dev libsqlite3-0
 
 The SQLiteCpp must be built from source. Instructions for doing so can be found here: [https://github.com/SRombauts/SQLiteCpp/](https://github.com/SRombauts/SQLiteCpp/)
 
-Once the library has been installed, clone or unzip the files to your favorite folder and run:
+Once the library has been installed, clone or unzip the files to your favourite folder and run:
 
 ```
 mkdir build
@@ -132,7 +132,7 @@ Training Time: 108m26.086s
 
 ### Reduced Error Pruning
 
-The Reduced Error Pruning alogrithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however. Reduced Error Pruning has a very long execution time and hence, should only be used in instances where long time training time is not a problem.
+The Reduced Error Pruning algorithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however. Reduced Error Pruning has a very long execution time and hence, should only be used in instances where long time training time is not a problem.
 
 #### Stats
 
@@ -168,4 +168,4 @@ Training Time: 7m55.311s
 
 ## Conclusions
 
-ID3 is a very effective machine learning clasifying algorithm. The algorithm can be adapted in many ways to improve the training time and accuracy as the problem requires. It can be adapted to solve several problems when large datasets are given. Furthermore, the construction of the tree is easy to visualise and the rules deduced by the tree are simple to understand. To improve performance, the algorithm could be rewritten to support multithreading and to recursively search the best attribute on each thread.
+ID3 is a very effective machine learning classifying algorithm. The algorithm can be adapted in many ways to improve the training time and accuracy as the problem requires. It can be adapted to solve several problems when large datasets are given. Furthermore, the construction of the tree is easy to visualise and the rules deduced by the tree are simple to understand. To improve performance, the algorithm could be rewritten to support multithreading and to recursively search the best attribute on each thread.
