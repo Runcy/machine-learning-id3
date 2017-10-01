@@ -1,4 +1,4 @@
-# ID3, Reduced Error Pruing, and Random Forests - BITS F464 Assigment 2
+# ID3, Reduced Error Pruning, and Random Forests - BITS F464 Assigment 2
 
 ## Introduction
 
@@ -27,6 +27,8 @@ cd build
 cmake ..
 make -j4
 ```
+
+Executables can be found in ```build/```. For testing your setup, run ```./test_p``` which will calculate the score of the decision tree computed by a standard ID3 algorithm.
 
 ## Code Base
 
