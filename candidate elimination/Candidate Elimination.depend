@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1506462575 source:c:\studies\ml\candidate elimination\main.cpp
-	<iostream>
-	<fstream>
-	<string>
-	<bits/stdc++.h>
-
