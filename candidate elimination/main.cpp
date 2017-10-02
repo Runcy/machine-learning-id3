@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int concept=1;
+//Structure instance to store each instance of the dataset
 struct instance
 {
     int hair;
@@ -25,8 +26,10 @@ struct instance
     int type;
 };
 instance temp;
+// A vector of instances is created one for the data, one for general and the other for specific boundary
 std::vector<instance> instances,general,specific;
 template <class Container>
+//A function to split a line based on the delimiter ','
 void split(const std::string& str, Container& cont, char delim = ',')
 {
     std::stringstream ss(str);
@@ -35,6 +38,7 @@ void split(const std::string& str, Container& cont, char delim = ',')
         cont.push_back(token);
     }
 }
+// function to check if the second instance is consistent with the first.
 int checkconsistent(instance boun,instance ins)
 {
     if((boun.hair==-1||(boun.hair==ins.hair))&&(boun.feathers==-1||(boun.feathers==ins.feathers))&&(boun.eggs==-1||(boun.eggs==ins.eggs))&&(boun.milk==-1||(boun.milk==ins.milk))&&(boun.airborne==-1||(boun.airborne==ins.airborne))&&(boun.aquatic==-1||(boun.aquatic==ins.aquatic))&&(boun.predator==-1||(boun.predator==ins.predator))&&(boun.toothed==-1||(boun.toothed==ins.toothed))&&(boun.backbone==-1||(boun.backbone==ins.backbone))&&(boun.breathes==-1||(boun.breathes==ins.breathes))&&(boun.venomous==-1||(boun.venomous==ins.venomous))&&(boun.fins==-1||(boun.fins==ins.fins))&&(boun.legs==-1||(boun.legs==ins.legs))&&(boun.tail==-1||(boun.tail==ins.tail))&&(boun.domestic==-1||(boun.domestic==ins.domestic))&&(boun.catsize==-1||(boun.catsize==ins.catsize)))
@@ -42,6 +46,7 @@ int checkconsistent(instance boun,instance ins)
        else
         return 0;
 }
+//Function to check if g1 is more general than g2
 int moregeneral(instance g1,instance g2)
 {
     if((g1.hair==-1&&g2.hair!=-1)||(g1.feathers==-1&&g2.feathers!=-1)||(g1.eggs==-1&&g2.eggs!=-1)||(g1.milk==-1&&g2.milk!=-1)||(g1.airborne==-1&&g2.airborne!=-1)||(g1.aquatic==-1&&g2.aquatic!=-1)||(g1.predator==-1&&g2.predator!=-1)||(g1.toothed==-1&&g2.toothed!=-1)||(g1.backbone==-1&&g2.backbone!=-1)||(g1.breathes==-1&&g2.breathes!=-1)||(g1.venomous==-1&&g2.venomous!=-1)||(g1.fins==-1&&g2.fins!=-1)||(g1.legs==-1&&g2.legs!=-1)||(g1.tail==-1&&g2.tail!=-1)||(g1.domestic==-1&&g2.domestic!=-1)||(g1.catsize==-1&&g2.catsize!=-1))
@@ -53,16 +58,20 @@ int moregeneral(instance g1,instance g2)
     return 1;
     }
 }
+//Function to check if the two insatnces are same
 int same(instance genera, instance specifi)
 {
     if((genera.hair==specifi.hair)&&(genera.milk==specifi.milk)&&(genera.eggs==specifi.eggs)&&(genera.airborne==specifi.airborne)&&(genera.feathers==specifi.feathers)&&(genera.aquatic==specifi.aquatic)&&(genera.predator==specifi.predator)&&(genera.toothed==specifi.toothed)&&(genera.backbone==specifi.backbone)&&(genera.breathes==specifi.breathes)&&(genera.venomous==specifi.venomous)&&(genera.fins==specifi.fins)&&(genera.legs==specifi.legs)&&(genera.tail==specifi.tail)&&(genera.domestic==specifi.domestic)&&(genera.catsize==specifi.catsize))
         return 1;
     else return 0;
 }
+//The main function where general and specific boundary is found
 void getgeneralandspecific(int no)
 {
+    //initializing the general boundary to most general
     instance genb = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
     general.push_back(genb);
+    //initializing the specific boundary to rhe first positive test case
     for(int i=0;i<instances.size();i++)
     {
             if(instances[i].type==no)
@@ -76,22 +85,25 @@ void getgeneralandspecific(int no)
 
     for(int i=0;i<instances.size();i++)
     {
-
+        //Updating general and specific for a positive test case
         if(instances[i].type==no)
         {
            for(int j=0;j<general.size();j++)
            {
+               //removing inconsistent hypothesis from general 
                if(!checkconsistent(general[j],instances[i]))
                {
                    general.erase(general.begin()+j);
                    j--;
                }
+               //Exit if entire general is inconsistent
                if(general.size()==0)
                {
                    cout<<"NOT POSSIBLE FOR CLASS "<<no<<endl<<endl;
                    return;
                }
            }
+            //Updating the specific boundary to the least general approximation that holds consistent for the given test case
            if(!checkconsistent(specific[0],instances[i]))
            {
                 if(specific[0].hair!=-1&&specific[0].hair!=instances[i].hair)
@@ -128,6 +140,7 @@ void getgeneralandspecific(int no)
                     specific[0].catsize=-1;
 
            }
+            //checking if the least general case is more general than the general boundary if so it exits.
             for(int j=0;j<general.size();j++)
             {
                 if(moregeneral(general[j],specific[0]))
@@ -147,8 +160,9 @@ void getgeneralandspecific(int no)
             }
 
         }
-        else
+        else //updating the specific and general boundary for a negative case
         {
+            //exits if the specific boundary is inconsistent with the case
             if(checkconsistent(specific[0],instances[i]))
             {
                    cout<<"NOT POSSIBLE FOR CLASS "<<no<<endl<<endl;
@@ -156,7 +170,8 @@ void getgeneralandspecific(int no)
             }
             int allcheck=0;
             //here
-
+            // for each inconsistent hypoothesis in general boundary a least specific consistent  general boundary is added which is
+            // more general than the general boundary and not more specific than the current general boundary
             int emergency=general.size();
             for(int j=0;j<emergency;j++)
             {
@@ -587,7 +602,7 @@ void getgeneralandspecific(int no)
 
             }
 
-
+                //exits if no least specific general hypothesis exists that is consistent with the test case
                 if(general.size()==0)
                 {
                    cout<<"NOT POSSIBLE FOR CLASS "<<no<<endl<<endl;
@@ -597,7 +612,7 @@ void getgeneralandspecific(int no)
 
             }
         }
-
+    //prints general boundary
     cout<<"*****General boundary*****\n";
     for(int i=0;i<general.size();i++)
     {
@@ -671,6 +686,7 @@ void getgeneralandspecific(int no)
 
     }
     cout<<endl;
+    //prints specific boundary
     for(int i=0;i<specific.size();i++)
     {
         cout<<"*****Specific boundary*****\n";
@@ -744,6 +760,7 @@ void getgeneralandspecific(int no)
     }
     cout<<endl<<endl;
 }
+//function to store the data in the text file to a vector of structures and detect how many training concepts
 void detectandstore()
 {
     ifstream fin;
@@ -812,6 +829,7 @@ void detectandstore()
     fin.close();
     cout<<"******DATA ACQUIRED****** \nNumber of training concepts is:" <<concept<<endl;
 }
+//main function to call the detectgeneraand specific function for each target concept
 int main()
 {
     int finalcounter=0;
