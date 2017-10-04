@@ -12,7 +12,7 @@ std::vector<std::string> v;
 typedef std::pair<std::string, std::string> ItemPair;
 
 std::string dataPath = "../adult.data";
-std::string testDataPath = "../adult.test";
+std::string testDataPath = "../adult.data";
 string positiveString = ">50K";
 string negativeString = "<=50K";
 

@@ -6,7 +6,7 @@ There are several methods to classify data from a dataset. One notable method is
 
 For this assignment, the task is to classify whether a given instance of a person's details can be used to deduce if they earn more or less than 50,000 USD per annum.
 
-This project is a modern, C++11 implementation of a Decision Tree.
+This project is a modern, C++11 implementation of a Decision Tree. For saving execution time, the rules deduced by the classifiers are stored in the ```rule_bases``` directory.
 
 ## Installation
 
@@ -88,7 +88,7 @@ This file initialises the tree from the ```rule_base``` file which contains the 
 
 The tree is then aggressively pruned, very heavily favouring nodes which improve the overall accuracy of the tree. Pruning is done by a custom BFS algorithm which checks if the accuracy of the tree is improved by deleting the node and replacing it with a TerminalNode having the result of the majority instances of the tree at that point. In case the accuracy is improved, the node is deleted and replaced with a TerminalNode. Otherwise, the node is kept at the same position and tree is recursively traversed till all the nodes have been checked.
 
-This algorithm requires the most execution time of the three. In return, it also provides the best accuracy at a startling **96%**!
+This algorithm requires the most execution time of the three. In return, it also provides the best accuracy at a startling **95%**!
 
 ### Random Forests
 
@@ -136,21 +136,21 @@ Training Time: 108m26.086s
 
 ### Reduced Error Pruning
 
-The Reduced Error Pruning algorithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy and precision. The Recall and F1 score are quite poor, however. Reduced Error Pruning has a very long execution time and hence, should only be used in instances where long time training time is not a problem.
+The Reduced Error Pruning algorithm shows interesting results. As it aggressively prunes for improving the trees accuracy, it gives excellent accuracy. The Recall and F1 score are quite poor, however. Reduced Error Pruning has a very long execution time and hence, should only be used in instances where long time training time is not a problem.
 
 #### Stats
 
-Accuracy: 0.988082
+Accuracy: 0.951414
 
-Precision: 1
+Precision: 0.364865
 
-Recall: 0.0363636
+Recall: 0.25
 
-F1 Score: 0.0701754
+F1 Score: 0.296703
 
 Validation Time: 0m2.042s
 
-Training Time: 108m26.086s + 64m12.762s (the training time includes the time for constructing the tree using standard ID3 in the first place)
+Training Time: 108m26.086s + 109m42.770s (the training time includes the time for constructing the tree using standard ID3 in the first place)
 
 ### Random Forest
 
