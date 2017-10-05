@@ -1,0 +1,320 @@
+In file included from /home/nic/original-projects/machine learning/id3/DecisionTree.h:8:0,
+                 from /home/nic/original-projects/machine learning/id3/prune_rules.cpp:2:
+/home/nic/original-projects/machine learning/id3/DataEngine.h:109:81: error: ‘>>’ should be ‘> >’ within a nested template argument list
+     void executeQuery(std::string sqlString, std::vector<std::vector<std::string>> &v)
+                                                                                 ^
+In file included from /home/nic/original-projects/machine learning/id3/DecisionTree.h:8:0,
+                 from /home/nic/original-projects/machine learning/id3/prune_rules.cpp:2:
+/home/nic/original-projects/machine learning/id3/DataEngine.h: In member function ‘std::__cxx11::string DataEngine::prepareSqlString(std::vector<std::__cxx11::basic_string<char> >)’:
+/home/nic/original-projects/machine learning/id3/DataEngine.h:48:19: error: ‘it’ does not name a type
+         for (auto it = v.begin(); it != v.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DataEngine.h:48:35: error: expected ‘;’ before ‘it’
+         for (auto it = v.begin(); it != v.end(); it++) {
+                                   ^
+/home/nic/original-projects/machine learning/id3/DataEngine.h:48:35: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DataEngine.h:56:22: error: ‘std::__cxx11::string {aka class std::__cxx11::basic_string<char>}’ has no member named ‘pop_back’
+         resultString.pop_back();
+                      ^
+/home/nic/original-projects/machine learning/id3/DataEngine.h:57:22: error: ‘std::__cxx11::string {aka class std::__cxx11::basic_string<char>}’ has no member named ‘pop_back’
+         resultString.pop_back();
+                      ^
+/home/nic/original-projects/machine learning/id3/DataEngine.h: In member function ‘void DataEngine::populateDatabase()’:
+/home/nic/original-projects/machine learning/id3/DataEngine.h:63:45: error: no matching function for call to ‘std::basic_ifstream<char>::basic_ifstream(const string&)’
+         std::ifstream input(trainingDataPath);
+                                             ^
+In file included from /home/nic/original-projects/machine learning/id3/DataEngine.h:12:0,
+                 from /home/nic/original-projects/machine learning/id3/DecisionTree.h:8,
+                 from /home/nic/original-projects/machine learning/id3/prune_rules.cpp:2:
+/usr/include/c++/5/fstream:495:7: note: candidate: std::basic_ifstream<_CharT, _Traits>::basic_ifstream(const char*, std::ios_base::openmode) [with _CharT = char; _Traits = std::char_traits<char>; std::ios_base::openmode = std::_Ios_Openmode]
+       basic_ifstream(const char* __s, ios_base::openmode __mode = ios_base::in)
+       ^
+/usr/include/c++/5/fstream:495:7: note:   no known conversion for argument 1 from ‘const string {aka const std::__cxx11::basic_string<char>}’ to ‘const char*’
+/usr/include/c++/5/fstream:481:7: note: candidate: std::basic_ifstream<_CharT, _Traits>::basic_ifstream() [with _CharT = char; _Traits = std::char_traits<char>]
+       basic_ifstream() : __istream_type(), _M_filebuf()
+       ^
+/usr/include/c++/5/fstream:481:7: note:   candidate expects 0 arguments, 1 provided
+/usr/include/c++/5/fstream:455:11: note: candidate: std::basic_ifstream<char>::basic_ifstream(const std::basic_ifstream<char>&)
+     class basic_ifstream : public basic_istream<_CharT, _Traits>
+           ^
+/usr/include/c++/5/fstream:455:11: note:   no known conversion for argument 1 from ‘const string {aka const std::__cxx11::basic_string<char>}’ to ‘const std::basic_ifstream<char>&’
+In file included from /home/nic/original-projects/machine learning/id3/prune_rules.cpp:2:0:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘std::pair<float, float> DecisionTree::getContinuousEntropyGain(std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >, std::__cxx11::string)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:49:14: error: ‘posItr’ does not name a type
+         auto posItr = contValuesPositive.begin();
+              ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:50:14: error: ‘negItr’ does not name a type
+         auto negItr = contValuesNegative.begin();
+              ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:54:15: error: ‘posItr’ was not declared in this scope
+         while(posItr < contValuesPositive.end() && negItr < contValuesNegative.end()) {
+               ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:54:52: error: ‘negItr’ was not declared in this scope
+         while(posItr < contValuesPositive.end() && negItr < contValuesNegative.end()) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:88:19: error: ‘it’ does not name a type
+         for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:88:48: error: expected ‘;’ before ‘it’
+         for (auto it = boundaryValues.begin(); it != boundaryValues.end(); it++) {
+                                                ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:88:48: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:93:59: error: ‘to_string’ is not a member of ‘std’
+                 attributeQueryString += attribute + ">" + std::to_string(*it);
+                                                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:95:69: error: ‘to_string’ is not a member of ‘std’
+                 attributeQueryString += " and " + attribute + ">" + std::to_string(*it);
+                                                                     ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:112:60: error: ‘to_string’ is not a member of ‘std’
+                 attributeQueryString += attribute + "<=" + std::to_string(*it);
+                                                            ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:114:70: error: ‘to_string’ is not a member of ‘std’
+                 attributeQueryString += " and " + attribute + "<=" + std::to_string(*it);
+                                                                      ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘float DecisionTree::getEntropyGain(std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >, std::__cxx11::string)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:164:19: error: ‘it’ does not name a type
+         for (auto it = attributesList.begin(); it != attributesList.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:164:48: error: expected ‘;’ before ‘it’
+         for (auto it = attributesList.begin(); it != attributesList.end(); it++) {
+                                                ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:164:48: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘bool DecisionTree::isContAttribute(std::__cxx11::string)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:190:19: error: ‘it’ does not name a type
+         for (auto it = contAttributes.begin(); it != contAttributes.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:190:48: error: expected ‘;’ before ‘it’
+         for (auto it = contAttributes.begin(); it != contAttributes.end(); it++) {
+                                                ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:190:48: error: ‘it’ was not declared in this scope
+In file included from /home/nic/original-projects/machine learning/id3/prune_rules.cpp:2:0:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In constructor ‘DecisionTree::DecisionTree(std::vector<std::__cxx11::basic_string<char> >&, std::vector<std::__cxx11::basic_string<char> >&, std::__cxx11::string, std::__cxx11::string, std::__cxx11::string, std::__cxx11::string, std::__cxx11::string, bool)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:231:55: error: ‘>>’ should be ‘> >’ within a nested template argument list
+         std::vector<std::pair<std::string, std::string>> nodeContext;
+                                                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:232:25: error: ‘NodeType’ is not a class or namespace
+         rootNode.type = NodeType::RootNode;
+                         ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:233:23: error: ‘NodeType’ is not a class or namespace
+         myRoot.type = NodeType::RootNode;
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘std::__cxx11::string DecisionTree::prepareQueryString(std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:254:19: error: ‘it’ does not name a type
+         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:254:51: error: expected ‘;’ before ‘it’
+         for (auto it = contextString.begin() + 1; it != contextString.end(); it++) {
+                                                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:254:51: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘DecisionTree::DecisionTreeNode* DecisionTree::findNode(DecisionTree::DecisionTreeNode*, std::__cxx11::string, std::__cxx11::string)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:272:19: error: ‘it’ does not name a type
+         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:272:48: error: expected ‘;’ before ‘it’
+         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:272:48: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:274:22: error: ‘nullptr’ was not declared in this scope
+             if (tmp!=nullptr) {
+                      ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:278:16: error: ‘nullptr’ was not declared in this scope
+         return nullptr;
+                ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘void DecisionTree::buildTreeFromRule(DecisionTree::DecisionTreeNode*, std::queue<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:291:40: error: ‘nullptr’ was not declared in this scope
+         DecisionTreeNode* searchNode = nullptr;
+                                        ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:301:34: error: ‘NodeType’ is not a class or namespace
+             terminalNode->type = NodeType::TerminalNode;
+                                  ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:322:38: error: ‘NodeType’ is not a class or namespace
+             positiveContNode->type = NodeType::AttributeNode;
+                                      ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:326:38: error: ‘NodeType’ is not a class or namespace
+             negativeContNode->type = NodeType::AttributeNode;
+                                      ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:334:23: error: ‘it’ does not name a type
+             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:334:59: error: expected ‘;’ before ‘it’
+             for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                                                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:334:59: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:337:35: error: ‘NodeType’ is not a class or namespace
+                 childNode->type = NodeType::AttributeNode;
+                                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘std::__cxx11::string DecisionTree::searchAttributeValue(std::__cxx11::string, std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:362:19: error: ‘it’ does not name a type
+         for (auto it = instanceList.begin(); it != instanceList.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:362:46: error: expected ‘;’ before ‘it’
+         for (auto it = instanceList.begin(); it != instanceList.end(); it++) {
+                                              ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:362:46: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘std::__cxx11::string DecisionTree::evaluateInstance(DecisionTree::DecisionTreeNode*, std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:392:36: error: ‘stof’ is not a member of ‘std’
+             float nodeContNumber = std::stof(number);
+                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:393:40: error: ‘stof’ is not a member of ‘std’
+             float instanceContNumber = std::stof(attributeValue);
+                                        ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:401:23: error: ‘it’ does not name a type
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:401:52: error: expected ‘;’ before ‘it’
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:401:52: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:406:35: error: ‘itr’ does not name a type
+                         for (auto itr = node->children.begin(); itr != node->children.end(); itr++) {
+                                   ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:406:65: error: expected ‘;’ before ‘itr’
+                         for (auto itr = node->children.begin(); itr != node->children.end(); itr++) {
+                                                                 ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:406:65: error: ‘itr’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In static member function ‘static void DecisionTree::traverseTree(DecisionTree::DecisionTreeNode*, std::__cxx11::string)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:421:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::RootNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:422:23: error: ‘it’ does not name a type
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:422:52: error: expected ‘;’ before ‘it’
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:422:52: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:428:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::AttributeNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:429:23: error: ‘it’ does not name a type
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:429:52: error: expected ‘;’ before ‘it’
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:429:52: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:433:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::TerminalNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In static member function ‘static void DecisionTree::traverseTree(DecisionTree::DecisionTreeNode*, std::__cxx11::string, std::ofstream&)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:442:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::RootNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:443:23: error: ‘it’ does not name a type
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:443:52: error: expected ‘;’ before ‘it’
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:443:52: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:449:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::AttributeNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:450:23: error: ‘it’ does not name a type
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:450:52: error: expected ‘;’ before ‘it’
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:450:52: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:454:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::TerminalNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h: In member function ‘void DecisionTree::buildTree(DecisionTree::DecisionTreeNode*, std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >, std::vector<std::__cxx11::basic_string<char> >)’:
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:468:14: error: ‘bestAttributeItr’ does not name a type
+         auto bestAttributeItr = availableAttributes.begin();
+              ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:474:27: error: ‘NodeType’ is not a class or namespace
+         if (node->type == NodeType::AttributeNode) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:494:34: error: ‘NodeType’ is not a class or namespace
+             terminalNode->type = NodeType::TerminalNode;
+                                  ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:498:23: error: ‘it’ does not name a type
+             for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:498:57: error: expected ‘;’ before ‘it’
+             for (auto it = availableAttributes.begin(); it != availableAttributes.end(); it++) {
+                                                         ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:498:57: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:508:21: error: ‘bestAttributeItr’ was not declared in this scope
+                     bestAttributeItr = it;
+                     ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:512:48: error: ‘bestAttributeItr’ was not declared in this scope
+             std::string bestAttributeString = *bestAttributeItr;
+                                                ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:517:91: error: ‘to_string’ is not a member of ‘std’
+                 positiveContNode->attributePair = std::make_pair(bestAttributeString, ">"+std::to_string(bestContValue));
+                                                                                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:518:42: error: ‘NodeType’ is not a class or namespace
+                 positiveContNode->type = NodeType::AttributeNode;
+                                          ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:522:94: error: ‘to_string’ is not a member of ‘std’
+                 negativeContNode->attributePair = std::make_pair(bestAttributeString, "<=" + std::to_string(bestContValue));
+                                                                                              ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:523:42: error: ‘NodeType’ is not a class or namespace
+                 negativeContNode->type = NodeType::AttributeNode;
+                                          ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:527:27: error: ‘it’ does not name a type
+                 for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                           ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:527:63: error: expected ‘;’ before ‘it’
+                 for (auto it = distinctAttributeList.begin(); it != distinctAttributeList.end(); it++) {
+                                                               ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:527:63: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:530:39: error: ‘NodeType’ is not a class or namespace
+                     childNode->type = NodeType::AttributeNode;
+                                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:535:23: error: ‘it’ does not name a type
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                       ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:535:52: error: expected ‘;’ before ‘it’
+             for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                    ^
+/home/nic/original-projects/machine learning/id3/DecisionTree.h:535:52: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp: In function ‘void pruneRules(DecisionTree::DecisionTreeNode*, std::vector<std::pair<std::__cxx11::basic_string<char>, std::__cxx11::basic_string<char> > >, DecisionTree&)’:
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:93:37: error: ‘DecisionTree::NodeType’ is not a class or namespace
+     if (node->type == DecisionTree::NodeType::RootNode) {
+                                     ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:94:19: error: ‘it’ does not name a type
+         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:94:48: error: expected ‘;’ before ‘it’
+         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:94:48: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:102:37: error: ‘DecisionTree::NodeType’ is not a class or namespace
+     if (node->type == DecisionTree::NodeType::AttributeNode) {
+                                     ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:103:19: error: ‘it’ does not name a type
+         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                   ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:103:48: error: expected ‘;’ before ‘it’
+         for (auto it = node->children.begin(); it != node->children.end(); it++) {
+                                                ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:103:48: error: ‘it’ was not declared in this scope
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:110:48: error: ‘DecisionTree::NodeType’ is not a class or namespace
+             terminalNode->type = DecisionTree::NodeType::TerminalNode;
+                                                ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:124:37: error: ‘DecisionTree::NodeType’ is not a class or namespace
+     if (node->type == DecisionTree::NodeType::TerminalNode) {
+                                     ^
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp: In function ‘void splitTrainingData()’:
+/home/nic/original-projects/machine learning/id3/prune_rules.cpp:131:28: error: no matching function for call to ‘std::basic_ifstream<char>::basic_ifstream(std::__cxx11::string&)’
+     ifstream input(dataPath);
+                            ^
+In file included from /home/nic/original-projects/machine learning/id3/DataEngine.h:12:0,
+                 from /home/nic/original-projects/machine learning/id3/DecisionTree.h:8,
+                 from /home/nic/original-projects/machine learning/id3/prune_rules.cpp:2:
+/usr/include/c++/5/fstream:495:7: note: candidate: std::basic_ifstream<_CharT, _Traits>::basic_ifstream(const char*, std::ios_base::openmode) [with _CharT = char; _Traits = std::char_traits<char>; std::ios_base::openmode = std::_Ios_Openmode]
+       basic_ifstream(const char* __s, ios_base::openmode __mode = ios_base::in)
+       ^
+/usr/include/c++/5/fstream:495:7: note:   no known conversion for argument 1 from ‘std::__cxx11::string {aka std::__cxx11::basic_string<char>}’ to ‘const char*’
+/usr/include/c++/5/fstream:481:7: note: candidate: std::basic_ifstream<_CharT, _Traits>::basic_ifstream() [with _CharT = char; _Traits = std::char_traits<char>]
+       basic_ifstream() : __istream_type(), _M_filebuf()
+       ^
+/usr/include/c++/5/fstream:481:7: note:   candidate expects 0 arguments, 1 provided
+/usr/include/c++/5/fstream:455:11: note: candidate: std::basic_ifstream<char>::basic_ifstream(const std::basic_ifstream<char>&)
+     class basic_ifstream : public basic_istream<_CharT, _Traits>
+           ^
+/usr/include/c++/5/fstream:455:11: note:   no known conversion for argument 1 from ‘std::__cxx11::string {aka std::__cxx11::basic_string<char>}’ to ‘const std::basic_ifstream<char>&’

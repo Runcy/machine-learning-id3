@@ -1,0 +1,1034 @@
+relationship 'Own-child'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Bachelors'
+workclass 'Private'
+age >45.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Bachelors'
+workclass 'Private'
+age <=45.000000
+hours_per_week >45.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Bachelors'
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Bachelors'
+workclass 'Self-emp-inc'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Assoc-acdm'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'HS-grad'
+age >40.000000
+workclass 'Private'
+capital_gain >40.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'HS-grad'
+age >40.000000
+workclass 'Local-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'HS-grad'
+age <=40.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Some-college'
+workclass 'Private'
+hours_per_week >42.500000
+age >0.000000
+race 'Black'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Some-college'
+workclass 'Private'
+hours_per_week <=42.500000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Some-college'
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Some-college'
+workclass 'Local-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Some-college'
+workclass 'Self-emp-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Some-college'
+workclass 'Federal-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Masters'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Assoc-voc'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education '9th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Exec-managerial'
+education 'Doctorate'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Farming-fishing'
+workclass 'Private'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Farming-fishing'
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Farming-fishing'
+workclass 'Self-emp-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Farming-fishing'
+workclass 'Federal-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Bachelors'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Assoc-acdm'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'HS-grad'
+native_country 'United-States'
+age <=42.500000
+hours_per_week >42.500000
+capital_gain >0.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'HS-grad'
+native_country 'United-States'
+age <=42.500000
+hours_per_week >42.500000
+capital_gain <=0.000000
+capital_loss >0.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'HS-grad'
+native_country 'United-States'
+age <=42.500000
+hours_per_week <=42.500000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'HS-grad'
+native_country 'Greece'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'HS-grad'
+native_country 'Canada'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age >39.000000
+workclass 'Private'
+capital_loss >40.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age >39.000000
+workclass 'Private'
+capital_loss <=40.000000
+hours_per_week >42.500000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age >39.000000
+workclass 'Private'
+capital_loss <=40.000000
+hours_per_week <=42.500000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age >39.000000
+workclass 'State-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age >39.000000
+workclass 'Self-emp-inc'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age <=39.000000
+hours_per_week >57.500000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Some-college'
+age <=39.000000
+hours_per_week <=57.500000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Masters'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education '11th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Assoc-voc'
+age <=38.000000
+hours_per_week >38.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Sales'
+education 'Assoc-voc'
+age <=38.000000
+hours_per_week <=38.000000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Other-service'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week >56.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'Bachelors'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'Assoc-acdm'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'HS-grad'
+workclass 'Private'
+age >0.000000
+race 'Amer-Indian-Eskimo'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'HS-grad'
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'HS-grad'
+workclass 'State-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'HS-grad'
+workclass 'Local-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'Some-college'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education 'Assoc-voc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education '9th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'United-States'
+hours_per_week <=56.000000
+education '10th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Cuba'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Mexico'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Guatemala'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Canada'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Germany'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'England'
+age <=45.000000
+workclass 'Private'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'England'
+age <=45.000000
+workclass 'Self-emp-not-inc'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Poland'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Craft-repair'
+native_country 'Puerto-Rico'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Adm-clerical'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'Bachelors'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'HS-grad'
+workclass 'Private'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'HS-grad'
+workclass 'State-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'HS-grad'
+workclass 'Local-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'Some-college'
+age >45.000000
+workclass 'Private'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'Some-college'
+age >45.000000
+workclass 'Local-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Protective-serv'
+education 'Some-college'
+age <=45.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education 'HS-grad'
+race 'White'
+age >40.000000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education 'HS-grad'
+race 'White'
+age <=40.000000
+capital_gain >40.000000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education 'HS-grad'
+race 'White'
+age <=40.000000
+capital_gain <=40.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education 'HS-grad'
+race 'Asian-Pac-Islander'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education 'HS-grad'
+race 'Amer-Indian-Eskimo'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education 'Some-college'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education '11th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education '1st-4th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Machine-op-inspct'
+education '10th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Bachelors'
+workclass 'Private'
+age <=45.000000
+capital_gain >45.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Bachelors'
+workclass 'Private'
+age <=45.000000
+capital_gain <=45.000000
+hours_per_week <=45.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Bachelors'
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Bachelors'
+workclass 'Local-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Assoc-acdm'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'HS-grad'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Some-college'
+age >30.000000
+hours_per_week >30.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Some-college'
+age >30.000000
+hours_per_week <=30.000000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Masters'
+age >46.500000
+workclass 'Private'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Masters'
+age >46.500000
+workclass 'Local-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Masters'
+age <=46.500000
+workclass 'Private'
+capital_loss >46.500000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Masters'
+age <=46.500000
+workclass 'Private'
+capital_loss <=46.500000
+hours_per_week >46.500000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Masters'
+age <=46.500000
+workclass 'Private'
+capital_loss <=46.500000
+hours_per_week <=46.500000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Masters'
+age <=46.500000
+workclass 'State-gov'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Prof-school'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Assoc-voc'
+age <=45.000000
+hours_per_week >45.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Assoc-voc'
+age <=45.000000
+hours_per_week <=45.000000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Prof-specialty'
+education 'Doctorate'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Tech-support'
+education 'Bachelors'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Tech-support'
+education 'HS-grad'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Tech-support'
+education 'Some-college'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Tech-support'
+education 'Assoc-voc'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Tech-support'
+education '7th-8th'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Transport-moving'
+workclass 'Private'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Transport-moving'
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Transport-moving'
+workclass 'Local-gov'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Transport-moving'
+workclass 'Self-emp-inc'
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Transport-moving'
+workclass 'Federal-gov'
+age >40.000000
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Transport-moving'
+workclass 'Federal-gov'
+age <=40.000000
+result <=50K
+RULE: 
+relationship 'Husband'
+occupation 'Handlers-cleaners'
+age >0.000000
+education 'HS-grad'
+result >50K
+RULE: 
+relationship 'Husband'
+occupation 'Handlers-cleaners'
+age >0.000000
+education '9th'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week >47.500000
+age >0.000000
+marital_status 'Never-married'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week >47.500000
+age >0.000000
+marital_status 'Divorced'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week >47.500000
+age >0.000000
+marital_status 'Married-spouse-absent'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss >1881.000000
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'Private'
+occupation 'Exec-managerial'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'Private'
+occupation 'Sales'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'Private'
+occupation 'Craft-repair'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'Private'
+occupation 'Adm-clerical'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'State-gov'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Bachelors'
+hours_per_week <=47.500000
+capital_loss <=1881.000000
+age >0.000000
+workclass 'Local-gov'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Assoc-acdm'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'HS-grad'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Never-married'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Divorced'
+age >53.000000
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Divorced'
+age <=53.000000
+capital_gain >53.000000
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Divorced'
+age <=53.000000
+capital_gain <=53.000000
+occupation 'Craft-repair'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Divorced'
+age <=53.000000
+capital_gain <=53.000000
+occupation 'Adm-clerical'
+workclass 'State-gov'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Divorced'
+age <=53.000000
+capital_gain <=53.000000
+occupation 'Handlers-cleaners'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Married-spouse-absent'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Separated'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Widowed'
+age >20.500000
+workclass 'Self-emp-not-inc'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Some-college'
+marital_status 'Widowed'
+age >20.500000
+workclass 'Self-emp-inc'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Masters'
+occupation 'Exec-managerial'
+sex 'Female'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Masters'
+occupation 'Exec-managerial'
+sex 'Male'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Masters'
+occupation 'Adm-clerical'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Masters'
+occupation 'Protective-serv'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Masters'
+occupation 'Prof-specialty'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education '11th'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Prof-school'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education 'Assoc-voc'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education '7th-8th'
+result <=50K
+RULE: 
+relationship 'Not-in-family'
+education 'Doctorate'
+result >50K
+RULE: 
+relationship 'Not-in-family'
+education '12th'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Exec-managerial'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Sales'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Other-service'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Adm-clerical'
+education 'Some-college'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Adm-clerical'
+education '10th'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Prof-specialty'
+age >38.500000
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Prof-specialty'
+age <=38.500000
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Private'
+occupation 'Transport-moving'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Self-emp-not-inc'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'State-gov'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Bachelors'
+occupation 'Adm-clerical'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Bachelors'
+occupation 'Protective-serv'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Bachelors'
+occupation 'Prof-specialty'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Assoc-acdm'
+age >30.000000
+occupation 'Adm-clerical'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Assoc-acdm'
+age >30.000000
+occupation 'Prof-specialty'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Some-college'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education 'Masters'
+result >50K
+RULE: 
+relationship 'Wife'
+workclass 'Local-gov'
+education '12th'
+result <=50K
+RULE: 
+relationship 'Wife'
+workclass 'Self-emp-inc'
+result <=50K
+RULE: 
+relationship 'Unmarried'
+workclass 'Private'
+result <=50K
+RULE: 
+relationship 'Unmarried'
+workclass 'Self-emp-not-inc'
+education 'Assoc-acdm'
+result >50K
+RULE: 
+relationship 'Unmarried'
+workclass 'Self-emp-not-inc'
+education 'Some-college'
+result <=50K
+RULE: 
+relationship 'Unmarried'
+workclass 'Local-gov'
+result <=50K
+RULE: 
+relationship 'Unmarried'
+workclass 'Federal-gov'
+result <=50K
+RULE: 
+relationship 'Other-relative'
+result <=50K
+RULE: 
